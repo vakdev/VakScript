@@ -4,11 +4,9 @@ Tool to automate kiting without any attack speed limit, game mode, or entity.
 The main purpose is help AD Carry players, not limited to any other role.
 It should be used only for practice, because it creates an huge advantage over a normal player.
 
+https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b6670bd67
 
-
-https://github.com/vakdev/VakScript/assets/93299015/963dc0fa-3247-4359-98c8-9f58ef5cfd92
-
-![Screenshot_1](https://github.com/vakdev/VakScript/assets/93299015/a6bdbbe4-5a8d-4572-a9f6-61cd4fc91386)
+![Screenshot_1](https://github.com/vakdev/VakScript/assets/93299015/70ace742-0d9a-4350-80fa-4785e989d6b8)
 
 ## Discord: https://discord.com/invite/Dw4Zjtwmz5
 
