@@ -28,7 +28,7 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
  - Show target to focus.
 
 ## How to use.
-1. Download VakScript.exe and settings.json (both files must be in the same directory).
+1. Download VakScript.exe (join discord) and settings.json (both files must be in the same directory).
 2. Start VakScript.exe as admin in a custom game.
 3. If is your first time using VakScript, enable Autoconfig in GUI,  and reconnect.
 4.  And now its ready to use.  Just press spacebar or V.
