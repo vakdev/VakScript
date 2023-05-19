@@ -38,7 +38,7 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 ## How to convert to .exe
 1. Download pyMeow latest release and install. (https://github.com/qb-0/PyMeow)
 2. Install pyMeow: pip install *pymeow file name.
-3. Install script requeriments: pip install -r requeriments.txt
+3. Install script requirements: pip install -r requirements.txt
 4. Convert to .exe file with: pyinstaller --onefile --noconsole main.py
 5. Move settings.json to dist carpet (or where .exe is located)
 
