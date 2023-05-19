@@ -45,9 +45,9 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 ### Is it  safe to use?
 - Yes, it doesn't use any internal game function.  All it does is through external memory reading. 
 
-### Based on outdated source: https://github.com/hrt/Lmeme
-
 ### Vakdev:
 - Discord group: https://discord.com/invite/Dw4Zjtwmz5
 - Discord: Vakdev Zet#5964
 - YouTube: https://www.youtube.com/@vakdev881
+
+### Based on outdated source: https://github.com/hrt/Lmeme
