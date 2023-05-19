@@ -35,6 +35,13 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 4.  And now its ready to use.  Just press spacebar or V.
 5. If you want to use drawings, set your game screen mode to Borderless covering the whole screen.
 
+## How to convert to .exe
+1. Download pyMeow latest release and install. (https://github.com/qb-0/PyMeow)
+2. Install pyMeow: pip install *pymeow file name.
+3. Install script requeriments: pip install -r requeriments.txt
+4. Convert to .exe file with: pyinstaller --onefile --noconsole main.py
+5. Move settings.json to dist carpet (or where .exe is located)
+
 ## About.
 ### Is it  safe to use?
 - Yes, it doesn't use any internal game function.  All it does is through external memory reading. 
