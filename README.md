@@ -8,7 +8,6 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 
 ![Screenshot_1](https://github.com/vakdev/VakScript/assets/93299015/70ace742-0d9a-4350-80fa-4785e989d6b8)
 
-## Discord: https://discord.com/invite/Dw4Zjtwmz5
 
 ## Functions.
 #### 1. Target prio:
