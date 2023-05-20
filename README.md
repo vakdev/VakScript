@@ -33,6 +33,7 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 3. If is your first time using VakScript, enable Autoconfig in GUI,  and reconnect.
 4.  And now its ready to use.  Just press spacebar or V.
 5. If you want to use drawings, set your game screen mode to Borderless covering the whole screen.
+6. NOTE: For some users it works much better in FullScreen mode. (no drawings).
 
 ## How to convert to .exe
 1. Download pyMeow latest release and install. (https://github.com/qb-0/PyMeow)
