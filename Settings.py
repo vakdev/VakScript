@@ -22,7 +22,7 @@ class jsonSetter:
     
     def setKey(self, id, key):
         if self.isValidKey(key):
-            self.settings['AutoKite']['Keys'][id] = key
+            self.settings['AutoKite']['Keys'][id] = key.lower()
             self._jsonUpdate()
 
     def setMode(self, id, mode):
@@ -35,7 +35,7 @@ class jsonSetter:
 
     def setSmiteKey(self, id, key):
         if self.isValidKey(key):
-            self.settings['AutoSmite']['Keys'][id] = key
+            self.settings['AutoSmite']['Keys'][id] = key.lower()
             self._jsonUpdate()
 
 class jsonGetter:
