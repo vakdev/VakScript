@@ -28,6 +28,7 @@ class Data:
     script_version = '13.10'
     settings_file_name = 'settings.json'
     settings_file_path = path.abspath(settings_file_name)
+    client_name_executable = 'LeagueClient.exe'
     game_name_executable = 'League of Legends.exe'
     game_name_window = 'League of Legends (TM) Client'
     game_files_path = '\Riot Games\League of Legends'
