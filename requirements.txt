@@ -1,6 +1,5 @@
 mouse==0.7.1
 mousekey==0.11
-dearpygui==1.9.0
 dearpygui-ext==0.9.5
 orjson==3.8.5
 keyboard==0.13.5
