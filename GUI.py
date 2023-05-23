@@ -67,7 +67,7 @@ def gui(terminate):
         dpg.add_checkbox(label="Show enemies health", default_value=can_focus, callback=set_can_healths)
         dpg.add_checkbox(label="Restrict Track", default_value=limited_draw, callback=set_restricted)
         dpg.add_checkbox(label="Potato PC", default_value=ppc, callback=set_potato)
-        dpg.add_checkbox(label="Autoconfig", default_value=autoconfig, callback=set_autoconfig)
+        dpg.add_checkbox(label="Autoconfig", default_value=False, callback=set_autoconfig)
         dpg.add_input_text(label="Auto Kite Key", width=50, no_spaces=True, hint=orbwalk_key.upper(), callback=set_autokite_key)
         dpg.add_input_text(label="Laneclear Key", width=50, no_spaces=True, hint=laneclear_key.upper(), callback=set_laneclear_key)
         dpg.add_input_text(label="Last Hit Key", width=50, no_spaces=True, hint=lasthit_key.upper(), callback=set_lasthit_key)
