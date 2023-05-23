@@ -3,7 +3,7 @@
         "Keys": {
             "orbwalk": "space",
             "laneclear": "v",
-            "lasthit": "k",
+            "lasthit": "c",
             "attack": "a",
             "range": "o"
         },
@@ -13,7 +13,7 @@
             "lasthit": "Auto"
         },
         "Settings": {
-            "autoconfig": false,
+            "autoconfig": true,
             "ppc": false,
             "ext_drawings": true,
             "ext_track": true,
