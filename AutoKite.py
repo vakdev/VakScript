@@ -23,7 +23,7 @@ def auto_kite(terminate):
     from Settings import jsonGetter
     from Entities import Entity, ReadAttributes
     from Utils import PressKey, ReleaseKey, isActiveWindow
-    from Autoconfig import Autoconfig
+    from Autoconfig import start_autoconfig
 
     #keyboard, mouse funcions (kp=key press, kr= key release, mp= mouse press, mr = mouse release)
     def ppc(_):pass
@@ -68,11 +68,6 @@ def auto_kite(terminate):
                 mode_lasthit = jsonGetter().getMode('lasthit')
                 freeze = jsonGetter().getSetting('freeze')
                 potato_pc = jsonGetter().getSetting('ppc')
-                autoconfig = jsonGetter().getSetting('autoconfig')
-
-                if autoconfig:
-                    Autoconfig().start()
-
                 #
                 target_prio_mode = {'Less Basic Attacks':entity.select_by_health,
                                      'Most Damage':entity.select_by_damage,
@@ -119,7 +114,7 @@ def auto_kite(terminate):
                             targets = [read_minion(pointer) for pointer in minion_pointers(minions, local_team)]
                             target = select_lasthit_minion(read_player(local), targets)
                             if target:
-                                mr()
+                                mr(0)
                                 pos = world_to_screen(get_view_proj_matrix(), target[0].x, target[0].z, target[0].y)
                                 walk_min(pos, attack_key, attack_speed_base, windup, windup_mod)
                                 continue
@@ -161,7 +156,7 @@ def auto_kite(terminate):
                             targets = [read_minion(pointer) for pointer in minion_pointers(minions, local_team)]
                             target = select_lasthit_minion(read_player(local), targets)
                             if target:
-                                mr()
+                                mr(0)
                                 pos = world_to_screen(get_view_proj_matrix(), target[0].x, target[0].z, target[0].y)
                                 walk_min(pos, attack_key, attack_speed_base, windup, windup_mod)
                                 continue
@@ -195,7 +190,9 @@ def auto_kite(terminate):
                     except:
                         kr_mr(range_key)
                         continue
-
+            elif jsonGetter().getSetting('autoconfig'):
+                start_autoconfig()
+                
             else:
                 sleep(0.1) 
         except:
