@@ -30,7 +30,7 @@ def auto_kite(terminate):
     def kp_mp_function(range_key): PressKey(range_key), mouse_event(MOUSEEVENTF_MIDDLEDOWN, 0, 0, 0, 0)
     def kr_mr_function(range_key): ReleaseKey(range_key), mouse_event(MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0)
     def kp_function(range_key): PressKey(range_key)
-    def mr_function(): mouse_event(MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0)
+    def mr_function(_): mouse_event(MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0)
 
     while not terminate.value:
         del_mem()
