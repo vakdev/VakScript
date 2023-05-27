@@ -27,14 +27,14 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
  - Show current enemy health.
  - Show target to focus.
 
-## How to use.
+## Usage
 1. Download and Install Python 3.10.10
 2. Download VakScript zip file.
 3. Download and Install pyMeow zip release file.
 4. Extract VakScript and install requirements. (pip install -r requirements.txt)
 5. Start main.py
 
-## How to convert to .exe
+## Packaging to .EXE
 1. Install pyinstaller: pip install pyinstaller
 2. Use: pyinstaller --onefile --noconsole main.py
 3. Copy settings.json and paste in dist dir. 
