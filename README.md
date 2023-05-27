@@ -28,19 +28,17 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
  - Show target to focus.
 
 ## How to use.
-1. Download VakScript.exe (join discord) and settings.json (both files must be in the same directory).
-2. Start VakScript.exe as admin in a custom game.
-3. If is your first time using VakScript, enable Autoconfig in GUI,  and reconnect.
-4.  And now its ready to use.  Just press spacebar or V.
-5. If you want to use drawings, set your game screen mode to Borderless covering the whole screen.
-6. NOTE: For some users it works much better in FullScreen mode. (no drawings).
+1. Download and Install Python 3.10.10
+2. Download VakScript zip file.
+3. Download and Install pyMeow zip release file.
+4. Extract VakScript and install requirements. (pip install -r requirements.txt)
+5. Start main.py
 
 ## How to convert to .exe
-1. Download pyMeow latest release and install. (https://github.com/qb-0/PyMeow)
-2. Install pyMeow: pip install *pymeow file name.
-3. Install script requirements: pip install -r requirements.txt
-4. Convert to .exe file with: pyinstaller --onefile --noconsole main.py
-5. Move settings.json to dist carpet (or where .exe is located)
+1. Install pyinstaller: pip install pyinstaller
+2. Use: pyinstaller --onefile --noconsole main.py
+3. Copy settings.json and paste in dist dir. 
+4. Start main.exe as admin.
 
 ## About.
 ### Is it  safe to use?
