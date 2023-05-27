@@ -30,8 +30,8 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 ## Usage
 1. Download and Install Python 3.10.10
 2. Download VakScript zip file.
-3. Download and Install pyMeow zip release file.
-4. Extract VakScript and install requirements. (pip install -r requirements.txt)
+3. Download and Install pyMeow zip release file. (https://github.com/qb-0/pyMeow)
+4. Extract VakScript and install requirements: pip install -r requirements.txt
 5. Start main.py
 
 ## Packaging to .EXE
