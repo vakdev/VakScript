@@ -3,7 +3,7 @@
         "Keys": {
             "orbwalk": "space",
             "laneclear": "v",
-            "lasthit": "c",
+            "lasthit": "x",
             "attack": "a",
             "range": "o"
         },
@@ -13,9 +13,9 @@
             "lasthit": "Auto"
         },
         "Settings": {
-            "autoconfig": true,
+            "autoconfig": false,
             "ppc": false,
-            "ext_drawings": true,
+            "ext_drawings": false,
             "ext_track": true,
             "ext_focus": true,
             "ext_healths": true,
@@ -26,7 +26,8 @@
     "AutoSmite": {
         "Keys": {
             "smite": "f",
-            "update": "q"
+            "update": "q",
+            "randb": false
         },
         "Targets": [
             "sru_dragon_air",
@@ -38,7 +39,10 @@
             "sru_dragon_water",
             "sru_riftherald",
             "sru_baron",
-            "sru_riftherald_mercenary_tx_cm"
+            "sru_riftherald_mercenary_tx_cm",
+            "sru_red",
+            "sru_blue",
+            "sru_crab"
         ]
     }
 }
