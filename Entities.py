@@ -111,9 +111,9 @@ class Entity:
         target, min_distance = None, None
         for entity in targets:
             if self.is_hurtable(entity) and self.in_distance(player, entity):
-                distance = distance(player, entity)
-                if target is None or distance < min_distance:
-                    target, min_distance = entity, distance
+                d = distance(player, entity)
+                if target is None or d < min_distance:
+                    target, min_distance = entity, d
         return target
     
     def select_lowest_minion(self, player, targets):
