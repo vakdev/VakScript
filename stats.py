@@ -5,7 +5,7 @@ from requests import get
 from functools import lru_cache
 
 #own
-from Data import Data
+from data import Data
 
 class Stats:
 
@@ -23,13 +23,13 @@ class Stats:
                 pass
 
     @lru_cache(maxsize=None)
-    def getAttackSpeedBase(self, name):
+    def get_attack_speed_base(self, name):
         name = name.lower()
         root_key = 'characters/{}/characterrecords/root'.format(name)
         return self.champion_data[name][root_key]['attackSpeed']
     
     @lru_cache(maxsize=None)
-    def getRadius(self, name):
+    def get_radius(self, name):
         name = name.lower()
         try:
             root_key = 'characters/{}/characterrecords/root'.format(name)
@@ -38,7 +38,7 @@ class Stats:
             return 65.0
     
     @lru_cache(maxsize=None)
-    def getWindup(self, name):
+    def get_windup(self, name):
         name = name.lower()
         root_key = 'characters/{}/characterrecords/root'.format(name)
         basic_attack = self.champion_data[name][root_key]['basicAttack']
@@ -50,10 +50,10 @@ class Stats:
             windup_mod = basic_attack['mAttackDelayCastOffsetPercentAttackSpeedRatio']
         return windup, windup_mod
     
-    def getTargetsRadius(self):
+    def get_targets_radius(self):
         champions_radius = dict()
         for name in self.names:
-            radius = self.getRadius(name)
+            radius = self.get_radius(name)
             champions_radius[name.capitalize()] = radius
         return champions_radius
     
