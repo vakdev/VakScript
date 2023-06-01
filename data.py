@@ -1,31 +1,30 @@
-
 class Offsets:
-    oLocalPlayer = 0x51c6980
-    oGameTime = 0x51b8c10
-    oViewProjMatrix = 0x5205C70
-    oChampionList = 0x210def0
-    oMinionList = 0x3968770
-    objName = 0x38D0
-    objTeam = 0x3C
-    objHealth = 0x1068
-    objMaxHealth = 0x1080
-    objArmor = 0x16A4
-    objBaseAttack = 0x1BC8
-    objBonusAttack = 0x1AA8
-    objMagicDamage = 0x15F8
-    objAttackRange = 0x16C4
-    objSpawnCount = 0x328
-    objTargetable = 0xEB0
-    objVisible = 0x310
-    objPosX = 0x220
-    objPosY = objPosX + 0x8
-    objPosZ = objPosX + 0x4
+    local_player = 0x51DA528
+    game_time = 0x51CC730
+    view_proj_matrix = 0x5219A80
+    champion_list = 0x21219E8
+    minion_list = 0x397C278
+    obj_name = 0x38C8
+    obj_team = 0x3C
+    obj_health = 0x1068
+    obj_max_health = 0x1080
+    obj_armor = 0x16A4
+    obj_base_attack = 0x1BC8
+    obj_bonus_attack = 0x1AA8
+    obj_magic_damage = 0x15F8
+    obj_attack_range = 0x16C4
+    obj_spawn_count = 0x328
+    obj_targetable = 0xEB0
+    obj_visible = 0x310
+    obj_x = 0x220
+    obj_y = obj_x + 0x8
+    obj_z = obj_x + 0x4
 
 
 class Data:
     from os import path
 
-    script_version = '13.10'
+    script_version = '13.11'
     settings_file_name = 'settings.json'
     settings_file_path = path.abspath(settings_file_name)
     client_name_executable = 'LeagueClient.exe'
