@@ -5,9 +5,8 @@ import fileinput
 from psutil import process_iter
 
 #own
-from Settings import jsonSetter
-from Data import Data
-
+from settings import jsonSetter
+from data import Data
 
 DEFAULT_CAMERA_SNAP = '[Space],[v]'
 DEFAULT_CHAMPION_ONLY = '[Button 3]'
@@ -35,20 +34,20 @@ class Autoconfig:
         self.persisted_settings = persisted_settings
 
     @staticmethod
-    def clearName(string):
+    def clear_name(string):
         return string.strip().removeprefix('"name": "').removesuffix('",')
     
     @staticmethod
-    def clearValue(string):
+    def clear_value(string):
         return string.strip(" \n").removeprefix('"value": "').removesuffix('"')
     
-    def removeDuplications(self):
+    def remove_duplications(self):
         #Prevent key bugs.
-        current_values = self.getPersistedSettings()
+        current_values = self.get_persisted_settings()
         duplications = dict()
         with open(self.persisted_settings) as persisted_settings:
             for index, line in enumerate(persisted_settings, 1):
-                line = Autoconfig.clearValue(line)
+                line = Autoconfig.clear_value(line)
                 if not line.isdecimal() and '.' not in line:
                     for k, v in current_values.items():
                             #remove normal keys
@@ -79,34 +78,34 @@ class Autoconfig:
                     line = line.replace(v, '[<Unbound>],[<Unbound>]')
             print(line, end="")
 
-    def getPersistedSettings(self):
+    def get_persisted_settings(self):
         current_settings = dict()
         is_value = False
         value_pos = None
         with open(self.persisted_settings, "r+") as persisted_settings:
             for index, line in enumerate(persisted_settings, 1):
-                line_name = Autoconfig.clearName(line)
+                line_name = Autoconfig.clear_name(line)
                 if line_name in options.keys():
                     value_pos = index + 1
                     is_value = True
                     continue
                 if is_value:
-                    current_settings[value_pos] = Autoconfig.clearValue(line)
+                    current_settings[value_pos] = Autoconfig.clear_value(line)
                     is_value = False
         return current_settings
         
 
-    def setPersistedSettings(self):
-        current_settings = self.getPersistedSettings()
+    def set_persisted_settings(self):
+        current_settings = self.get_persisted_settings()
         for line in fileinput.input(self.persisted_settings, inplace=True):
             current_index = fileinput.lineno()
             for (value_pos, current_value), new_value in zip(current_settings.items(), options.values()):
                 if value_pos == current_index:
                     line = line.replace(current_value, new_value)
             print(line, end="")
-        self.removeDuplications()
+        self.remove_duplications()
 
-    def toggleSettingsToPersist(self, statment):
+    def toggle_settings_to_persist(self, statment):
         for line in fileinput.input(self.settings_to_persist, inplace=True):
             if statment:
                 line = line.replace("false", "true")
@@ -115,7 +114,7 @@ class Autoconfig:
 
             print(line, end="")
 
-    def setJsonSettings(self):
+    def set_json_settings(self):
         jsonSetter().setKey('orbwalk', DEFAULT_ORBWALK.removeprefix('[').removesuffix(']'))
         jsonSetter().setKey('laneclear', DEFAULT_LANECLEAR.removeprefix('[').removesuffix(']'))
         jsonSetter().setKey('lasthit', DEFAULT_LASTHIT.removeprefix('[').removesuffix(']'))
@@ -130,10 +129,10 @@ class Autoconfig:
         jsonSetter().setSetting('freeze', False)
 
     def set_config(self):
-        self.toggleSettingsToPersist(False)
-        self.setPersistedSettings()
-        self.toggleSettingsToPersist(True)
-        self.setJsonSettings()
+        self.toggle_settings_to_persist(False)
+        self.set_persisted_settings()
+        self.toggle_settings_to_persist(True)
+        self.set_json_settings()
         
 def start_autoconfig():
     league_path = None
