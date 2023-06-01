@@ -2,7 +2,7 @@
 from json import load, dump
 
 #own
-from Data import Data, VK_CODES
+from data import Data, VK_CODES
 
 class jsonSetter:
 
@@ -34,33 +34,9 @@ class jsonSetter:
         self._jsonUpdate()
 
     def setSmiteKey(self, id, key):
-        if self.isValidKey(key):
-            self.settings['AutoSmite']['Keys'][id] = key.lower()
-            self._jsonUpdate()
-
-class jsonGetter:
-
-    def __init__(self):
-        self.file_name = Data.settings_file_name
-        self.file = open(self.file_name, "r+")
-        self.settings = load(self.file)
-
-    def getKey(self, id):
-        data = self.settings['AutoKite']['Keys'][id]
-        self.file.close()
-        return data
-    
-    def getMode(self, id):
-        data = self.settings['AutoKite']['Modes'][id]
-        self.file.close()
-        return data
-    
-    def getSetting(self, id):
-        data = self.settings['AutoKite']['Settings'][id]
-        self.file.close()
-        return data
-    
-    def getSmiteKey(self, id):
-        data = self.settings['AutoSmite']['Keys'][id]
-        self.file.close()
-        return data
+        if isinstance(key, str):
+            if self.isValidKey(key):
+                self.settings['AutoSmite']['Keys'][id] = key.lower()
+        else:
+            self.settings['AutoSmite']['Keys'][id] = key
+        self._jsonUpdate()
