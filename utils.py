@@ -3,16 +3,15 @@ from ctypes import wintypes, Structure, Union, WinDLL, POINTER, byref, sizeof
 from win32gui import GetWindowText, GetForegroundWindow
 
 #own
-from Data import Data
+from data import Data
 
-#--
+#
 user32 = WinDLL('user32', use_last_error=True)
 INPUT_KEYBOARD = 1
 KEYEVENTF_EXTENDEDKEY = 0x0001
 KEYEVENTF_KEYUP       = 0x0002
 KEYEVENTF_UNICODE     = 0x0004
 MAPVK_VK_TO_VSC = 0
-# msdn.microsoft.com/en-us/library/dd375731
 wintypes.ULONG_PTR = wintypes.WPARAM
 class MOUSEINPUT(Structure):
     _fields_ = (("dx",          wintypes.LONG),
@@ -44,16 +43,17 @@ class INPUT(Structure):
     _fields_ = (("type",   wintypes.DWORD),
                 ("_input", _INPUT))
 LPINPUT = POINTER(INPUT)
-def PressKey(hexKeyCode):
+
+def press_key(hexKeyCode):
     x = INPUT(type=INPUT_KEYBOARD,
               ki=KEYBDINPUT(wVk=hexKeyCode))
     user32.SendInput(1, byref(x), sizeof(x))
-def ReleaseKey(hexKeyCode):
+    
+def release_key(hexKeyCode):
     x = INPUT(type=INPUT_KEYBOARD,
               ki=KEYBDINPUT(wVk=hexKeyCode,
                             dwFlags=KEYEVENTF_KEYUP))
     user32.SendInput(1, byref(x), sizeof(x))
-#----------------------------------
 
-def isActiveWindow():
+def is_active_window():
     return GetWindowText(GetForegroundWindow()) == Data.game_name_window
