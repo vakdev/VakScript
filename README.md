@@ -6,8 +6,7 @@ It should be used only for practice, because it creates an huge advantage over a
 
 https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b6670bd67
 
-![Screenshot_1](https://github.com/vakdev/VakScript/assets/93299015/70ace742-0d9a-4350-80fa-4785e989d6b8)
-
+![spaceglider](https://github.com/vakdev/VakScript/assets/93299015/ee39794c-fcc0-4bc8-b705-00b56516337b)
 
 ## Functions.
 #### 1. Target prio:
@@ -22,10 +21,13 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 #### 3. Laneclear:
  - Auto kite minions.
 
-#### 4.Drawings:
+#### 4. Drawings:
  - Show current enemy position.
  - Show current enemy health.
  - Show target to focus.
+
+#### 5. Auto Smite:
+ - Including Blue / Red / Crab.
 
 ## Usage
 1. Download and Install Python 3.10.10
