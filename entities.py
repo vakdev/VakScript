@@ -5,12 +5,27 @@ from math import hypot
 from functools import partial
 
 #own
-from Data import Offsets
-from WorldToScreen import World
+from data import Offsets
+from world_to_screen import World
 
 class ReadAttributes:
 
     def __init__(self, process):
+        self.obj_name = Offsets.obj_name
+        self.obj_health = Offsets.obj_health
+        self.obj_max_health = Offsets.obj_max_health
+        self.obj_team = Offsets.obj_team
+        self.obj_base_attack = Offsets.obj_base_attack
+        self.obj_bonus_attack = Offsets.obj_bonus_attack
+        self.obj_magic_damage = Offsets.obj_magic_damage
+        self.obj_armor = Offsets.obj_armor
+        self.obj_attack_range = Offsets.obj_attack_range
+        self.obj_spawn_count = Offsets.obj_spawn_count
+        self.obj_targetable = Offsets.obj_targetable
+        self.obj_visible = Offsets.obj_visible
+        self.obj_x = Offsets.obj_x
+        self.obj_y = Offsets.obj_y
+        self.obj_z = Offsets.obj_z
         self.process = process 
         self.PlayerNamedtuple = namedtuple('Player', 'name basic_attack bonus_attack x y z attack_range')
         self.EnemyNamedtuple = namedtuple('Enemy', 'name health max_health armor basic_attack bonus_attack magic_damage x y z alive targetable visible attack_range')
@@ -19,44 +34,44 @@ class ReadAttributes:
     
     def read_player(self, local_player):
         d, process = {}, self.process
-        d['name'] = r_string(process, local_player + Offsets.objName)
-        d['basic_attack'] = r_float(process, local_player + Offsets.objBaseAttack)
-        d['bonus_attack'] = r_float(process, local_player + Offsets.objBonusAttack)
-        d['x'] = r_float(process, local_player + Offsets.objPosX)
-        d['y'] = r_float(process, local_player + Offsets.objPosY)
-        d['z'] = r_float(process, local_player + Offsets.objPosZ)
-        d['attack_range'] = r_float(process, local_player + Offsets.objAttackRange)
+        d['name'] = r_string(process, local_player + self.obj_name)
+        d['basic_attack'] = r_float(process, local_player + self.obj_base_attack)
+        d['bonus_attack'] = r_float(process, local_player + self.obj_bonus_attack)
+        d['x'] = r_float(process, local_player + self.obj_x)
+        d['y'] = r_float(process, local_player + self.obj_y)
+        d['z'] = r_float(process, local_player + self.obj_z)
+        d['attack_range'] = r_float(process, local_player + self.obj_attack_range)
         return self.PlayerNamedtuple(**d)
     
     def read_enemy(self, pointer):
         d, process = {}, self.process
-        d['name'] = r_string(process, pointer + Offsets.objName)
-        d['health'] = r_float(process, pointer + Offsets.objHealth)
-        d['max_health'] = r_float(process, pointer + Offsets.objMaxHealth)
-        d['armor'] = r_float(process, pointer + Offsets.objArmor)
-        d['basic_attack'] = r_float(process, pointer + Offsets.objBaseAttack)
-        d['bonus_attack'] = r_float(process, pointer + Offsets.objBonusAttack)
-        d['magic_damage'] = r_float(process, pointer + Offsets.objMagicDamage)
-        d['x'] = r_float(process, pointer + Offsets.objPosX)
-        d['y'] = r_float(process, pointer + Offsets.objPosY)
-        d['z'] = r_float(process, pointer + Offsets.objPosZ)
-        d['alive'] = r_int(process, pointer + Offsets.objSpawnCount) % 2 == 0
-        d['targetable'] = r_bool(process, pointer + Offsets.objTargetable)#
-        d['visible'] = r_bool(process, pointer + Offsets.objVisible)
-        d['attack_range'] = r_float(process, pointer + Offsets.objAttackRange)
+        d['name'] = r_string(process, pointer + self.obj_name)
+        d['health'] = r_float(process, pointer + self.obj_health)
+        d['max_health'] = r_float(process, pointer + self.obj_max_health)
+        d['armor'] = r_float(process, pointer + self.obj_armor)
+        d['basic_attack'] = r_float(process, pointer + self.obj_base_attack)
+        d['bonus_attack'] = r_float(process, pointer + self.obj_bonus_attack)
+        d['magic_damage'] = r_float(process, pointer + self.obj_magic_damage)
+        d['x'] = r_float(process, pointer + self.obj_x)
+        d['y'] = r_float(process, pointer + self.obj_y)
+        d['z'] = r_float(process, pointer + self.obj_z)
+        d['alive'] = r_int(process, pointer + self.obj_spawn_count) % 2 == 0
+        d['targetable'] = r_bool(process, pointer + self.obj_targetable)
+        d['visible'] = r_bool(process, pointer + self.obj_visible)
+        d['attack_range'] = r_float(process, pointer + self.obj_attack_range)
         return self.EnemyNamedtuple(**d)
     
     def read_minion(self, pointer):
         d, process = {}, self.process
-        d['name'] = r_string(process, pointer + Offsets.objName)
-        d['health'] = r_float(process, pointer + Offsets.objHealth)
-        d['armor'] = r_float(process, pointer + Offsets.objArmor)
-        d['x'] = r_float(process, pointer + Offsets.objPosX)
-        d['y'] = r_float(process, pointer + Offsets.objPosY)
-        d['z'] = r_float(process, pointer + Offsets.objPosZ)
-        d['alive'] = r_int(process, pointer + Offsets.objSpawnCount) % 2 == 0
-        d['targetable'] = r_bool(process, pointer + Offsets.objTargetable)
-        d['visible'] = r_bool(process, pointer + Offsets.objVisible)
+        d['name'] = r_string(process, pointer + self.obj_name)
+        d['health'] = r_float(process, pointer + self.obj_health)
+        d['armor'] = r_float(process, pointer + self.obj_armor)
+        d['x'] = r_float(process, pointer + self.obj_x)
+        d['y'] = r_float(process, pointer + self.obj_y)
+        d['z'] = r_float(process, pointer + self.obj_z)
+        d['alive'] = r_int(process, pointer + self.obj_spawn_count) % 2 == 0
+        d['targetable'] = r_bool(process, pointer + self.obj_targetable)
+        d['visible'] = r_bool(process, pointer + self.obj_visible)
         return self.MinionNamedtuple(**d)
     
 
@@ -78,7 +93,7 @@ class Entity:
 
     def __init__(self, stats):
         self.stats = stats
-        self.radius = self.stats.getTargetsRadius()
+        self.radius = self.stats.get_targets_radius()
     
     def in_distance(self, player, target):
         return distance(player, target) - self.radius.get(target.name, 65.) <= player.attack_range + self.radius.get(player.name, 65.)
@@ -132,9 +147,11 @@ class EntityDrawings:
 
     def __init__(self, process, base_address, width, height):
         self.world = World(process, base_address, width, height)
+        self.world_to_screen = self.world.world_to_screen_limited
+        self.get_view_proj_matrix = self.world.get_view_proj_matrix
     
     def _has_pos(self, target):
-        return self.world.world_to_screen_restricted(self.world.get_view_proj_matrix(), target.x, target.z, target.y) and target.alive and target.targetable and target.visible
+        return self.world_to_screen(self.get_view_proj_matrix(), target.x, target.z, target.y) and target.alive and target.targetable and target.visible
 
     @staticmethod
     def min_attacks(player, target):
