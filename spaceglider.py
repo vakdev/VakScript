@@ -1,4 +1,4 @@
-def auto_kite(terminate):
+def spaceglider(terminate, settings):
     #verified context and no warnings.
     import requests
     import ssl
@@ -15,32 +15,30 @@ def auto_kite(terminate):
     from gc import collect as del_mem
 
     #own
-    from Data import Data, Offsets, VK_CODES
-    from Stats import Stats
-    from Orbwalk import Orbwalk
-    from WorldToScreen import World
-    from Manager import ReadManager
-    from Settings import jsonGetter
-    from Entities import Entity, ReadAttributes
-    from Utils import PressKey, ReleaseKey, isActiveWindow
-    from Autoconfig import start_autoconfig
+    from data import Data, Offsets, VK_CODES
+    from stats import Stats
+    from orbwalk import Orbwalk
+    from world_to_screen import World
+    from manager import ReadManager
+    from entities import Entity, ReadAttributes
+    from utils import press_key, release_key, is_active_window
 
     #keyboard, mouse funcions (kp=key press, kr= key release, mp= mouse press, mr = mouse release)
     def ppc(_):pass
-    def kp_mp_function(range_key): PressKey(range_key), mouse_event(MOUSEEVENTF_MIDDLEDOWN, 0, 0, 0, 0)
-    def kr_mr_function(range_key): ReleaseKey(range_key), mouse_event(MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0)
-    def kp_function(range_key): PressKey(range_key)
+    def kp_mp_function(range_key): press_key(range_key), mouse_event(MOUSEEVENTF_MIDDLEDOWN, 0, 0, 0, 0)
+    def kr_mr_function(range_key): release_key(range_key), mouse_event(MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0)
+    def kp_function(range_key): press_key(range_key)
     def mr_function(_): mouse_event(MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0)
 
     while not terminate.value:
         del_mem()
         try:
-            if isActiveWindow():
+            if is_active_window():
                 process = open_process(process=Data.game_name_executable)
                 base_address = get_module(process, Data.game_name_executable)['base']
-                local = r_uint64(process, base_address + Offsets.oLocalPlayer)
-                local_name = r_string(process, local + Offsets.objName)
-                local_team = r_int(process, local + Offsets.objTeam)
+                local = r_uint64(process, base_address + Offsets.local_player)
+                local_name = r_string(process, local + Offsets.obj_name)
+                local_team = r_int(process, local + Offsets.obj_team)
                 stats = Stats()
                 entity = Entity(stats)
                 attr = ReadAttributes(process)
@@ -50,24 +48,25 @@ def auto_kite(terminate):
                 world = World(process, base_address, width, height)
 
                 #player stats
-                attack_speed_base = stats.getAttackSpeedBase(local_name)
-                windup, windup_mod = stats.getWindup(local_name)
+                attack_speed_base = stats.get_attack_speed_base(local_name)
+                windup, windup_mod = stats.get_windup(local_name)
 
                 #pointers
-                champion_pointers = pointers_manager.getChampionPointers(stats.names, local_team)
+                champion_pointers = pointers_manager.get_pointers(stats.names, local_team)
                 minions = frozenset({"SRU_OrderMinionRanged", "SRU_ChaosMinionRanged", "SRU_ChaosMinionMelee", "SRU_OrderMinionMelee", "SRU_OrderMinionSuper", "SRU_ChaosMinionSuper", "SRU_ChaosMinionSiege", "SRU_OrderMinionSiege"})
 
-                #JSON
-                orbwalk_key = VK_CODES[jsonGetter().getKey('orbwalk')]
-                laneclear_key = VK_CODES[jsonGetter().getKey('laneclear')]
-                lasthit_key = VK_CODES[jsonGetter().getKey('lasthit')]
-                attack_key = jsonGetter().getKey('attack')
-                range_key = VK_CODES[jsonGetter().getKey('range')]
-                kiting_mode = jsonGetter().getMode('kiting')
-                target_prio = jsonGetter().getMode('orbwalk')
-                mode_lasthit = jsonGetter().getMode('lasthit')
-                freeze = jsonGetter().getSetting('freeze')
-                potato_pc = jsonGetter().getSetting('ppc')
+                #settings
+                orbwalk_key = VK_CODES[settings['orbwalk']]
+                laneclear_key = VK_CODES[settings['laneclear']]
+                lasthit_key = VK_CODES[settings['lasthit']]
+                attack_key = settings['attack']
+                range_key = VK_CODES[settings['range']]
+                kiting_mode = settings['kiting']
+                target_prio = settings['prio']
+                mode_lasthit = settings['lhmode']
+                freeze = settings['freeze']
+                potato_pc = settings['ppc']
+
                 #
                 target_prio_mode = {'Less Basic Attacks':entity.select_by_health,
                                      'Most Damage':entity.select_by_damage,
@@ -90,7 +89,7 @@ def auto_kite(terminate):
                 read_minion = attr.read_minion
                 world_to_screen = world.world_to_screen
                 get_view_proj_matrix = world.get_view_proj_matrix
-                minion_pointers = pointers_manager.getMinionPointers
+                minion_pointers = pointers_manager.get_minion_pointers
                 select_lasthit_minion = entity.select_lasthit_minion
                 select_lowest_minion = entity.select_lowest_minion
 
@@ -137,9 +136,9 @@ def auto_kite(terminate):
                         orbwalk.can_attack_time = 0
                         kr_mr(range_key)
 
-                        if not isActiveWindow():
+                        if not settings['can_script']:
                             break
-                        
+
                 def auto_mode():
                     while 1:
                         sleep(0.0001)
@@ -179,10 +178,9 @@ def auto_kite(terminate):
                         orbwalk.can_attack_time = 0
                         kr_mr(range_key)
 
-                        if not isActiveWindow():
+                        if not settings['can_script']:
                             break
-
-
+                                                                                  
                 if not freeze:
                     callFunc = {'Manual': manual_mode, 'Auto': auto_mode}
                     try: 
@@ -190,10 +188,7 @@ def auto_kite(terminate):
                     except:
                         kr_mr(range_key)
                         continue
-            elif jsonGetter().getSetting('autoconfig'):
-                start_autoconfig()
-                
             else:
                 sleep(0.1) 
         except:
-            continue
+            pass
