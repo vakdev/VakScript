@@ -3,7 +3,7 @@
         "Keys": {
             "orbwalk": "space",
             "laneclear": "v",
-            "lasthit": "x",
+            "lasthit": "c",
             "attack": "a",
             "range": "o"
         },
@@ -15,12 +15,12 @@
         "Settings": {
             "autoconfig": false,
             "ppc": false,
-            "ext_drawings": false,
             "ext_track": true,
             "ext_focus": true,
             "ext_healths": true,
             "ext_limited": false,
-            "freeze": false
+            "freeze": false,
+            "ext_drawings": true
         }
     },
     "AutoSmite": {
