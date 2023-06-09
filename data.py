@@ -1,15 +1,15 @@
 class Offsets:
-    local_player = 0x51DA528
-    game_time = 0x51CC730
-    view_proj_matrix = 0x5219A80
-    champion_list = 0x21219E8
-    minion_list = 0x397C278
+    local_player = 0x51DC530
+    game_time = 0x51CE730
+    view_proj_matrix = 0x521BA80
+    champion_list = 0x21239E8
+    minion_list = 0x397E278
     obj_name = 0x38C8
     obj_team = 0x3C
     obj_health = 0x1068
     obj_max_health = 0x1080
     obj_armor = 0x16A4
-    obj_base_attack = 0x1BC8
+    obj_base_attack = 0x167C
     obj_bonus_attack = 0x1AA8
     obj_magic_damage = 0x15F8
     obj_attack_range = 0x16C4
