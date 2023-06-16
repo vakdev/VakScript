@@ -42,13 +42,26 @@ class ReadManager:
         except:
             return None
         
+    def is_valid_jungle_pointer(self, pointer, entities):
+        try:
+            return r_string(self.process, r_int64(self.process, pointer + self.name)).lower() in entities
+        except:
+            try:
+                return r_string(self.process, pointer + self.name).lower() in entities
+            except:
+                return False
+        
     def get_pointers(self, champions, team):
         champion_manager = r_uint64(self.process, self.base_address + self.champion_list)
-        pointers = r_ints64(self.process, r_int64(self.process, champion_manager + 0x8), 200)
+        pointers = r_ints64(self.process, r_int64(self.process, champion_manager + 0x8), 100)
         return {pointer for pointer in pointers if self.is_valid_pointer(pointer, champions, team)}
     
     def get_minion_pointers(self, minions, team):
         minion_manager = r_uint64(self.process, self.base_address + self.minion_list)
-        pointers = r_ints64(self.process, r_int64(self.process, minion_manager + 0x8), 200)
+        pointers = r_ints64(self.process, r_int64(self.process, minion_manager + 0x8), 100)
         return [pointer for pointer in pointers if self.is_valid_minion_pointer(pointer, minions, team)]
     
+    def get_jungle_pointers(self, entities):
+        minion_manager = r_uint64(self.process, self.base_address + self.minion_list)
+        pointers = r_ints64(self.process, r_int64(self.process, minion_manager + 0x8), 100)
+        return [pointer for pointer in pointers if self.is_valid_jungle_pointer(pointer, entities)]
