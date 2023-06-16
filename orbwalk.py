@@ -11,7 +11,6 @@ from ctypes import windll
 #own
 from data import Offsets
 
-
 class Orbwalk:
     def __init__(self, process, base_address):
         self.can_attack_time = 0
