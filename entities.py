@@ -1,6 +1,6 @@
 #ext
 from collections import namedtuple
-from pyMeow import r_string, r_float, r_bool, r_int
+from pyMeow import r_string, r_float, r_bool, r_int, r_ints64
 from math import hypot
 from functools import partial
 
@@ -10,7 +10,7 @@ from world_to_screen import World
 
 class ReadAttributes:
 
-    def __init__(self, process):
+    def __init__(self, process, base_address):
         self.obj_name = Offsets.obj_name
         self.obj_health = Offsets.obj_health
         self.obj_max_health = Offsets.obj_max_health
@@ -26,10 +26,16 @@ class ReadAttributes:
         self.obj_x = Offsets.obj_x
         self.obj_y = Offsets.obj_y
         self.obj_z = Offsets.obj_z
-        self.process = process 
+        self.obj_spell_book = Offsets.obj_spell_book
+        self.spell_level = Offsets.spell_level
+        self.spell_cooldown = Offsets.spell_cooldown
+        self.spells_keys = ['Q', 'W', 'E', 'R', 'D', 'F']
+        self.game_time = Offsets.game_time
+        self.process = process
+        self.base_address = base_address
         self.PlayerNamedtuple = namedtuple('Player', 'name basic_attack bonus_attack x y z attack_range')
         self.EnemyNamedtuple = namedtuple('Enemy', 'name health max_health armor basic_attack bonus_attack magic_damage x y z alive targetable visible attack_range')
-        self.MinionNamedtuple = namedtuple('Minion', 'name health armor x y z alive targetable visible')
+        self.MinionNamedtuple = namedtuple('Minion', 'health armor x y z alive targetable visible')
 
     
     def read_player(self, local_player):
@@ -63,7 +69,6 @@ class ReadAttributes:
     
     def read_minion(self, pointer):
         d, process = {}, self.process
-        d['name'] = r_string(process, pointer + self.obj_name)
         d['health'] = r_float(process, pointer + self.obj_health)
         d['armor'] = r_float(process, pointer + self.obj_armor)
         d['x'] = r_float(process, pointer + self.obj_x)
@@ -74,7 +79,17 @@ class ReadAttributes:
         d['visible'] = r_bool(process, pointer + self.obj_visible)
         return self.MinionNamedtuple(**d)
     
-
+    def read_spells(self, pointer):
+        spells, process = {}, self.process
+        spell_book = r_ints64(process, pointer + self.obj_spell_book, 0x6)
+        game_time = r_float(process, self.base_address + self.game_time)
+        for i, spell_slot in enumerate(spell_book):
+            level = r_int(process, spell_slot + self.spell_level)
+            cooldown = r_float(process, spell_slot + self.spell_cooldown) + 1.
+            cooldown = max(0, cooldown - game_time)
+            spells[self.spells_keys[i]] = (level, int(cooldown))
+        return spells
+    
 #Entity + EntityDrawings
 def distance(player, target):
     return hypot(player.x - target.x, player.y - target.y)
@@ -85,8 +100,7 @@ def get_effective_damage(damage, armor):
     return damage * (2. - (100. / (100. - armor)))
 
 def get_min_attacks(player, target):
-    effective_damage = get_effective_damage(player.basic_attack + player.bonus_attack, target.armor)
-    return target.health / effective_damage
+    return target.health / get_effective_damage(player.basic_attack + player.bonus_attack, target.armor)
 
 
 class Entity:
