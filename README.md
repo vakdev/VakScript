@@ -48,6 +48,6 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 - Yes, it doesn't use any internal game function.  All it does is through external memory reading. 
 
 ### Vakdev:
-- Discord group: https://discord.gg/uxvKc4XmNr
+- Discord group: https://discord.gg/thc7aECZR
 - Discord: Vakdev Zet#5964
 - YouTube: https://www.youtube.com/@vakdev881
