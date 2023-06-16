@@ -1,10 +1,10 @@
 class Offsets:
-    local_player = 0x51DC530
-    game_time = 0x51CE730
-    view_proj_matrix = 0x521BA80
-    champion_list = 0x21239E8
-    minion_list = 0x397E278
-    obj_name = 0x38C8
+    local_player = 0x51F52D0
+    game_time = 0x51E8C70
+    view_proj_matrix = 0x5236720
+    champion_list = 0x213DC68
+    minion_list = 0x3998608
+    obj_name = 0x3850
     obj_team = 0x3C
     obj_health = 0x1068
     obj_max_health = 0x1080
@@ -19,14 +19,20 @@ class Offsets:
     obj_x = 0x220
     obj_y = obj_x + 0x8
     obj_z = obj_x + 0x4
-
+    obj_spell_book = 0x30C8
+    spell_info = 0x130
+    spell_data = 0x60
+    spell_name = 0x80
+    spell_level = 0x28
+    spell_cooldown = 0x30
 
 class Data:
     from os import path
 
-    script_version = '13.11'
+    script_version = '13.12'
     settings_file_name = 'settings.json'
     settings_file_path = path.abspath(settings_file_name)
+    font_file_name = 'drawings_font.ttf'
     client_name_executable = 'LeagueClient.exe'
     game_name_executable = 'League of Legends.exe'
     game_name_window = 'League of Legends (TM) Client'
