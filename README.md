@@ -39,7 +39,7 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 ## Packaging to .EXE
 1. Install pyinstaller: pip install pyinstaller
 2. Use: pyinstaller --onefile --noconsole main.py
-3. Copy settings.json and paste in dist dir. 
+3. Copy settings.json, drawings_font.ttf and paste in dist dir. 
 4. Start main.exe as admin.
 
 ## About
