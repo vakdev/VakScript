@@ -3,12 +3,38 @@ import os
 import win32api
 import fileinput
 from psutil import process_iter
+from json import dump
 
 #own
-from settings import jsonSetter
 from data import Data
 
-DEFAULT_CAMERA_SNAP = '[Space],[v]'
+settings_json = {
+    'Spaceglider': {
+        'orbwalk' : 'space',
+        'laneclear' : 'v',
+        'lasthit' : 'c',
+        'attack' : 'a',
+        'range' : 'o',
+        'kiting_mode' : 'Normal',
+        'orbwalk_prio' : 'Less Basic Attacks',
+        'lasthit_mode' : 'Manual',
+        'ppc' : False
+    },
+    'Drawings' : {
+        'position_tracker' : True,
+        'screen_track' : False,
+        'show_focused' : True,
+        'show_healths' : True,
+        'show_gold' : False,
+        'spell_tracker' : True
+    },
+    'AutoSmite' : {
+        'smite' : 'f',
+        'update' : 'q',
+        'randb' : False
+    }
+}
+
 DEFAULT_CHAMPION_ONLY = '[Button 3]'
 DEFAULT_PLAYER_ATTACK = '[a]'
 DEFAULT_WALK_CLICK = '[Button 2]'
@@ -20,7 +46,6 @@ DEFAULT_LASTHIT = '[c]'
 options = {
     'EnableTargetedAttackMove':'1',
     'TargetChampionsOnlyAsToggle':'0',
-    'evtCameraSnap':DEFAULT_CAMERA_SNAP,
     'evtChampionOnly':DEFAULT_CHAMPION_ONLY,
     'evtPlayerAttackMoveClick':DEFAULT_PLAYER_ATTACK,
     'evtPlayerMoveClick':DEFAULT_WALK_CLICK,
@@ -50,24 +75,19 @@ class Autoconfig:
                 line = Autoconfig.clear_value(line)
                 if not line.isdecimal() and '.' not in line:
                     for k, v in current_values.items():
-                            #remove normal keys
                             if line == v and index != k:
                                 duplications[index] = line
                             
-                            #remove double bound keys
                             if (line.startswith(v) or line.endswith(v)) and index != k:
                                 if not line.startswith(('[Alt]', '[Ctrl]')):
                                     duplications[index] = line
                             
-                            #remove C for lasthit
                             if line == DEFAULT_LASTHIT:
                                 duplications[index] = line
 
-                            #remove V for laneclear
                             if line == DEFAULT_LANECLEAR:
                                 duplications[index] = line
 
-                            #remove SPACE for orbwalk
                             if line == DEFAULT_ORBWALK:
                                 duplications[index] = line
 
@@ -115,18 +135,8 @@ class Autoconfig:
             print(line, end="")
 
     def set_json_settings(self):
-        jsonSetter().setKey('orbwalk', DEFAULT_ORBWALK.removeprefix('[').removesuffix(']'))
-        jsonSetter().setKey('laneclear', DEFAULT_LANECLEAR.removeprefix('[').removesuffix(']'))
-        jsonSetter().setKey('lasthit', DEFAULT_LASTHIT.removeprefix('[').removesuffix(']'))
-        jsonSetter().setMode('orbwalk', 'Less Basic Attacks')
-        jsonSetter().setMode('lasthit', 'Auto')
-        jsonSetter().setSetting('autoconfig', False)
-        jsonSetter().setSetting('ppc', False)
-        jsonSetter().setSetting('ext_drawings', True)
-        jsonSetter().setSetting('ext_track', True)
-        jsonSetter().setSetting('ext_focus', True)
-        jsonSetter().setSetting('ext_limited', False)
-        jsonSetter().setSetting('freeze', False)
+        with open(Data.settings_file_name, 'w') as json_file:
+            dump(settings_json, json_file, indent=4)
 
     def set_config(self):
         self.toggle_settings_to_persist(False)
