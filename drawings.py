@@ -31,7 +31,7 @@ def drawings(terminate, settings, champion_pointers, on_window):
 
     def draw_enemy_line(entity, own_pos, width, height):
         if entity.alive and entity.targetable and entity.visible:
-            pos = world_to_screen_limited(get_view_proj_matrix(), entity.x, entity.z, entity.y)
+            pos = world_to_screen(get_view_proj_matrix(), entity.x, entity.z, entity.y)
             if pos:
                 x, y = pos[0], pos[1]
                 if (x < 0 or x > width or y < 0 or y > height) and distance(player, entity) <= 3000:
@@ -105,9 +105,9 @@ def drawings(terminate, settings, champion_pointers, on_window):
                             break
 
                         if can_track:
-                            if own_pos:
-                                for entity in entities:
-                                    draw_enemy_line(entity, own_pos, width, height)
+                            own_pos = world_to_screen(get_view_proj_matrix(), player.x, player.z, player.y)
+                            for entity in entities:
+                                draw_enemy_line(entity, own_pos, width, height)
 
                         if can_focus:
                             target = select_target(player, entities)
