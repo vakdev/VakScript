@@ -24,7 +24,6 @@ def drawings(terminate, settings, champion_pointers, on_window):
     from world_to_screen import World
     from settings import jsonGetter
 
-    #
     yellow = get_color('yellow')
     red = get_color('red')
     cyan = get_color('cyan')
@@ -32,7 +31,7 @@ def drawings(terminate, settings, champion_pointers, on_window):
 
     def draw_enemy_line(entity, own_pos, width, height):
         if entity.alive and entity.targetable and entity.visible:
-            pos = world_to_screen(get_view_proj_matrix(), entity.x, entity.z, entity.y)
+            pos = world_to_screen_limited(get_view_proj_matrix(), entity.x, entity.z, entity.y)
             if pos:
                 x, y = pos[0], pos[1]
                 if (x < 0 or x > width or y < 0 or y > height) and distance(player, entity) <= 3000:
@@ -84,6 +83,7 @@ def drawings(terminate, settings, champion_pointers, on_window):
                     world_to_screen = world.world_to_screen_limited
 
             except:
+                print('Error on drawings.py')
                 continue
         
             else:
@@ -96,23 +96,24 @@ def drawings(terminate, settings, champion_pointers, on_window):
 
                         entities = [read_enemy(pointer) for pointer in champion_pointers]
                         player = read_player(local)
-                        own_pos = world_to_screen(get_view_proj_matrix(), player.x, player.z, player.y)
-                        draw_circle(own_pos[0], own_pos[1], 5, gold)
+                        own_pos = world_to_screen_limited(get_view_proj_matrix(), player.x, player.z, player.y)
+                        if own_pos:
+                            draw_circle(own_pos[0], own_pos[1], 5, gold)
 
                         if not on_window.value:
                             overlay_close()
                             break
 
                         if can_track:
-                            for entity in entities:
-                                draw_enemy_line(entity, own_pos, width, height)
+                            if own_pos:
+                                for entity in entities:
+                                    draw_enemy_line(entity, own_pos, width, height)
 
                         if can_focus:
                             target = select_target(player, entities)
                             if target:
                                 pos = world_to_screen_limited(get_view_proj_matrix(), target.x, target.z, target.y)
-                                if pos:
-                                    draw_line(own_pos[0], own_pos[1], pos[0], pos[1], gold, 5.) 
+                                if pos and own_pos:
                                     draw_circle(pos[0], pos[1], 8, gold)
 
                         if can_healths:
@@ -127,7 +128,7 @@ def drawings(terminate, settings, champion_pointers, on_window):
                             ypos = height
                             for i, entity in enumerate(entities):
                                 ypos -= 30
-                                pos = world_to_screen(get_view_proj_matrix(), entity.x, entity.z, entity.y)
+                                pos = world_to_screen_limited(get_view_proj_matrix(), entity.x, entity.z, entity.y)
 
                                 if pos:
                                     x_space = 0
@@ -146,6 +147,7 @@ def drawings(terminate, settings, champion_pointers, on_window):
                                         gui_text_box(x_space, ypos-5, 35, 25, '', 1)
                                         draw_font(1, str(spells[i][slot][1]), x_space + 3, ypos, 15, 2, yellow)
                                         x_space += 40
+                            # print(f"drawings time: {(end_time - start_time)*1000:.2f} ms")
                             
                             # type in-game chat cooldowns: R, D, F.
 
