@@ -1,5 +1,12 @@
 @echo off
 
+REM Check if PyInstaller is installed
+pyinstaller --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo PyInstaller is not installed. Installing...
+    pip install pyinstaller
+)
+
 REM Get the version from data.py
 for /f "tokens=2 delims=''" %%G in ('findstr "script_version" data.py') do (
     set "version=%%G"
