@@ -21,16 +21,14 @@ pyinstaller --version >nul 2>&1
 if %errorlevel% neq 0 (
     echo PyInstaller is not installed. Installing...
     pip install pyinstaller
-)
-
-REM Check if PyInstaller is installed successfully
-pyinstaller --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo Failed to install PyInstaller.
-    echo.
-    echo Press any key to exit...
-    pause >nul
-    exit /b
+	pyinstaller --version >nul 2>&1
+	if %errorlevel% neq 0 (
+		echo Failed to install PyInstaller.
+		echo.
+		echo Press any key to exit...
+		pause >nul
+		exit /b
+	)
 )
 
 REM Get the version from data.py
