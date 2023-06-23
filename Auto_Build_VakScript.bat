@@ -1,5 +1,21 @@
 @echo off
 
+REM Check if pip is installed
+pip --version > nul 2>&1
+if %errorlevel%==0 (
+    echo Pip is already installed.
+    echo Installing requirements...
+    pip install -r requirements.txt
+) else (
+    echo Pip is not installed.
+    echo Installing pip...
+	curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python get-pip.py
+    echo Pip installed successfully.
+    echo Installing requirements...
+    pip install -r requirements.txt
+)
+
 REM Check if PyInstaller is installed
 pyinstaller --version >nul 2>&1
 if %errorlevel% neq 0 (
