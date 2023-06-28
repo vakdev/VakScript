@@ -1,6 +1,8 @@
 #ext
 from ctypes import wintypes, Structure, Union, WinDLL, POINTER, byref, sizeof
 from win32gui import GetWindowText, GetForegroundWindow
+from random import choice
+from string import printable
 
 #own
 from data import Data
@@ -13,6 +15,7 @@ KEYEVENTF_KEYUP       = 0x0002
 KEYEVENTF_UNICODE     = 0x0004
 MAPVK_VK_TO_VSC = 0
 wintypes.ULONG_PTR = wintypes.WPARAM
+
 class MOUSEINPUT(Structure):
     _fields_ = (("dx",          wintypes.LONG),
                 ("dy",          wintypes.LONG),
@@ -57,3 +60,6 @@ def release_key(hexKeyCode):
 
 def is_active_window():
     return GetWindowText(GetForegroundWindow()) == Data.game_name_window
+
+def safe_title():
+    return "".join(choice(printable) for i in range(11))
