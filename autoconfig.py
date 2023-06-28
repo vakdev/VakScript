@@ -157,11 +157,9 @@ def start_autoconfig():
         files_list = [settings_to_persist, persisted_settings]
 
         for file in files_list:
-            #prevent read-only files. (first attempt)
             try:
                 win32api.SetFileAttributes(file, 128)    
             except:
-                #second attempt.
                 try:
                     os.chmod(file, 0o777)
                 except:
