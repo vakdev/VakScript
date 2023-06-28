@@ -1,10 +1,10 @@
 class Offsets:
-    local_player = 0x51F52D0
-    game_time = 0x51E8C70
-    view_proj_matrix = 0x5236720
-    champion_list = 0x213DC68
-    minion_list = 0x3998608
-    obj_name = 0x3850
+    local_player = 0x522B768 
+    game_time = 0x521EE00 
+    view_proj_matrix = 0x526C1B0 
+    champion_list = 0x2173340 
+    minion_list = 0x39CDCE0
+    obj_name = 0x3848
     obj_team = 0x3C
     obj_health = 0x1068
     obj_max_health = 0x1080
@@ -24,12 +24,12 @@ class Offsets:
     spell_data = 0x60
     spell_name = 0x80
     spell_level = 0x28
-    spell_cooldown = 0x30
+    spell_cooldown = 0x3
 
 class Data:
     from os import path
 
-    script_version = '13.12'
+    script_version = '13.13'
     settings_file_name = 'settings.json'
     settings_file_path = path.abspath(settings_file_name)
     font_file_name = 'drawings_font.ttf'
