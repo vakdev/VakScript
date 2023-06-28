@@ -1,6 +1,6 @@
 #ext
 from collections import namedtuple
-from pyMeow import r_string, r_float, r_bool, r_int, r_ints64
+from pyMeow import r_string, r_float, r_bool, r_int
 from math import hypot
 from functools import partial
 
@@ -26,10 +26,10 @@ class ReadAttributes:
         self.obj_x = Offsets.obj_x
         self.obj_y = Offsets.obj_y
         self.obj_z = Offsets.obj_z
-        self.obj_spell_book = Offsets.obj_spell_book
-        self.spell_level = Offsets.spell_level
-        self.spell_cooldown = Offsets.spell_cooldown
-        self.spells_keys = ['Q', 'W', 'E', 'R', 'D', 'F']
+        self.obj_spell_book = None#Offsets.obj_spell_book
+        self.spell_level = None#Offsets.spell_level
+        self.spell_cooldown = None#Offsets.spell_cooldown
+        self.spells_keys = None#['Q', 'W', 'E', 'R', 'D', 'F']
         self.game_time = Offsets.game_time
         self.process = process
         self.base_address = base_address
@@ -79,16 +79,16 @@ class ReadAttributes:
         d['visible'] = r_bool(process, pointer + self.obj_visible)
         return self.MinionNamedtuple(**d)
     
-    def read_spells(self, pointer):
-        spells, process = {}, self.process
-        spell_book = r_ints64(process, pointer + self.obj_spell_book, 0x6)
-        game_time = r_float(process, self.base_address + self.game_time)
-        for i, spell_slot in enumerate(spell_book):
-            level = r_int(process, spell_slot + self.spell_level)
-            cooldown = r_float(process, spell_slot + self.spell_cooldown) + 1.
-            cooldown = max(0, cooldown - game_time)
-            spells[self.spells_keys[i]] = (level, int(cooldown))
-        return spells
+    #def read_spells(self, pointer):
+    #    spells, process = {}, self.process
+    #    spell_book = r_ints64(process, pointer + self.obj_spell_book, 0x6)
+    #    game_time = r_float(process, self.base_address + self.game_time)
+    #    for i, spell_slot in enumerate(spell_book):
+    #        level = r_int(process, spell_slot + self.spell_level)
+    #        cooldown = r_float(process, spell_slot + self.spell_cooldown) + 1.
+    #        cooldown = max(0, cooldown - game_time)
+    #        spells[self.spells_keys[i]] = (level, int(cooldown))
+    #    return spells
     
 #Entity + EntityDrawings
 def distance(player, target):
@@ -154,9 +154,10 @@ class Entity:
         return target
     
     def select_lasthit_minion(self, player, targets):
-        return [target for target in targets if self.in_distance_minion(player, target) and target.health <= get_effective_damage(player.basic_attack + player.bonus_attack, target.armor) and self.is_hurtable(target)]
+        for target in targets:
+            if self.is_hurtable(target) and target.health <= get_effective_damage(player.basic_attack + player.bonus_attack, target.armor) and self.in_distance_minion(player, target):
+                return target
     
-
 class EntityDrawings:
 
     def __init__(self, process, base_address, width, height):
