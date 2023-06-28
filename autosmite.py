@@ -73,7 +73,7 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
                 get_view_proj_matrix = world.get_view_proj_matrix
 
                 def read_attr(process, address, nt):
-                    d = dict()
+                    d = {}
                     d["health"] = r_float(process, address + obj_health)
                     d["is_alive"] = r_int(process, address + obj_spawn_count) % 2 == 0
                     d["x"] = r_float(process, address + obj_x)
@@ -84,7 +84,7 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
 
                 nt = namedtuple('Attributes', 'health is_alive x y z')
                 while 1:
-                    targets = [read_attr(process, pointer, nt) for pointer in jungle_pointers]
+                    targets = (read_attr(process, pointer, nt) for pointer in jungle_pointers)
                     target = [entity for entity in targets if entity.health <= damage and entity.is_alive]
 
                     if target:
@@ -92,7 +92,6 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
                         if pos:
                             windll.user32.SetCursorPos(int(pos[0]), int(pos[1]))
                             send(smite_key)
-                            targets.clear()
                             sleep(0.03)
 
                     elif GetAsyncKeyState(update_key):
