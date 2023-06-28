@@ -1,17 +1,13 @@
 #ext
 from multiprocessing import Process, Manager, freeze_support
 from dearpygui.dearpygui import create_context, destroy_context, create_viewport, setup_dearpygui, show_viewport, is_dearpygui_running, render_dearpygui_frame
-from random import choice
-from string import printable
 from ctypes import windll 
 import sys
 
 #own
 from multiprocessing_functions import MultiprocessingFunctions
 from gui import gui
-
-def safe_title():
-    return "".join(choice(printable) for i in range(11))
+from utils import safe_title
 
 def is_admin():
     try:
