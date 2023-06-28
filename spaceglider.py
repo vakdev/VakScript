@@ -88,7 +88,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                         sleep(0.0001)
                         if GetAsyncKeyState(orbwalk_key):
                             kp_mp(range_key)
-                            targets = [read_enemy(pointer) for pointer in champion_pointers]
+                            targets = (read_enemy(pointer) for pointer in champion_pointers)
                             target = select_target(read_player(local), targets)
                             if target:
                                 pos = world_to_screen(get_view_proj_matrix(), target.x, target.z, target.y)
@@ -100,11 +100,11 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
 
                         elif GetAsyncKeyState(lasthit_key):
                             kp_mp(range_key)
-                            targets = [read_minion(pointer) for pointer in minion_pointers]
+                            targets = (read_minion(pointer) for pointer in minion_pointers)
                             target = select_lasthit_minion(read_player(local), targets)
                             if target:
                                 mr(0)
-                                pos = world_to_screen(get_view_proj_matrix(), target[0].x, target[0].z, target[0].y)
+                                pos = world_to_screen(get_view_proj_matrix(), target.x, target.z, target.y)
                                 walk_min(pos, attack_key, attack_speed_base, windup, windup_mod)
                                 continue
                             right_click()
@@ -113,7 +113,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
 
                         elif GetAsyncKeyState(laneclear_key):
                             kp(range_key)
-                            targets = [read_minion(pointer) for pointer in minion_pointers]
+                            targets = (read_minion(pointer) for pointer in minion_pointers)
                             target = select_lowest_minion(read_player(local), targets)
                             if target:
                                 pos = world_to_screen(get_view_proj_matrix(), target.x, target.z, target.y)
@@ -132,7 +132,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                 def auto_mode():
                     while 1:
                         sleep(0.0001)
-                        targets = [read_enemy(pointer) for pointer in champion_pointers]
+                        targets = (read_enemy(pointer) for pointer in champion_pointers)
                         target = select_target(read_player(local), targets)
                         if GetAsyncKeyState(orbwalk_key) and target:
                             kp_mp(range_key)
@@ -142,11 +142,11 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                         
                         elif GetAsyncKeyState(orbwalk_key) and not target:
                             kp_mp(range_key)
-                            targets = [read_minion(pointer) for pointer in minion_pointers]
+                            targets = (read_minion(pointer) for pointer in minion_pointers)
                             target = select_lasthit_minion(read_player(local), targets)
                             if target:
                                 mr(0)
-                                pos = world_to_screen(get_view_proj_matrix(), target[0].x, target[0].z, target[0].y)
+                                pos = world_to_screen(get_view_proj_matrix(), target.x, target.z, target.y)
                                 walk_min(pos, attack_key, attack_speed_base, windup, windup_mod)
                                 continue
                             right_click()
@@ -155,7 +155,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                         
                         elif GetAsyncKeyState(laneclear_key):
                             kp(range_key)
-                            targets = [read_minion(pointer) for pointer in minion_pointers]
+                            targets = (read_minion(pointer) for pointer in minion_pointers)
                             target = select_lowest_minion(read_player(local), targets)
                             if target:
                                 pos = world_to_screen(get_view_proj_matrix(), target.x, target.z, target.y)
