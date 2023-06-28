@@ -1,3 +1,4 @@
+#ext
 from dearpygui.dearpygui import window, child_window, tab_bar, tab
 from dearpygui.dearpygui import add_checkbox, add_text, add_combo, add_input_text
 from webbrowser import open_new_tab
@@ -85,7 +86,7 @@ def gui(main_instance, width, height):
             
             with tab(label='Drawings'):
                 add_checkbox(label='Enemy Info (borderless)', callback=main_instance.start_drawings_process)
-                with child_window(width=260, height=150):
+                with child_window(width=260, height=105):
                     add_checkbox(
                         label='Position',
                         default_value=jsonGetter().get_data('position_tracker'),
@@ -101,16 +102,16 @@ def gui(main_instance, width, height):
                         default_value=jsonGetter().get_data('show_healths'),
                         callback=lambda _, data: Functions.set_drawings_data('show_healths', data)
                     )
-                    add_checkbox(
-                        label='Gold',
-                        default_value=jsonGetter().get_data('show_gold'),
-                        callback=lambda _, data: Functions.set_drawings_data('show_gold', data)
-                    )
-                    add_checkbox(
-                        label='Cooldowns',
-                        default_value=jsonGetter().get_data('spell_tracker'),
-                        callback=lambda _, data: Functions.set_drawings_data('spell_tracker', data)
-                    )
+                    #add_checkbox(
+                    #    label='Gold',
+                    #    default_value=jsonGetter().get_data('show_gold'),
+                    #    callback=lambda _, data: Functions.set_drawings_data('show_gold', data)
+                    #)
+                    #add_checkbox(
+                    #    label='Cooldowns',
+                    #    default_value=jsonGetter().get_data('spell_tracker'),
+                    #    callback=lambda _, data: Functions.set_drawings_data('spell_tracker', data)
+                    #)
                     add_checkbox(
                         label='Limit position',
                         default_value=jsonGetter().get_data('screen_track'),
