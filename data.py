@@ -1,30 +1,30 @@
 class Offsets:
-    local_player = 0x522B768 
-    game_time = 0x521EE00 
-    view_proj_matrix = 0x526C1B0 
-    champion_list = 0x2173340 
-    minion_list = 0x39CDCE0
-    obj_name = 0x3848
+    local_player = 0x421F828
+    game_time = 0x4213710
+    view_proj_matrix = 0x42642A0
+    champion_list = 0x2171780
+    minion_list = 0x31C45B8
+    obj_name = 0x3838
     obj_team = 0x3C
-    obj_health = 0x1068
-    obj_max_health = 0x1080
+    obj_health = 0x1058
+    obj_max_health = 0x1070
     obj_armor = 0x16A4
     obj_base_attack = 0x167C
     obj_bonus_attack = 0x1AA8
     obj_magic_damage = 0x15F8
-    obj_attack_range = 0x16C4
+    obj_attack_range = 0x16B4
     obj_spawn_count = 0x328
     obj_targetable = 0xEB0
     obj_visible = 0x310
     obj_x = 0x220
     obj_y = obj_x + 0x8
     obj_z = obj_x + 0x4
-    obj_spell_book = 0x30C8
+    obj_spell_book = 0x30B8
     spell_info = 0x130
     spell_data = 0x60
     spell_name = 0x80
     spell_level = 0x28
-    spell_cooldown = 0x3
+    spell_cooldown = 0x30
 
 class Data:
     from os import path
