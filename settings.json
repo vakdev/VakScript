@@ -8,15 +8,21 @@
         "kiting_mode": "Normal",
         "orbwalk_prio": "Less Basic Attacks",
         "lasthit_mode": "Manual",
+        "press_range": false,
         "ppc": false
     },
     "Drawings": {
-        "position_tracker": true,
-        "screen_track": false,
+        "show_position": true,
         "show_focused": true,
         "show_healths": true,
         "show_gold": false,
-        "spell_tracker": true
+        "show_spells": true,
+        "show_player_range": true,
+        "show_enemy_range": true,
+        "show_turret_range": true,
+        "show_hits": true,
+        "screen_track": false,
+        "fps": "0"
     },
     "AutoSmite": {
         "smite": "f",
