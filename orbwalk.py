@@ -4,12 +4,15 @@ from urllib.request import urlopen
 from pyMeow import r_float
 from win32api import GetCursorPos
 from time import sleep
-from keyboard import send
 from mouse import right_click
 from ctypes import windll
 
 #own
 from data import Offsets
+from utils import send_key
+
+#
+SetCursorPos = windll.user32.SetCursorPos
 
 class Orbwalk:
     def __init__(self, process, base_address):
@@ -18,7 +21,6 @@ class Orbwalk:
         self.process = process
         self.base_address = base_address
         self.game_time = Offsets.game_time
-        self.set_cursor_pos = windll.user32.SetCursorPos
 
     def get_game_time(self):
         return r_float(self.process, self.base_address + self.game_time)
@@ -26,59 +28,62 @@ class Orbwalk:
     @staticmethod
     def get_attack_time():
         stats = loads(urlopen("https://127.0.0.1:2999/liveclientdata/activeplayer").read())
-        return 1. / stats["championStats"]["attackSpeed"]
+        return stats["championStats"]["attackSpeed"]
 
     @staticmethod
-    def get_windup_time(attack_speed_base, windup, windup_mod):
-        attack_time = Orbwalk.get_attack_time()
-        if windup_mod == 0:
-            return (1. / attack_speed_base) * windup + (1. / attack_speed_base) * windup * (attack_time - 1. / attack_speed_base)
-        return (1. / attack_speed_base) * windup + ((attack_time * windup) - (1. / attack_speed_base) * windup) * windup_mod
+    def get_windup_time(base_as, windup, windup_mod, c_attack_speed):
+        if windup_mod:
+            return (1. / base_as) * windup + ((1. / c_attack_speed * windup) - (1. / base_as) * windup) * windup_mod
+        return (1. / base_as) * windup + ((1. / c_attack_speed * windup) - (1. / base_as) * windup)
 
-        #attack_time = Orbwalk.get_attack_time()
-        #if windup_mod == 0.:
-        #    baseWindupTime = (1. / attack_speed_base) * windup
-        #    bonusWindupTime = (1. / attack_speed_base) * windup * (attack_time - 1. / attack_speed_base)
-        #    return baseWindupTime + bonusWindupTime
-        #else:
-        #    baseWindupTime = (1. / attack_speed_base) * windup
-        #    bonusWindupTime = attack_speed_base * windup * (1. + windup_mod)
-        #    if bonusWindupTime > (1. / attack_speed_base) * windup:
-        #        return (1. / attack_speed_base) * windup
-        #    else:
-        #        return baseWindupTime + bonusWindupTime
-        
-    def walk(self, pos, attack_key, attack_speed_base, windup, windup_mod):
+    def walk(self, pos, attack_key, base_as, windup, windup_mod):
         game_time = self.get_game_time()
+        c_attack_speed = Orbwalk.get_attack_time()
         if self.can_attack_time < game_time and pos:
             mouse_pos = GetCursorPos()
-            self.set_cursor_pos(int(pos[0]),int(pos[1]))
-            send(attack_key)
+            self.can_attack_time = game_time + 1. / c_attack_speed
+            self.can_move_time = game_time + Orbwalk.get_windup_time(base_as, windup, windup_mod, c_attack_speed)
+            SetCursorPos(int(pos[0]),int(pos[1]))
+            send_key(attack_key)
             sleep(0.01)
-            self.set_cursor_pos(int(mouse_pos[0]), int(mouse_pos[1]))
-            self.can_attack_time = game_time + Orbwalk.get_attack_time()
-            self.can_move_time = game_time + Orbwalk.get_windup_time(attack_speed_base, windup, windup_mod)
+            SetCursorPos(int(mouse_pos[0]), int(mouse_pos[1]))
         elif self.can_move_time < game_time:
             sleep(0.03)
             right_click()
-
-    def walk_inplace(self, pos, attack_key, attack_speed_base, windup, windup_mod):
+        
+    def walk_v2(self, pos, attack_key, base_as, windup, windup_mod):
         game_time = self.get_game_time()
+        c_attack_speed = Orbwalk.get_attack_time()
         if self.can_attack_time < game_time and pos:
-            send(attack_key)
-            self.can_attack_time = game_time + Orbwalk.get_attack_time()
-            self.can_move_time = game_time + Orbwalk.get_windup_time(attack_speed_base, windup, windup_mod)
-        elif self.can_move_time < game_time:
+            self.can_attack_time = game_time + 1. / c_attack_speed
+            mouse_pos = GetCursorPos()
+            SetCursorPos(int(pos[0]),int(pos[1]))
+            send_key(attack_key)
+            sleep(0.01)
+            SetCursorPos(int(mouse_pos[0]), int(mouse_pos[1]))
+            sleep(Orbwalk.get_windup_time(base_as, windup, windup_mod, c_attack_speed))
+        else:
             sleep(0.03)
+            right_click()
+
+    def walk_inplace(self, pos, attack_key, base_as, windup, windup_mod):
+        game_time = self.get_game_time()
+        c_attack_speed = Orbwalk.get_attack_time()
+        if self.can_attack_time < game_time and pos:
+            send_key(attack_key)
+            self.can_attack_time = game_time + 1. / c_attack_speed
+            sleep(Orbwalk.get_windup_time(base_as, windup, windup_mod, c_attack_speed))
+        else:
+            sleep(.1 / c_attack_speed)
             right_click()
 
     def walk_kalista(self, pos, attack_key, *_):
         if pos:
             mouse_pos = GetCursorPos()
-            self.set_cursor_pos(int(pos[0]),int(pos[1]))
-            send(attack_key)
+            SetCursorPos(int(pos[0]),int(pos[1]))
+            send_key(attack_key)
             sleep(0.01)
-            self.set_cursor_pos(int(mouse_pos[0]), int(mouse_pos[1]))
+            SetCursorPos(int(mouse_pos[0]), int(mouse_pos[1]))
             sleep(0.01)
             right_click()
             sleep(0.02)

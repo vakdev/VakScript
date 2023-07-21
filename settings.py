@@ -51,4 +51,3 @@ class jsonGetter(jsonSetter):
         for sk, sv in self.settings.items():
             if key in sv:
                 return self.settings[sk][key]
-        self.settings.close()

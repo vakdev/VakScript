@@ -16,12 +16,12 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
     from time import sleep
     from win32api import GetAsyncKeyState
     from ctypes import windll
-    from keyboard import send
     from gc import collect as del_mem
 
     #own
     from data import Data, Offsets, VK_CODES
     from world_to_screen import World
+    from utils import send_key
 
     #offsets
     obj_health = Offsets.obj_health
@@ -31,7 +31,7 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
     obj_z = Offsets.obj_z
 
     def get_settings():
-        smite_key = settings['smite']
+        smite_key = VK_CODES[settings['smite']]
         update_key = VK_CODES[settings['update']]
 
         return smite_key, update_key
@@ -47,6 +47,15 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
                 return rawNames[v]
             if v2 in rawNames:
                 return rawNames[v2]
+
+    def read_attr(process, address, nt):
+        d = {}
+        d["health"] = r_float(process, address + obj_health)
+        d["alive"] = r_int(process, address + obj_spawn_count) % 2 == 0
+        d["x"] = r_float(process, address + obj_x)
+        d["y"] = r_float(process, address + obj_y)
+        d["z"] = r_float(process, address + obj_z)  
+        return nt(**d)
 
     rawNames = {
         "GeneratedTip_SummonerSpell_SummonerSmite_DisplayName":600.,
@@ -72,26 +81,18 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
                 world_to_screen = world.world_to_screen_limited
                 get_view_proj_matrix = world.get_view_proj_matrix
 
-                def read_attr(process, address, nt):
-                    d = {}
-                    d["health"] = r_float(process, address + obj_health)
-                    d["is_alive"] = r_int(process, address + obj_spawn_count) % 2 == 0
-                    d["x"] = r_float(process, address + obj_x)
-                    d["y"] = r_float(process, address + obj_y)
-                    d["z"] = r_float(process, address + obj_z)
+                SetCursorPos = windll.user32.SetCursorPos
 
-                    return nt(**d)
-
-                nt = namedtuple('Attributes', 'health is_alive x y z')
+                nt = namedtuple('Attributes', 'health alive x y z')
                 while 1:
-                    targets = (read_attr(process, pointer, nt) for pointer in jungle_pointers)
-                    target = [entity for entity in targets if entity.health <= damage and entity.is_alive]
+                    targets = [read_attr(process, pointer, nt) for pointer in jungle_pointers]
+                    target = [entity for entity in targets if entity.health <= damage and entity.alive]
 
                     if target:
                         pos = world_to_screen(get_view_proj_matrix(), target[0].x, target[0].z, target[0].y)
                         if pos:
-                            windll.user32.SetCursorPos(int(pos[0]), int(pos[1]))
-                            send(smite_key)
+                            SetCursorPos(int(pos[0]), int(pos[1]))
+                            send_key(smite_key)
                             sleep(0.03)
 
                     elif GetAsyncKeyState(update_key):

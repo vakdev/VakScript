@@ -6,62 +6,51 @@ from data import Offsets
 
 class ReadManager:
     
-    def __init__(self, process, base_address):
+    def __init__(self, process, base_address, local_team):
         self.process = process
         self.base_address = base_address
-        self.champion_list = Offsets.champion_list
-        self.minion_list = Offsets.minion_list
-        self.name = Offsets.obj_name
-        self.team = Offsets.obj_team
+        self.local_team = local_team
+        self.name_offset = Offsets.obj_name
+        self.team_offset = Offsets.obj_team
 
-    def is_valid_pointer(self, pointer, champions, team):
-        #Get 5 pointers only.
-        try:
-            pointer_name = r_string(self.process, pointer + self.name, 50).lower()
-            pointer_team = r_int(self.process, pointer + self.team)
-            if pointer_name in champions and pointer_team != team:
-                return pointer
-        except:
-            return None
-        
-        #If there's a custom target in practice mode.
-        try:
-            pointer_name = r_string(self.process, r_int64(self.process, pointer + self.name), 50).lower()
-            pointer_team = r_int(self.process, pointer + self.team)
-            if pointer_name.startswith('practicetool') and pointer_team != team: 
-                return pointer
-        except:
-            return None
+    @staticmethod
+    def _is_valid_name(name, entities_list, search_mode):
+        if isinstance(name, str):
+            name = name.lower()
+            if search_mode == 0:
+                return name in entities_list or name.startswith('practicetool')
+            if search_mode == 1:
+                return name.startswith('sru')
+            if search_mode == 2:
+                return name == 'turret'
+            
+        return False
 
-    def is_valid_minion_pointer(self, pointer, minions, team):
+    def is_valid_pointer(self, pointer, entities_list, search_mode):
+        process = self.process
+
         try:
-            pointer_name = r_string(self.process, r_int64(self.process, pointer + self.name), 50)
-            pointer_team = r_int(self.process, pointer + self.team)
-            if pointer_name in minions and pointer_team != team:
-                return pointer
+            name = r_string(process, r_int64(process, pointer + self.name_offset), 50)
+            if self._is_valid_name(name, entities_list, search_mode):
+                team = r_int(process, pointer + self.team_offset)
+                if team != self.local_team:
+                    return True
         except:
-            return None
-        
-    def is_valid_jungle_pointer(self, pointer, entities):
+            pass
+
         try:
-            return r_string(self.process, r_int64(self.process, pointer + self.name)).lower() in entities
+            name = r_string(process, pointer + self.name_offset, 50)
+            if self._is_valid_name(name, entities_list, search_mode):
+                team = r_int(process, pointer + self.team_offset)
+                if team != self.local_team:
+                    return True
         except:
-            try:
-                return r_string(self.process, pointer + self.name).lower() in entities
-            except:
-                return False
+            pass
         
-    def get_pointers(self, champions, team):
-        champion_manager = r_uint64(self.process, self.base_address + self.champion_list)
-        pointers = r_ints64(self.process, r_int64(self.process, champion_manager + 0x8), 200)
-        return [pointer for pointer in pointers if self.is_valid_pointer(pointer, champions, team)]
-    
-    def get_minion_pointers(self, minions, team):
-        minion_manager = r_uint64(self.process, self.base_address + self.minion_list)
-        pointers = r_ints64(self.process, r_int64(self.process, minion_manager + 0x8), 200)
-        return [pointer for pointer in pointers if self.is_valid_minion_pointer(pointer, minions, team)]
-    
-    def get_jungle_pointers(self, entities):
-        minion_manager = r_uint64(self.process, self.base_address + self.minion_list)
-        pointers = r_ints64(self.process, r_int64(self.process, minion_manager + 0x8), 200)
-        return [pointer for pointer in pointers if self.is_valid_jungle_pointer(pointer, entities)]
+        return False
+
+    def get_pointers(self, type_list: int, entities_list: list = [], size: int = 512, search_mode: int = 0):
+        process = self.process
+        pointers_mng = r_uint64(process, self.base_address + type_list)
+        pointers = r_ints64(process, r_int64(process, pointers_mng + 0x8), size)
+        return {pointer for pointer in pointers if self.is_valid_pointer(pointer, entities_list, search_mode)}

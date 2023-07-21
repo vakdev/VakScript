@@ -18,15 +18,20 @@ settings_json = {
         'kiting_mode' : 'Normal',
         'orbwalk_prio' : 'Less Basic Attacks',
         'lasthit_mode' : 'Manual',
+        'press_range': False,
         'ppc' : False
     },
     'Drawings' : {
-        'position_tracker' : True,
-        'screen_track' : False,
-        'show_focused' : True,
-        'show_healths' : True,
-        'show_gold' : False,
-        'spell_tracker' : True
+        "show_position": True,
+        "show_focused": True,
+        "show_healths": True,
+        "show_gold": False,
+        "show_spells": True,
+        "show_player_range": True,
+        "show_enemy_range": True,
+        "show_turret_range": True,
+        "show_hits": True,
+        "screen_track": False
     },
     'AutoSmite' : {
         'smite' : 'f',

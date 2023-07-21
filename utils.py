@@ -58,8 +58,13 @@ def release_key(hexKeyCode):
                             dwFlags=KEYEVENTF_KEYUP))
     user32.SendInput(1, byref(x), sizeof(x))
 
+def send_key(hexKeyCode):
+    press_key(hexKeyCode)
+    release_key(hexKeyCode)
+
 def is_active_window():
     return GetWindowText(GetForegroundWindow()) == Data.game_name_window
 
 def safe_title():
     return "".join(choice(printable) for i in range(11))
+

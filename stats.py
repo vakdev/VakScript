@@ -23,10 +23,11 @@ class Stats:
                 pass
 
     @lru_cache(maxsize=None)
-    def get_attack_speed_base(self, name):
+    def get_attack_speed(self, name):
         name = name.lower()
         root_key = 'characters/{}/characterrecords/root'.format(name)
-        return self.champion_data[name][root_key]['attackSpeed']
+        base_as = self.champion_data[name][root_key]['attackSpeed']
+        return base_as
     
     @lru_cache(maxsize=None)
     def get_radius(self, name):

@@ -30,9 +30,9 @@ def gui(main_instance, width, height):
         with tab_bar():
             with tab(label='Spaceglider'):
                 add_checkbox(label='Use Spaceglider', callback=main_instance.start_spaceglider_process)
-                with child_window(width=260, height=300):
+                with child_window(width=260, height=315):
                     add_combo(
-                        label='Kiting mode', width=150, items=['Normal','In-place'],
+                        label='Kiting mode', width=150, items=['Normal', 'Normal v2', 'In-place'],
                         default_value=jsonGetter().get_data('kiting_mode'),
                         callback=lambda _, data: Functions.set_spaceglider_data('kiting_mode', data)
                     )
@@ -45,6 +45,11 @@ def gui(main_instance, width, height):
                         label='Lasthit mode', width=150, items=['Auto','Manual'],
                         default_value=jsonGetter().get_data('lasthit_mode'),
                         callback=lambda _, data: Functions.set_spaceglider_data('lasthit_mode', data)
+                    )
+                    add_checkbox(
+                        label='In-game Range',
+                        default_value=jsonGetter().get_data('press_range'),
+                        callback=lambda _, data: Functions.set_spaceglider_data('press_range', data)
                     )
                     add_checkbox(
                         label='Potato PC',
@@ -85,12 +90,12 @@ def gui(main_instance, width, height):
                     )
             
             with tab(label='Drawings'):
-                add_checkbox(label='Enemy Info (borderless)', callback=main_instance.start_drawings_process)
-                with child_window(width=260, height=105):
+                add_checkbox(label='Drawings (borderless)', callback=main_instance.start_drawings_process)
+                with child_window(width=260, height=265):
                     add_checkbox(
                         label='Position',
-                        default_value=jsonGetter().get_data('position_tracker'),
-                        callback=lambda _, data: Functions.set_drawings_data('position_tracker', data)
+                        default_value=jsonGetter().get_data('show_position'),
+                        callback=lambda _, data: Functions.set_drawings_data('show_position', data)
                     )
                     add_checkbox(
                         label='Prioritized',
@@ -102,20 +107,45 @@ def gui(main_instance, width, height):
                         default_value=jsonGetter().get_data('show_healths'),
                         callback=lambda _, data: Functions.set_drawings_data('show_healths', data)
                     )
-                    #add_checkbox(
-                    #    label='Gold',
-                    #    default_value=jsonGetter().get_data('show_gold'),
-                    #    callback=lambda _, data: Functions.set_drawings_data('show_gold', data)
-                    #)
-                    #add_checkbox(
-                    #    label='Cooldowns',
-                    #    default_value=jsonGetter().get_data('spell_tracker'),
-                    #    callback=lambda _, data: Functions.set_drawings_data('spell_tracker', data)
-                    #)
+                    add_checkbox(
+                        label='Player Range',
+                        default_value=jsonGetter().get_data('show_player_range'),
+                        callback=lambda _, data: Functions.set_drawings_data('show_player_range', data)
+                    )
+                    add_checkbox(
+                        label='Enemy Range',
+                        default_value=jsonGetter().get_data('show_enemy_range'),
+                        callback=lambda _, data: Functions.set_drawings_data('show_enemy_range', data)
+                    )
+                    add_checkbox(
+                        label='Turret Range',
+                        default_value=jsonGetter().get_data('show_turret_range'),
+                        callback=lambda _, data: Functions.set_drawings_data('show_turret_range', data)
+                    )
+                    add_checkbox(
+                        label='Hits',
+                        default_value=jsonGetter().get_data('show_hits'),
+                        callback=lambda _, data: Functions.set_drawings_data('show_hits', data)
+                    )
+                    add_checkbox(
+                        label='Gold',
+                        default_value=jsonGetter().get_data('show_gold'),
+                        callback=lambda _, data: Functions.set_drawings_data('show_gold', data)
+                    )
+                    add_checkbox(
+                        label='Cooldowns',
+                        default_value=jsonGetter().get_data('show_spells'),
+                        callback=lambda _, data: Functions.set_drawings_data('show_spells', data)
+                    )
                     add_checkbox(
                         label='Limit position',
                         default_value=jsonGetter().get_data('screen_track'),
                         callback=lambda _, data: Functions.set_drawings_data('screen_track', data)
+                    )
+                    add_input_text(
+                        label='Max FPS', width=50, no_spaces=True,
+                        hint=jsonGetter().get_data('fps'),
+                        callback=lambda _, data: Functions.set_drawings_data('fps', data)
                     )
                     
             with tab(label='AutoSmite'):

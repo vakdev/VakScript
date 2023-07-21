@@ -1,6 +1,6 @@
 #ext
 from collections import namedtuple
-from pyMeow import r_string, r_float, r_bool, r_int
+from pyMeow import r_string, r_float, r_bool, r_int, r_ints64
 from math import hypot
 from functools import partial
 
@@ -15,8 +15,10 @@ class ReadAttributes:
         self.obj_health = Offsets.obj_health
         self.obj_max_health = Offsets.obj_max_health
         self.obj_team = Offsets.obj_team
+        self.obj_gold = Offsets.obj_gold
         self.obj_base_attack = Offsets.obj_base_attack
         self.obj_bonus_attack = Offsets.obj_bonus_attack
+        self.obj_bonus_as = Offsets.obj_bonus_as
         self.obj_magic_damage = Offsets.obj_magic_damage
         self.obj_armor = Offsets.obj_armor
         self.obj_attack_range = Offsets.obj_attack_range
@@ -26,16 +28,17 @@ class ReadAttributes:
         self.obj_x = Offsets.obj_x
         self.obj_y = Offsets.obj_y
         self.obj_z = Offsets.obj_z
-        self.obj_spell_book = None#Offsets.obj_spell_book
-        self.spell_level = None#Offsets.spell_level
-        self.spell_cooldown = None#Offsets.spell_cooldown
-        self.spells_keys = None#['Q', 'W', 'E', 'R', 'D', 'F']
+        self.obj_spell_book = Offsets.obj_spell_book
+        self.spell_level = Offsets.spell_level
+        self.spell_cooldown = Offsets.spell_cooldown
+        self.spells_keys = ['Q', 'W', 'E', 'R', 'D', 'F']
         self.game_time = Offsets.game_time
         self.process = process
         self.base_address = base_address
         self.PlayerNamedtuple = namedtuple('Player', 'name basic_attack bonus_attack x y z attack_range')
-        self.EnemyNamedtuple = namedtuple('Enemy', 'name health max_health armor basic_attack bonus_attack magic_damage x y z alive targetable visible attack_range')
+        self.EnemyNamedtuple = namedtuple('Enemy', 'name health max_health gold armor basic_attack bonus_attack magic_damage x y z alive targetable visible attack_range pointer')
         self.MinionNamedtuple = namedtuple('Minion', 'health armor x y z alive targetable visible')
+        self.TurretNamedTuple = namedtuple('Turret', 'attack_range x y z')
 
     
     def read_player(self, local_player):
@@ -54,6 +57,7 @@ class ReadAttributes:
         d['name'] = r_string(process, pointer + self.obj_name)
         d['health'] = r_float(process, pointer + self.obj_health)
         d['max_health'] = r_float(process, pointer + self.obj_max_health)
+        d['gold'] = r_int(process, pointer + self.obj_gold)
         d['armor'] = r_float(process, pointer + self.obj_armor)
         d['basic_attack'] = r_float(process, pointer + self.obj_base_attack)
         d['bonus_attack'] = r_float(process, pointer + self.obj_bonus_attack)
@@ -65,6 +69,7 @@ class ReadAttributes:
         d['targetable'] = r_bool(process, pointer + self.obj_targetable)
         d['visible'] = r_bool(process, pointer + self.obj_visible)
         d['attack_range'] = r_float(process, pointer + self.obj_attack_range)
+        d['pointer'] = pointer
         return self.EnemyNamedtuple(**d)
     
     def read_minion(self, pointer):
@@ -79,16 +84,21 @@ class ReadAttributes:
         d['visible'] = r_bool(process, pointer + self.obj_visible)
         return self.MinionNamedtuple(**d)
     
-    #def read_spells(self, pointer):
-    #    spells, process = {}, self.process
-    #    spell_book = r_ints64(process, pointer + self.obj_spell_book, 0x6)
-    #    game_time = r_float(process, self.base_address + self.game_time)
-    #    for i, spell_slot in enumerate(spell_book):
-    #        level = r_int(process, spell_slot + self.spell_level)
-    #        cooldown = r_float(process, spell_slot + self.spell_cooldown) + 1.
-    #        cooldown = max(0, cooldown - game_time)
-    #        spells[self.spells_keys[i]] = (level, int(cooldown))
-    #    return spells
+    def read_turret(self, pointer):
+        d, process = {}, self.process
+        d['attack_range'] = r_float(process, pointer + self.obj_attack_range)
+        d['x'] = r_float(process, pointer + self.obj_x)
+        d['y'] = r_float(process, pointer + self.obj_y)
+        d['z'] = r_float(process, pointer + self.obj_z)
+        return self.TurretNamedTuple(**d)
+    
+    def read_spells(self, pointer):
+        spells, process = [], self.process
+        spell_book = r_ints64(process, pointer + self.obj_spell_book, 0x4)
+        for spell_slot in spell_book:
+            level = r_int(process, spell_slot + self.spell_level)
+            spells.append(level)
+        return spells
     
 #Entity + EntityDrawings
 def distance(player, target):

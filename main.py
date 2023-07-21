@@ -28,7 +28,7 @@ if __name__ == '__main__':
     proc = Process(target=main_instance.updater)
     proc.start()
 
-    width, height = 290, 400
+    width, height = 290, 420
     create_context()
     gui(main_instance, width, height)
     create_viewport(

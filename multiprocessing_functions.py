@@ -20,8 +20,24 @@ from data import Data, Offsets
 from manager import ReadManager
 from stats import Stats
 from utils import is_active_window
-from settings import jsonGetter
 
+
+class EntitiesNames:
+
+    minion_names = [
+        'ha_orderminionsuper', 'ha_orderminionranged', 'ha_chaosminionsuper', 'sru_orderminionsuper', 
+        'ha_orderminionsiege', 'ha_chaosminionmelee', 'sru_chaosminionmelee', 'sru_chaosminionsiege', 
+        'sru_orderminionranged', 'sru_orderminionsiege', 'ha_chaosminionsiege', 'ha_chaosminionranged', 
+        'ha_orderminionmelee', 'sru_chaosminionsuper', 'sru_chaosminionranged', 'sru_orderminionmelee'
+        ]
+    
+    jungle_names = [
+        "sru_dragon_air", "sru_dragon_chemtech", "sru_dragon_earth", "sru_dragon_elder",
+        "sru_dragon_fire", "sru_dragon_hextech", "sru_dragon_water", "sru_riftherald",
+        "sru_baron", "sru_riftherald_mercenary_tx_cm", "sru_red", "sru_blue", "sru_crab"
+        ]
+    
+        
 class MultiprocessingFunctions:
 
     def __init__(self, manager):
@@ -30,6 +46,7 @@ class MultiprocessingFunctions:
         self.champion_pointers = manager.list()
         self.minion_pointers = manager.list()
         self.jungle_pointers = manager.list()
+        self.turret_pointers = manager.list()
 
         #json settings
         self.spaceglider_settings = manager.dict()
@@ -43,33 +60,15 @@ class MultiprocessingFunctions:
         self.drawings_terminate = Value('i', 0)
         self.on_window = Value('i', 0)
 
+        #entities names
+        self.minion_names = EntitiesNames.minion_names
+        self.jungle_names = EntitiesNames.jungle_names
 
-    def updater(self):
+
+    def updater(self) -> None:
         """
         This will continuously update and share all the pointers and settings that each process needs.
         """
-
-        minion_names = {
-            "SRU_OrderMinionRanged", "SRU_ChaosMinionRanged", "SRU_ChaosMinionMelee", "SRU_OrderMinionMelee", 
-            "SRU_OrderMinionSuper", "SRU_ChaosMinionSuper", "SRU_ChaosMinionSiege", "SRU_OrderMinionSiege",
-            "HA_OrderMinionRanged", "HA_ChaosMinionRanged", "HA_ChaosMinionMelee", "HA_OrderMinionMelee", 
-            "HA_OrderMinionSuper", "HA_ChaosMinionSuper", "HA_ChaosMinionSiege", "HA_OrderMinionSiege"}
-        
-        jungle_names = [
-            "sru_dragon_air",
-            "sru_dragon_chemtech",
-            "sru_dragon_earth",
-            "sru_dragon_elder",
-            "sru_dragon_fire",
-            "sru_dragon_hextech",
-            "sru_dragon_water",
-            "sru_riftherald",
-            "sru_baron",
-            "sru_riftherald_mercenary_tx_cm",
-            "sru_red",
-            "sru_blue",
-            "sru_crab"
-        ]
         
         while not self.updater_terminate.value:
             del_mem()
@@ -79,7 +78,7 @@ class MultiprocessingFunctions:
                 base_address = get_module(process, name_exec)['base']
                 local_player = r_uint64(process, base_address + Offsets.local_player)
                 local_team = r_int(process, local_player + Offsets.obj_team)
-                read_pointers = ReadManager(process, base_address)
+                read_pointers = ReadManager(process, base_address, local_team)
                 stats = Stats()
 
             except:
@@ -87,23 +86,24 @@ class MultiprocessingFunctions:
             else:
                 try:
                     while True:
+                        self.update_settings()
+
                         if is_active_window():
                             self.on_window.value = 1
                         else:
                             self.on_window.value = 0
 
                         if not self.autosmite_terminate.value:
-                            if not jsonGetter().get_data('randb'):
-                                entities = jungle_names[:-3]
+                            if not self.autosmite_settings['randb']:
+                                jg_names = self.jungle_names[:-3]
                             else:
-                                entities = jungle_names
-                            self.jungle_pointers[:] = read_pointers.get_jungle_pointers(entities)
+                                jg_names = self.jungle_names
+                            self.jungle_pointers[:] = read_pointers.get_pointers(Offsets.minion_list, jg_names, size=512, search_mode=0)
 
                         if not self.spaceglider_terminate.value or not self.drawings_terminate.value:
-                            self.champion_pointers[:] = read_pointers.get_pointers(stats.names, local_team)
-                            self.minion_pointers[:] = read_pointers.get_minion_pointers(minion_names, local_team)
-
-                        self.update_settings()
+                            self.champion_pointers[:] = read_pointers.get_pointers(Offsets.champion_list, stats.names, size=64, search_mode=0)
+                            self.minion_pointers[:] = read_pointers.get_pointers(Offsets.minion_list, size=512, search_mode=1)
+                            self.turret_pointers[:] = read_pointers.get_pointers(Offsets.turret_list, size=64, search_mode=2)
 
                         sleep(.1)
                 except:
@@ -156,6 +156,7 @@ class MultiprocessingFunctions:
                 self.drawings_terminate,
                 self.drawings_settings,
                 self.champion_pointers,
+                self.turret_pointers,
                 self.on_window
             ))
             process.start()
