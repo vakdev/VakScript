@@ -94,9 +94,7 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
                             SetCursorPos(int(pos[0]), int(pos[1]))
                             send_key(smite_key)
                             sleep(0.03)
-                            
-                    sleep(0.001)
-
+    
                     elif GetAsyncKeyState(update_key):
                         damage = get_damage(rawNames, url_request)
 
