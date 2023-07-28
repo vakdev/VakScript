@@ -1,10 +1,10 @@
 class Offsets:
-    local_player = 0x421F828 
-    game_time = 0X4213710 
-    view_proj_matrix = 0x42642A0#0x31C4578 
-    champion_list = 0x2171780 
-    minion_list = 0x31C45B8
-    turret_list = 0x420EBF0
+    local_player = 0x421f8a8 
+    game_time = 0x4213790 
+    view_proj_matrix = 0x4264320#0x31C4578 
+    champion_list = 0x2171800 
+    minion_list = 0x31c4638
+    turret_list = 0x420ec70
     obj_name = 0x3838#0x35D8
     obj_team = 0x3C
     obj_gold = 0x2138
