@@ -133,7 +133,7 @@ def gui(main_instance, width, height):
                         callback=lambda _, data: Functions.set_drawings_data('show_gold', data)
                     )
                     add_checkbox(
-                        label='Cooldowns',
+                        label='Spell level',
                         default_value=jsonGetter().get_data('show_spells'),
                         callback=lambda _, data: Functions.set_drawings_data('show_spells', data)
                     )
