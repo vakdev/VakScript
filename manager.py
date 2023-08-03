@@ -20,7 +20,7 @@ class ReadManager:
             if search_mode == 0:
                 return name in entities_list or name.startswith('practicetool')
             if search_mode == 1:
-                return name.startswith('sru')
+                return name.startswith(('sru', 'ha'))
             if search_mode == 2:
                 return name == 'turret'
             
