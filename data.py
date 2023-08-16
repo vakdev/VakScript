@@ -1,15 +1,15 @@
 class Offsets:
-    local_player = 0x2196050
-    game_time = 0x2189EB8
-    view_proj_matrix = 0x21DCD60
-    champion_list = 0x217B350
-    minion_list = 0x217E1A8
-    turret_list = 0x2184750
-    obj_name = 0x3838
-    obj_team = 0x3C
+    local_player = 0x21B7BC0
+    game_time = 0x21ABFFC
+    view_proj_matrix = 0x21FEE30
+    champion_list = 0x219D000
+    minion_list = 0x219D000 # CHANGEME: Outdated
+    turret_list = 0x21A6530
+    obj_name = 0x3838 
+    obj_team = 0x3C 
     obj_gold = 0x2138
-    obj_health = 0x1058
-    obj_max_health = 0x1070
+    obj_health = 0x1058 
+    obj_max_health = 0x1070 
     obj_armor = 0x1694
     obj_base_attack = 0x1670
     obj_bonus_attack = 0x15D8
@@ -18,21 +18,21 @@ class Offsets:
     obj_attack_range = 0x16B4
     obj_spawn_count = 0x328
     obj_targetable = 0xEB0
-    obj_visible = 0x310
-    obj_x = 0x220
+    obj_visible = 0x310 
+    obj_x = 0x220 
     obj_y = obj_x + 0x8
     obj_z = obj_x + 0x4
-    obj_spell_book = 0x30B8
-    spell_info = 0x130
-    spell_data = 0x60
-    spell_name = 0x80
-    spell_level = 0x28
+    obj_spell_book = 0x30B8 
+    spell_info = 0x130 
+    spell_data = 0x60 
+    spell_name = 0x80 
+    spell_level = 0x28 
     spell_cooldown = 0x30
-
+    
 class Data:
     from os import path
 
-    script_version = '13.14'
+    script_version = '13.16'
     settings_file_name = 'settings.json'
     settings_file_path = path.abspath(settings_file_name)
     font_file_name = 'drawings_font.ttf'
@@ -197,4 +197,3 @@ VK_CODES = {'backspace':0x08,
            ']':0xDD,
            "'":0xDE,
            '`':0xC0}
-
