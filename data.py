@@ -3,7 +3,7 @@ class Offsets:
     game_time = 0x21ABFFC
     view_proj_matrix = 0x21FEE30
     champion_list = 0x219D000
-    minion_list = 0x219D000 # CHANGEME: Outdated
+    minion_list = 0x219FE58 # CHANGEME: Outdated
     turret_list = 0x21A6530
     obj_name = 0x3838 
     obj_team = 0x3C 
