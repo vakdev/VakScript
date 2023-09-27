@@ -1,11 +1,11 @@
 class Offsets:
-    local_player = 0x21ad080
-    game_time = 0x21a1f48
-    view_proj_matrix = 0x21f6110
-    champion_list = 0x2192f28
-    minion_list = 0x2195d08
-    turret_list = 0x219c340
-    obj_name = 0x3838
+    local_player = 0x21C4A28
+    game_time = 0x21B8D2C
+    view_proj_matrix = 0x220D4D0
+    champion_list = 0x21A9988
+    minion_list = 0x21AC7F0
+    turret_list = 0x21B3090
+    obj_name = 0x3858
     obj_team = 0x3C
     obj_gold = 0x2138
     obj_health = 0x1058
@@ -32,7 +32,7 @@ class Offsets:
 class Data:
     from os import path
 
-    script_version = '13.17'
+    script_version = '13.19'
     settings_file_name = 'settings.json'
     settings_file_path = path.abspath(settings_file_name)
     font_file_name = 'drawings_font.ttf'
