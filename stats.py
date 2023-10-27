@@ -1,26 +1,30 @@
+#built-in
+from urllib.request import urlopen
+from functools import lru_cache
+from time import sleep
+
 #ext
 from orjson import loads
-from urllib.request import urlopen
 from requests import get
-from functools import lru_cache
 
 #own
-from data import Data
+from data import Info
+from utils import debug_info
 
 class Stats:
-
     def __init__(self):
         while True:
             try:
-                stats = loads(urlopen(Data.url_allgamedata).read())
+                stats = loads(urlopen(Info.url_allgamedata).read())
                 self.names = [champion['rawChampionName'].removeprefix('game_character_displayname_').lower() for champion in stats['allPlayers']]
                 self.champion_data = dict()
                 for name in self.names:
-                    champion_response = get(Data.url_comunitydragon.format(name=name)).json()
+                    champion_response = get(Info.url_comunitydragon.format(name=name)).json()
                     self.champion_data[name] = {k.lower(): v for k, v in champion_response.items()}
                 break
-            except:
-                pass
+            except Exception as stats_loop:
+                debug_info(stats_loop, True)
+                sleep(0.1)
 
     @lru_cache(maxsize=None)
     def get_attack_speed(self, name):
