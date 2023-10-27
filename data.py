@@ -1,12 +1,12 @@
 from os import path
 
 class Offsets:
-    local_player = 0x21F6AC0
-    game_time = 0x21E4948
-    view_proj_matrix = 0x223FF10
-    champion_list = 0x21DA340
-    minion_list = 0x21DD2B0
-    turret_list = 0x21E3BC0
+    local_player = 0x21F5AC0
+    game_time = 0x21E3948
+    view_proj_matrix = 0x223EF10
+    champion_list = 0x21D9340
+    minion_list = 0x21DC2B0
+    turret_list = 0x21E2BC0
     obj_name = 0x3868
     obj_team = 0x3C
     obj_gold = 0x2138
@@ -32,7 +32,7 @@ class Offsets:
     spell_cooldown = 0x30
 
 class Info:
-    script_version = '13.20'
+    script_version = '13.21'
     settings_file_name = 'settings.json'
     settings_file_path = path.abspath(settings_file_name)
     font_file_name = 'drawings_font.ttf'
