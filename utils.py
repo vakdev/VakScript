@@ -1,11 +1,17 @@
-#ext
+#built-in
 from ctypes import wintypes, Structure, Union, WinDLL, POINTER, byref, sizeof
-from win32gui import GetWindowText, GetForegroundWindow
 from random import choice
 from string import printable
+from traceback import print_exc
+from time import sleep
+
+#ext
+from win32gui import GetWindowText, GetForegroundWindow
 
 #own
-from data import Data
+from data import Info
+
+DEBUG = True
 
 #
 user32 = WinDLL('user32', use_last_error=True)
@@ -45,7 +51,6 @@ class INPUT(Structure):
     _anonymous_ = ("_input",)
     _fields_ = (("type",   wintypes.DWORD),
                 ("_input", _INPUT))
-LPINPUT = POINTER(INPUT)
 
 def press_key(hexKeyCode):
     x = INPUT(type=INPUT_KEYBOARD,
@@ -63,8 +68,18 @@ def send_key(hexKeyCode):
     release_key(hexKeyCode)
 
 def is_active_window():
-    return GetWindowText(GetForegroundWindow()) == Data.game_name_window
+    return GetWindowText(GetForegroundWindow()) == Info.game_name_window
 
 def safe_title():
     return "".join(choice(printable) for i in range(11))
 
+def debug_info(exception=None, ex_info=False, info=None):
+    if DEBUG:    
+        if info is not None:
+            print(f'info > {info}')
+        elif exception:
+            print(f's > {exception}')
+            if ex_info:
+                print('d >',end=' ')
+                print_exc()
+    sleep(0.1)
