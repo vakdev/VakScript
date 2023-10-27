@@ -1,13 +1,20 @@
+#built-in
+from webbrowser import open_new_tab
+
 #ext
+from dearpygui.dearpygui import create_context, destroy_context, create_viewport, setup_dearpygui, show_viewport, is_dearpygui_running, render_dearpygui_frame
 from dearpygui.dearpygui import window, child_window, tab_bar, tab
 from dearpygui.dearpygui import add_checkbox, add_text, add_combo, add_input_text
-from webbrowser import open_new_tab
 
 #own
 from settings import jsonSetter, jsonGetter
+from utils import safe_title
 from autoconfig import start_autoconfig
 
-class Functions:
+GUI_WIDTH = 290
+GUI_HEIGHT = 420
+
+class GUIFunctions:
 
     def set_spaceglider_data(key, value):
         jsonSetter().set_spaceglider_data(key, value)
@@ -22,11 +29,11 @@ class Functions:
         if data:
             start_autoconfig()
 
-    def open_link(url):
-        open_new_tab(url)
+def show_gui(main_instance):
 
-def gui(main_instance, width, height):
-    with window(label='', width=width, height=height, no_move=True, no_resize=True, no_title_bar=True):
+    create_context()
+
+    with window(label='', width=GUI_WIDTH, height=GUI_HEIGHT, no_move=True, no_resize=True, no_title_bar=True):
         with tab_bar():
             with tab(label='Spaceglider'):
                 add_checkbox(label='Use Spaceglider', callback=main_instance.start_spaceglider_process)
@@ -34,59 +41,59 @@ def gui(main_instance, width, height):
                     add_combo(
                         label='Kiting mode', width=150, items=['Normal', 'Normal v2', 'In-place'],
                         default_value=jsonGetter().get_data('kiting_mode'),
-                        callback=lambda _, data: Functions.set_spaceglider_data('kiting_mode', data)
+                        callback=lambda _, data: GUIFunctions.set_spaceglider_data('kiting_mode', data)
                     )
                     add_combo(
                         label='Target Prio', width=150, items=['Less Basic Attacks','Nearest Enemy','Most Damage'],
                         default_value=jsonGetter().get_data('orbwalk_prio'),
-                        callback=lambda _, data: Functions.set_spaceglider_data('orbwalk_prio', data)
+                        callback=lambda _, data: GUIFunctions.set_spaceglider_data('orbwalk_prio', data)
                     )
                     add_combo(
-                        label='Lasthit mode', width=150, items=['Auto','Manual'],
+                        label='Lasthit mode', width=150, items=['Manual'],
                         default_value=jsonGetter().get_data('lasthit_mode'),
-                        callback=lambda _, data: Functions.set_spaceglider_data('lasthit_mode', data)
+                        callback=lambda _, data: GUIFunctions.set_spaceglider_data('lasthit_mode', data)
                     )
                     add_checkbox(
                         label='In-game Range',
                         default_value=jsonGetter().get_data('press_range'),
-                        callback=lambda _, data: Functions.set_spaceglider_data('press_range', data)
+                        callback=lambda _, data: GUIFunctions.set_spaceglider_data('press_range', data)
                     )
                     add_checkbox(
                         label='Potato PC',
                         default_value=jsonGetter().get_data('ppc'),
-                        callback=lambda _, data: Functions.set_spaceglider_data('ppc', data)
+                        callback=lambda _, data: GUIFunctions.set_spaceglider_data('ppc', data)
                     )
                     add_checkbox(
                         label='Autoconfig',
                         default_value=False,
-                        callback=Functions.set_autoconfig
+                        callback=GUIFunctions.set_autoconfig
                     )
                     add_text('Keys to use:', color=(128, 0, 128, 255))
                     add_input_text(
                         label='Spaceglider Key', width=50, no_spaces=True,
                         hint=jsonGetter().get_data('orbwalk').upper(),
-                        callback=lambda _, data: Functions.set_spaceglider_data('orbwalk', data)
+                        callback=lambda _, data: GUIFunctions.set_spaceglider_data('orbwalk', data)
                     )
                     add_input_text(
                         label='Laneclear Key', width=50, no_spaces=True,
                         hint=jsonGetter().get_data('laneclear').upper(),
-                        callback=lambda _, data: Functions.set_spaceglider_data('laneclear', data)
+                        callback=lambda _, data: GUIFunctions.set_spaceglider_data('laneclear', data)
                     )
                     add_input_text(
                         label='Lasthit Key', width=50, no_spaces=True,
                         hint=jsonGetter().get_data('lasthit').upper(),
-                        callback=lambda _, data: Functions.set_spaceglider_data('lasthit', data)
+                        callback=lambda _, data: GUIFunctions.set_spaceglider_data('lasthit', data)
                     )
                     add_text('Keys In-game:', color=(0, 100, 0, 255))
                     add_input_text(
                         label='PlayerAttackMoveClick', width=30, no_spaces=True,
                         hint=jsonGetter().get_data('attack').upper(),
-                        callback=lambda _, data: Functions.set_spaceglider_data('attack', data)
+                        callback=lambda _, data: GUIFunctions.set_spaceglider_data('attack', data)
                     )
                     add_input_text(
                         label='ShowAdvancedPlayerStats', width=30, no_spaces=True,
                         hint=jsonGetter().get_data('range').upper(),
-                        callback=lambda _, data: Functions.set_spaceglider_data('range', data)
+                        callback=lambda _, data: GUIFunctions.set_spaceglider_data('range', data)
                     )
             
             with tab(label='Drawings'):
@@ -95,57 +102,58 @@ def gui(main_instance, width, height):
                     add_checkbox(
                         label='Position',
                         default_value=jsonGetter().get_data('show_position'),
-                        callback=lambda _, data: Functions.set_drawings_data('show_position', data)
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('show_position', data)
                     )
                     add_checkbox(
                         label='Prioritized',
                         default_value=jsonGetter().get_data('show_focused'),
-                        callback=lambda _, data: Functions.set_drawings_data('show_focused', data)
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('show_focused', data)
                     )
                     add_checkbox(
                         label='Health',
                         default_value=jsonGetter().get_data('show_healths'),
-                        callback=lambda _, data: Functions.set_drawings_data('show_healths', data)
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('show_healths', data)
                     )
                     add_checkbox(
                         label='Player Range',
                         default_value=jsonGetter().get_data('show_player_range'),
-                        callback=lambda _, data: Functions.set_drawings_data('show_player_range', data)
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('show_player_range', data)
                     )
                     add_checkbox(
                         label='Enemy Range',
                         default_value=jsonGetter().get_data('show_enemy_range'),
-                        callback=lambda _, data: Functions.set_drawings_data('show_enemy_range', data)
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('show_enemy_range', data)
                     )
                     add_checkbox(
                         label='Turret Range',
                         default_value=jsonGetter().get_data('show_turret_range'),
-                        callback=lambda _, data: Functions.set_drawings_data('show_turret_range', data)
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('show_turret_range', data)
                     )
                     add_checkbox(
                         label='Hits',
                         default_value=jsonGetter().get_data('show_hits'),
-                        callback=lambda _, data: Functions.set_drawings_data('show_hits', data)
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('show_hits', data)
                     )
                     add_checkbox(
                         label='Gold',
                         default_value=jsonGetter().get_data('show_gold'),
-                        callback=lambda _, data: Functions.set_drawings_data('show_gold', data)
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('show_gold', data)
                     )
-                    add_checkbox(
-                        label='Spell level',
-                        default_value=jsonGetter().get_data('show_spells'),
-                        callback=lambda _, data: Functions.set_drawings_data('show_spells', data)
-                    )
+                    ## REMOVED DUE READ ISSUE [v13.21]
+                    #add_checkbox(
+                    #    label='Spell level',
+                    #    default_value=jsonGetter().get_data('show_spells'),
+                    #    callback=lambda _, data: GUIFunctions.set_drawings_data('show_spells', data)
+                    #)
                     add_checkbox(
                         label='Limit position',
                         default_value=jsonGetter().get_data('screen_track'),
-                        callback=lambda _, data: Functions.set_drawings_data('screen_track', data)
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('screen_track', data)
                     )
                     add_input_text(
                         label='Max FPS', width=50, no_spaces=True,
                         hint=jsonGetter().get_data('fps'),
-                        callback=lambda _, data: Functions.set_drawings_data('fps', data)
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('fps', data)
                     )
                     
             with tab(label='AutoSmite'):
@@ -154,15 +162,32 @@ def gui(main_instance, width, height):
                     add_checkbox(
                         label='Consider Blue / Red / Crab',
                         default_value=jsonGetter().get_data('randb'),
-                        callback=lambda _, data: Functions.set_autosmite_data('randb', data)
+                        callback=lambda _, data: GUIFunctions.set_autosmite_data('randb', data)
                     )
                     add_input_text(
                         label='Smite Key', width=30, no_spaces=True,
                         hint=jsonGetter().get_data('smite').upper(),
-                        callback=lambda _, data: Functions.set_autosmite_data('smite', data)
+                        callback=lambda _, data: GUIFunctions.set_autosmite_data('smite', data)
                     )
                     add_input_text(
                         label='Update Key', width=30, no_spaces=True,
                         hint=jsonGetter().get_data('update').upper(),
-                        callback=lambda _, data: Functions.set_autosmite_data('update', data)
+                        callback=lambda _, data: GUIFunctions.set_autosmite_data('update', data)
                     )
+
+
+    create_viewport(
+        title=safe_title(),
+        width=GUI_WIDTH, height=GUI_HEIGHT,
+        max_width=GUI_WIDTH, max_height=GUI_HEIGHT,
+        x_pos=0, y_pos=0,
+        resizable=False
+    )
+
+    setup_dearpygui()
+    show_viewport()
+
+    while is_dearpygui_running():
+        render_dearpygui_frame()
+
+    destroy_context()
