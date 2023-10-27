@@ -2,12 +2,12 @@
 from json import load, dump
 
 #own
-from data import Data, VK_CODES
+from data import Info, VK_CODES
 
 class jsonSetter:
 
     def __init__(self):
-        self.file_name = Data.settings_file_name
+        self.file_name = Info.settings_file_name
         self.file = open(self.file_name, "r+")
         self.settings = load(self.file)
 
