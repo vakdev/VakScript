@@ -4,8 +4,7 @@ from pyMeow import r_string, r_int, r_int64, r_uint64, r_ints64
 #own
 from data import Offsets
 
-class ReadManager:
-    
+class ListReader:
     def __init__(self, process, base_address, local_team):
         self.process = process
         self.base_address = base_address
@@ -19,12 +18,13 @@ class ReadManager:
             name = name.lower()
             if search_mode == 0:
                 return name in entities_list or name.startswith('practicetool')
-            if search_mode == 1:
+            elif search_mode == 1:
                 return name.startswith(('sru', 'ha'))
-            if search_mode == 2:
+            elif search_mode == 2:
                 return name == 'turret'
-            
+        
         return False
+    
 
     def is_valid_pointer(self, pointer, entities_list, search_mode):
         process = self.process
@@ -48,7 +48,7 @@ class ReadManager:
             pass
         
         return False
-
+    
     def get_pointers(self, type_list: int, entities_list: list = [], size: int = 512, search_mode: int = 0):
         process = self.process
         pointers_mng = r_uint64(process, self.base_address + type_list)
