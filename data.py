@@ -1,38 +1,38 @@
+from os import path
+
 class Offsets:
-    local_player = 0x21a56f8
-    game_time = 0x2198714
-    view_proj_matrix = 0x21ec740
-    champion_list = 0x21894b0
-    minion_list = 0x218c328
-    turret_list = 0x2192bc0
-    obj_name = 0x3860
+    local_player = 0x21F6AC0
+    game_time = 0x21E4948
+    view_proj_matrix = 0x223FF10
+    champion_list = 0x21DA340
+    minion_list = 0x21DD2B0
+    turret_list = 0x21E3BC0
+    obj_name = 0x3868
     obj_team = 0x3C
     obj_gold = 0x2138
-    obj_health = 0x1058
-    obj_max_health = 0x1070
+    obj_health = 0x1068
+    obj_max_health = 0x1080
     obj_armor = 0x1694
-    obj_base_attack = 0x1670
+    obj_base_attack = 0x166C
     obj_bonus_attack = 0x15D8
-    obj_bonus_as = 0x1678
+    obj_bonus_as = 0x164C
     obj_magic_damage = 0x15F8
-    obj_attack_range = 0x16B4
-    obj_spawn_count = 0x328
-    obj_targetable = 0xEB0
-    obj_visible = 0x310
+    obj_attack_range = 0x16C4
+    obj_spawn_count = 0x338
+    obj_targetable = 0xEC0
+    obj_visible = 0x320
     obj_x = 0x220
     obj_y = obj_x + 0x8
     obj_z = obj_x + 0x4
-    obj_spell_book = 0x30B8
+    obj_spell_book = 0x2A00
     spell_info = 0x130
     spell_data = 0x60
     spell_name = 0x80
     spell_level = 0x28
     spell_cooldown = 0x30
 
-class Data:
-    from os import path
-
-    script_version = '13.18'
+class Info:
+    script_version = '13.20'
     settings_file_name = 'settings.json'
     settings_file_path = path.abspath(settings_file_name)
     font_file_name = 'drawings_font.ttf'
@@ -45,10 +45,18 @@ class Data:
     settings_to_persist_path = path.join(game_files_path, settings_to_persist)
     persisted_settings_path = path.join(game_files_path, persisted_settings)
     url_activeplayer = 'https://127.0.0.1:2999/liveclientdata/activeplayer'
+    url_activeplayer_name = 'https://127.0.0.1:2999/liveclientdata/activeplayername'
     url_allgamedata = 'https://127.0.0.1:2999/liveclientdata/allgamedata'
     url_comunitydragon = 'https://raw.communitydragon.org/latest/game/data/characters/{name}/{name}.bin.json'
     root_key = 'characters/{}/characterrecords/root'
-    
+    asmite_raw_names = {
+        "GeneratedTip_SummonerSpell_SummonerSmite_DisplayName":600.,
+        "GeneratedTip_SummonerSpell_S5_SummonerSmitePlayerGanker_DisplayName":900.,
+        "GeneratedTip_SummonerSpell_SummonerSmiteAvatarOffensive_DisplayName":1200.,
+        "GeneratedTip_SummonerSpell_SummonerSmiteAvatarDefensive_DisplayName":1200.,
+        "GeneratedTip_SummonerSpell_SummonerSmiteAvatarUtility_DisplayName":1200.
+    }
+    asmite_url_request = 'https://127.0.0.1:2999/liveclientdata/playersummonerspells?summonerName={username}'
 
 VK_CODES = {'backspace':0x08,
            'tab':0x09,
