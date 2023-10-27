@@ -6,7 +6,7 @@ from psutil import process_iter
 from json import dump
 
 #own
-from data import Data
+from data import Info
 
 settings_json = {
     'Spaceglider': {
@@ -140,7 +140,7 @@ class Autoconfig:
             print(line, end="")
 
     def set_json_settings(self):
-        with open(Data.settings_file_name, 'w') as json_file:
+        with open(Info.settings_file_name, 'w') as json_file:
             dump(settings_json, json_file, indent=4)
 
     def set_config(self):
@@ -152,13 +152,13 @@ class Autoconfig:
 def start_autoconfig():
     league_path = None
     for process in process_iter(['name', 'cwd']):
-        if process.info['name'] == Data.client_name_executable:
-            os.system('taskkill -f -im "{}"'.format(Data.game_name_executable))
+        if process.info['name'] == Info.client_name_executable:
+            os.system('taskkill -f -im "{}"'.format(Info.game_name_executable))
             league_path = process.info['cwd']
 
     if league_path is not None and os.path.isdir(league_path):
-        settings_to_persist = os.path.join(league_path, Data.settings_to_persist_path)
-        persisted_settings = os.path.join(league_path, Data.persisted_settings_path)
+        settings_to_persist = os.path.join(league_path, Info.settings_to_persist_path)
+        persisted_settings = os.path.join(league_path, Info.persisted_settings_path)
         files_list = [settings_to_persist, persisted_settings]
 
         for file in files_list:
