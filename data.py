@@ -1,38 +1,44 @@
 from os import path
+import configparser
 
+# Patch 13.22
 class Offsets:
-    local_player = 0x21F5AC0
-    game_time = 0x21E3948
-    view_proj_matrix = 0x223EF10
-    champion_list = 0x21D9340
-    minion_list = 0x21DC2B0
-    turret_list = 0x21E2BC0
-    obj_name = 0x3868
-    obj_team = 0x3C
-    obj_gold = 0x2138
-    obj_health = 0x1068
-    obj_max_health = 0x1080
-    obj_armor = 0x1694
-    obj_base_attack = 0x166C
-    obj_bonus_attack = 0x15D8
-    obj_bonus_as = 0x164C
-    obj_magic_damage = 0x15F8
-    obj_attack_range = 0x16C4
-    obj_spawn_count = 0x338
-    obj_targetable = 0xEC0
-    obj_visible = 0x320
-    obj_x = 0x220
-    obj_y = obj_x + 0x8
-    obj_z = obj_x + 0x4
-    obj_spell_book = 0x2A00
-    spell_info = 0x130
-    spell_data = 0x60
-    spell_name = 0x80
-    spell_level = 0x28
-    spell_cooldown = 0x30
+    offsets_file = configparser.ConfigParser()
+    offsets_file.read("offsets.ini")
+    local_player = int(offsets_file.get("offsets", "local_player"), 16)
+    game_time = int(offsets_file.get("offsets", "game_time"), 16)
+    view_proj_matrix = int(offsets_file.get("offsets", "view_proj_matrix"), 16)
+    champion_list = int(offsets_file.get("offsets", "champion_list"), 16)
+    minion_list = int(offsets_file.get("offsets", "minion_list"), 16)
+    turret_list = int(offsets_file.get("offsets", "turret_list"), 16)
+    obj_name = int(offsets_file.get("offsets", "obj_name"), 16)
+    obj_team = int(offsets_file.get("offsets", "obj_team"), 16)
+    obj_gold = int(offsets_file.get("offsets", "obj_gold"), 16)
+    obj_health = int(offsets_file.get("offsets", "obj_health"), 16)
+    obj_max_health = int(offsets_file.get("offsets", "obj_max_health"), 16)
+    obj_armor = int(offsets_file.get("offsets", "obj_armor"), 16)
+    obj_base_attack = int(offsets_file.get("offsets", "obj_base_attack"), 16)
+    obj_bonus_attack = int(offsets_file.get("offsets", "obj_bonus_attack"), 16)
+    obj_bonus_as = int(offsets_file.get("offsets", "obj_bonus_as"), 16)
+    obj_magic_damage = int(offsets_file.get("offsets", "obj_magic_damage"), 16)
+    obj_attack_range = int(offsets_file.get("offsets", "obj_attack_range"), 16)
+    obj_spawn_count = int(offsets_file.get("offsets", "obj_spawn_count"), 16)
+    obj_targetable = int(offsets_file.get("offsets", "obj_targetable"), 16)
+    obj_visible = int(offsets_file.get("offsets", "obj_visible"), 16)
+    obj_x = int(offsets_file.get("offsets", "obj_x"), 16)
+    obj_y = int(offsets_file.get("offsets", "obj_y"), 16)
+    obj_z = int(offsets_file.get("offsets", "obj_z"), 16)
+    obj_spell_book = int(offsets_file.get("offsets", "obj_spell_book"), 16)
+    spell_info = int(offsets_file.get("offsets", "spell_info"), 16)
+    spell_data = int(offsets_file.get("offsets", "spell_data"), 16)
+    spell_name = int(offsets_file.get("offsets", "spell_name"), 16)
+    spell_level = int(offsets_file.get("offsets", "spell_level"), 16)
+    spell_cooldown = int(offsets_file.get("offsets", "spell_cooldown"), 16)
 
 class Info:
-    script_version = '13.20'
+    offsets_file = configparser.ConfigParser()
+    offsets_file.read("offsets.ini")
+    script_version = offsets_file.get("version", "script_version")
     settings_file_name = 'settings.json'
     settings_file_path = path.abspath(settings_file_name)
     font_file_name = 'drawings_font.ttf'

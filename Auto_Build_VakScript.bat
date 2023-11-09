@@ -32,7 +32,7 @@ if %errorlevel% neq 0 (
 )
 
 REM Get the version from data.py
-for /f "tokens=2 delims=''" %%G in ('findstr "script_version" data.py') do (
+for /f "tokens=2 delims=''" %%G in ('findstr "script_version" offsets.ini') do (
     set "version=%%G"
 )
 
@@ -45,9 +45,21 @@ pyinstaller --onefile --noconsole --distpath "%target_folder%" main.py
 REM Copy required files to the target folder
 copy drawings_font.ttf "%target_folder%"
 copy settings.json "%target_folder%"
+copy offsets.ini "%target_folder%"
 
-REM Rename the main.exe file to match the target folder name
-ren "%target_folder%\main.exe" "%target_folder%.exe"
+@echo off
+setlocal EnableDelayedExpansion
+
+REM Generate a random alphanumeric string with length 12
+set "characters=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+set "random_name="
+for /L %%i in (1,1,12) do (
+    set /a "rand=!random! %% 62"
+    for %%j in (!rand!) do set "random_name=!random_name!!characters:~%%j,1!"
+)
+
+REM Rename the main.exe file to random string
+ren "%target_folder%\main.exe" "!random_name!.exe"
 
 REM Remove the build folder if it exists
 if exist "%cd%\build" (
