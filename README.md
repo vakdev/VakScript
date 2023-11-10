@@ -1,4 +1,4 @@
-# VakScript - Spaceglider for League of Legends (13.11+)
+# VakScript - Spaceglider for League of Legends (13.22+)
 
 Tool to automate kiting without any attack speed limit, game mode, or entity.
 The main purpose is help AD Carry players, not limited to any other role.
@@ -41,6 +41,10 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 2. Use: pyinstaller --onefile --noconsole main.py
 3. Copy settings.json, offsets.ini, drawings_font.ttf and paste in dist dir. 
 4. Start main.exe as admin.
+   
+OR USE Auto_Build_VakScript.bat:
+1. Start Auto_Build_VakScript.bat.
+2. Start builded script from VakScript v**.** folder as admin.
 
 ## About
 ### Based on outdated source: https://github.com/hrt/Lmeme
