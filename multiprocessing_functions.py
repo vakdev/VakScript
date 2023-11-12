@@ -42,6 +42,7 @@ class MultiprocessingFunctions:
         self.champion_pointers = manager.list()
         self.minion_pointers = manager.list()
         self.jungle_pointers = manager.list()
+        self.ward_pointers = manager.list()
         self.turret_pointers = manager.list()
 
         #json settings
@@ -91,6 +92,7 @@ class MultiprocessingFunctions:
                             if not self.spaceglider_terminate.value or not self.drawings_terminate.value:
                                 self.champion_pointers[:] = read_pointers.get_pointers(Offsets.champion_list, stats.names, size=128, search_mode=0)
                                 self.minion_pointers[:] = read_pointers.get_pointers(Offsets.minion_list, size=512, search_mode=1)
+                                self.ward_pointers[:] = read_pointers.get_pointers(Offsets.minion_list, size=512, search_mode=3)
                                 self.turret_pointers[:] = read_pointers.get_pointers(Offsets.turret_list, size=64, search_mode=2)
 
                             if not self.autosmite_terminate.value:
@@ -161,6 +163,7 @@ class MultiprocessingFunctions:
                 self.drawings_terminate,
                 self.drawings_settings,
                 self.champion_pointers,
+                self.ward_pointers,
                 self.turret_pointers,
                 self.on_window
             ))

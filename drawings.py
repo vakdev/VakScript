@@ -112,7 +112,7 @@ class Draw:
         draw_circle(pos[0], pos[1], 5.0, color)
 
 
-def drawings(terminate, settings, champion_pointers, turret_pointers, on_window):
+def drawings(terminate, settings, champion_pointers, ward_pointers, turret_pointers, on_window):
     """ External drawings process."""
 
     while not terminate.value:
@@ -172,6 +172,7 @@ def drawings(terminate, settings, champion_pointers, turret_pointers, on_window)
 
                     while overlay_loop():
                         entities = [attr_reader.read_enemy(pointer) for pointer in champion_pointers]
+                        wards = [attr_reader.read_minion(pointer) for pointer in ward_pointers]
                         player = attr_reader.read_player(local_player)
                         view_proj_matrix = get_view_proj_matrix()
                         own_pos = world_to_screen(view_proj_matrix, player.x, player.z, player.y)
@@ -207,6 +208,10 @@ def drawings(terminate, settings, champion_pointers, turret_pointers, on_window)
                                     if show_spells:
                                         spell_levels = attr_reader.read_spells(entity.pointer)
                                         draw.spell_level(pos, spell_levels)
+                        
+                        for ward in wards:
+                            draw.entity_range(view_proj_matrix, (ward.x, ward.z, ward.y), 900.0, 1.7, Colors.Magenta)
+                            draw.entity_range(view_proj_matrix, (ward.x, ward.z, ward.y), 12.0, 4, Colors.Purple)
 
                         if show_focused:
                             target = select_target(player, entities)

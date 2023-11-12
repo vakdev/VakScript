@@ -22,6 +22,10 @@ class ListReader:
                 return name.startswith(('sru', 'ha'))
             elif search_mode == 2:
                 return name == 'turret'
+            elif search_mode == 3:
+                wards = ['sightward', 'visionward', 'yellowtrinket', 'yellowtrinketupgrade', 'bluetrinket', 'jammerdevice', 
+                         'perkszombieward']
+                return name in wards
         
         return False
     
