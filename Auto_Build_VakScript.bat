@@ -47,6 +47,9 @@ copy drawings_font.ttf "%target_folder%"
 copy settings.json "%target_folder%"
 copy offsets.ini "%target_folder%"
 
+REM Copy wards folder to the target folder
+xcopy /E /I /Y wards "%target_folder%\wards"
+
 @echo off
 setlocal EnableDelayedExpansion
 

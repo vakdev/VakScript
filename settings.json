@@ -5,7 +5,7 @@
         "lasthit": "x",
         "attack": "a",
         "range": "o",
-        "kiting_mode": "Normal",
+        "kiting_mode": "Normal v2",
         "orbwalk_prio": "Less Basic Attacks",
         "lasthit_mode": "Manual",
         "press_range": true,
@@ -21,6 +21,7 @@
         "show_enemy_range": true,
         "show_turret_range": true,
         "show_hits": true,
+        "vision_tracker": true,
         "screen_track": false,
         "fps": "60"
     },

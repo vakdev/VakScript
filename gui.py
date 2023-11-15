@@ -146,6 +146,11 @@ def show_gui(main_instance):
                     #    callback=lambda _, data: GUIFunctions.set_drawings_data('show_spells', data)
                     #)
                     add_checkbox(
+                        label='Vision Tracking',
+                        default_value=jsonGetter().get_data('vision_tracker'),
+                        callback=lambda _, data: GUIFunctions.set_drawings_data('vision_tracker', data)
+                    )
+                    add_checkbox(
                         label='Limit position',
                         default_value=jsonGetter().get_data('screen_track'),
                         callback=lambda _, data: GUIFunctions.set_drawings_data('screen_track', data)
