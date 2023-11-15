@@ -16,7 +16,7 @@ class AttributesReader(Offsets):
         self.spell_keys = ['Q', 'W', 'E', 'R', 'D', 'F']
         self.PlayerNamedtuple = namedtuple('Player', 'name basic_attack bonus_attack x y z attack_range')
         self.EnemyNamedtuple = namedtuple('Enemy', 'name health max_health gold armor basic_attack bonus_attack magic_damage x y z alive targetable visible attack_range pointer')
-        self.MinionNamedtuple = namedtuple('Minion', 'health armor x y z alive targetable visible')
+        self.MinionNamedtuple = namedtuple('Minion', 'name health armor x y z alive targetable visible')
         self.TurretNamedTuple = namedtuple('Turret', 'attack_range x y z alive targetable visible')
 
     def read_player(self, local_player):
@@ -60,6 +60,7 @@ class AttributesReader(Offsets):
     def read_minion(self, pointer):
         process = self.process
         attributes = self.MinionNamedtuple(
+            name =         r_string(process, pointer + self.obj_name),
             health =       r_float(process, pointer + self.obj_health),
             armor =        r_float(process, pointer + self.obj_armor),
             x =            r_float(process, pointer + self.obj_x),

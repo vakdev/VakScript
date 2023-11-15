@@ -4,7 +4,7 @@ from time import sleep
 from math import cos, sin, pi
 
 #ext
-from pyMeow import open_process, get_module, load_font, new_color
+from pyMeow import open_process, get_module, load_font, new_color, load_texture, draw_texture
 from pyMeow import overlay_init, overlay_loop, overlay_close, begin_drawing, end_drawing
 from pyMeow import draw_line, draw_circle, draw_font, gui_progress_bar, gui_text_box
 from pyMeow import r_uint64
@@ -145,6 +145,7 @@ def drawings(terminate, settings, champion_pointers, ward_pointers, turret_point
                 show_enemy_range = settings['show_enemy_range']
                 show_turret_range = settings['show_turret_range']
                 show_hits = settings['show_hits']
+                vision_tracker = settings['vision_tracker']
                 screen_track = settings['screen_track']
                 fps = settings['fps']
                 target_prio = jsonGetter().get_data('orbwalk_prio')
@@ -169,6 +170,14 @@ def drawings(terminate, settings, champion_pointers, ward_pointers, turret_point
                     
                     overlay_init(title=safe_title(), fps=int(fps))
                     load_font(Info.font_file_name, 1)
+                    wards_texture = {
+                        'yellowtrinket': load_texture('wards/yellowtrinket.png'),
+                        'sightward': load_texture('wards/sightward.png'),
+                        'visionward': load_texture('wards/yellowtrinket.png'),
+                        'bluetrinket': load_texture('wards/bluetrinket.png'),
+                        'jammerdevice': load_texture('wards/pinkward.png'),
+                        'perkszombieward': load_texture('wards/sightward.png')
+                    }
 
                     while overlay_loop():
                         entities = [attr_reader.read_enemy(pointer) for pointer in champion_pointers]
@@ -209,9 +218,16 @@ def drawings(terminate, settings, champion_pointers, ward_pointers, turret_point
                                         spell_levels = attr_reader.read_spells(entity.pointer)
                                         draw.spell_level(pos, spell_levels)
                         
-                        for ward in wards:
-                            draw.entity_range(view_proj_matrix, (ward.x, ward.z, ward.y), 900.0, 1.7, Colors.Magenta)
-                            draw.entity_range(view_proj_matrix, (ward.x, ward.z, ward.y), 12.0, 4, Colors.Purple)
+                        if vision_tracker:
+                            for ward in wards:
+                                try:
+                                    texture = wards_texture[ward.name.lower()]
+                                    pos = world_to_screen(view_proj_matrix, ward.x, ward.z, ward.y)
+                                    draw_texture(texture, pos[0], pos[1] + 10, Colors.White, 0, scale=0.5)
+                                    draw.entity_range(view_proj_matrix, (ward.x, ward.z, ward.y), 900.0, 1.7, Colors.Magenta)
+                                    draw.entity_range(view_proj_matrix, (ward.x, ward.z, ward.y), 8.0, 2, Colors.Purple)
+                                except:
+                                    pass
 
                         if show_focused:
                             target = select_target(player, entities)
