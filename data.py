@@ -42,6 +42,14 @@ class Offsets:
     spell_level = int(offsets_file.get("offsets", "spell_level"), 16)
     spell_cooldown = int(offsets_file.get("offsets", "spell_cooldown"), 16)
 
+    buff_manager = int(offsets_file.get("offsets", "buff_manager"), 16)
+    buff_count = int(offsets_file.get("offsets", "buff_count"), 16)
+    buff_count2 = int(offsets_file.get("offsets", "buff_count2"), 16)
+    buff_start = int(offsets_file.get("offsets", "buff_start"), 16)
+    buff_end = int(offsets_file.get("offsets", "buff_end"), 16)
+    buff_info = int(offsets_file.get("offsets", "buff_info"), 16)
+    buff_name = int(offsets_file.get("offsets", "buff_name"), 16)
+
 class Info:
     offsets_file = configparser.ConfigParser()
     offsets_file.read("offsets.ini")

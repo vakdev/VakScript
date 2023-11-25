@@ -14,10 +14,11 @@ class AttributesReader(Offsets):
         self.process = process
         self.base_address = base_address
         self.spell_keys = ['Q', 'W', 'E', 'R', 'D', 'F']
-        self.PlayerNamedtuple = namedtuple('Player', 'name basic_attack bonus_attack x y z attack_range items')
+        self.PlayerNamedtuple = namedtuple('Player', 'name basic_attack bonus_attack x y z attack_range items buffs')
         self.EnemyNamedtuple = namedtuple('Enemy', 'name health max_health gold armor basic_attack bonus_attack magic_damage x y z alive targetable visible attack_range pointer items')
         self.MinionNamedtuple = namedtuple('Minion', 'name health armor x y z alive targetable visible')
         self.TurretNamedTuple = namedtuple('Turret', 'attack_range x y z alive targetable visible')
+        self.BuffNamedTuple = namedtuple('Buff', 'name count count2 alive')
     
     def read_items(self, pointer):
         process = self.process
@@ -33,13 +34,49 @@ class AttributesReader(Offsets):
                 items_ids.append(0)
         return items_ids
 
+    def read_buffs(self, pointer):
+        process = self.process
+        buffs = []
+        for i in range(1000):
+            buff_manager = r_uint64(process, pointer + Offsets.buff_manager)
+            try:
+                buff = r_uint64(process, buff_manager + 0x10 + 0x8 * i)
+                buff_count = r_int(process, buff + Offsets.buff_count)
+                buff_count2 = r_int(process, buff + Offsets.buff_count2)
+            except:
+                continue
+            
+            gametime = r_float(process, self.base_address + Offsets.game_time)
+            buff_alive = False
+            try:
+                buff_start = r_float(process, buff + Offsets.buff_start)
+                buff_end = r_float(process, buff + Offsets.buff_end)
+                if buff_start <= gametime <= buff_end:
+                    buff_alive = True
+            except:
+                buff_alive = True
+
+            buff_info = r_uint64(process, buff + Offsets.buff_info)
+            try:
+                buff_name_ptr = r_uint64(process, buff_info + Offsets.buff_name)
+                buff_name = r_string(process, buff_name_ptr, 100)
+            except:
+                continue
+
+            attributes = self.BuffNamedTuple(
+                name = buff_name,
+                count = buff_count,
+                count2 = buff_count2,
+                alive = buff_alive
+            )
+            buffs.append(attributes)
+        return buffs
+    
     def read_player(self, local_player):
         process = self.process
-        gold_ptr = r_uint64(process, local_player + 0x4070 + 0x10)
-        gold = r_float(process, gold_ptr)
-        print(f'gold: {gold}')
 
         items_ids = self.read_items(local_player)
+        buffs = self.read_buffs(local_player)
 
         attributes = self.PlayerNamedtuple(
             name =         r_string(process, local_player + self.obj_name),
@@ -49,7 +86,8 @@ class AttributesReader(Offsets):
             y =            r_float(process, local_player + self.obj_y),
             z =            r_float(process, local_player + self.obj_z),
             attack_range = r_float(process, local_player + self.obj_attack_range),
-            items =        items_ids
+            items =        items_ids,
+            buffs =        buffs
         )
 
         return attributes
@@ -58,6 +96,8 @@ class AttributesReader(Offsets):
         process = self.process
 
         items_ids = self.read_items(pointer)
+        # Currently cause huge lags, because we read alot of enemies for some reason
+        # buffs = self.read_buffs(pointer)
 
         attributes = self.EnemyNamedtuple(
             name =         r_string(process, pointer + self.obj_name),
@@ -76,7 +116,8 @@ class AttributesReader(Offsets):
             visible =      r_bool(process, pointer + self.obj_visible),
             attack_range = r_float(process, pointer + self.obj_attack_range),
             pointer =      pointer,
-            items =        items_ids
+            items =        items_ids,
+            # buffs =        buffs
         )
     
         return attributes
