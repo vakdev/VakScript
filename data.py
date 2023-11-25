@@ -32,7 +32,6 @@ class Offsets:
     obj_spell_book = int(offsets_file.get("offsets", "obj_spell_book"), 16)
 
     obj_item_list = int(offsets_file.get("offsets", "obj_item_list"), 16)
-    item_list_item = int(offsets_file.get("offsets", "item_list_item"), 16)
     item_info = int(offsets_file.get("offsets", "item_info"), 16)
     item_info_id = int(offsets_file.get("offsets", "item_info_id"), 16)
 
