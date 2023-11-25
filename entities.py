@@ -37,7 +37,7 @@ class AttributesReader(Offsets):
     def read_buffs(self, pointer):
         process = self.process
         buffs = []
-        for i in range(1000):
+        for i in range(200):
             buff_manager = r_uint64(process, pointer + Offsets.buff_manager)
             try:
                 buff = r_uint64(process, buff_manager + 0x10 + 0x8 * i)
@@ -96,6 +96,7 @@ class AttributesReader(Offsets):
         process = self.process
 
         items_ids = self.read_items(pointer)
+
         # Currently cause huge lags, because we read alot of enemies for some reason
         # buffs = self.read_buffs(pointer)
 
