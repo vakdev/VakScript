@@ -3,7 +3,7 @@ from collections import namedtuple
 from math import hypot
 
 #ext
-from pyMeow import r_string, r_float, r_bool, r_int, r_ints64
+from pyMeow import r_string, r_float, r_bool, r_int, r_ints64, r_uint64
 
 #own
 from data import Offsets
@@ -14,13 +14,33 @@ class AttributesReader(Offsets):
         self.process = process
         self.base_address = base_address
         self.spell_keys = ['Q', 'W', 'E', 'R', 'D', 'F']
-        self.PlayerNamedtuple = namedtuple('Player', 'name basic_attack bonus_attack x y z attack_range')
-        self.EnemyNamedtuple = namedtuple('Enemy', 'name health max_health gold armor basic_attack bonus_attack magic_damage x y z alive targetable visible attack_range pointer')
+        self.PlayerNamedtuple = namedtuple('Player', 'name basic_attack bonus_attack x y z attack_range items')
+        self.EnemyNamedtuple = namedtuple('Enemy', 'name health max_health gold armor basic_attack bonus_attack magic_damage x y z alive targetable visible attack_range pointer items')
         self.MinionNamedtuple = namedtuple('Minion', 'name health armor x y z alive targetable visible')
         self.TurretNamedTuple = namedtuple('Turret', 'attack_range x y z alive targetable visible')
+    
+    def read_items(self, pointer):
+        process = self.process
+        items_ids = []
+        for i in range(7):
+            try:
+                item = r_uint64(process, pointer + Offsets.obj_item_list + 0x30 + 0x8 * i)
+                item_slot = r_uint64(process, item + 0x10)
+                item_info = r_uint64(process, item_slot + Offsets.item_info)
+                item_info_id = r_int(process, item_info + Offsets.item_info_id)
+                items_ids.append(item_info_id)
+            except:
+                items_ids.append(0)
+        return items_ids
 
     def read_player(self, local_player):
         process = self.process
+        gold_ptr = r_uint64(process, local_player + 0x4070 + 0x10)
+        gold = r_float(process, gold_ptr)
+        print(f'gold: {gold}')
+
+        items_ids = self.read_items(local_player)
+
         attributes = self.PlayerNamedtuple(
             name =         r_string(process, local_player + self.obj_name),
             basic_attack = r_float(process, local_player + self.obj_base_attack),
@@ -28,13 +48,17 @@ class AttributesReader(Offsets):
             x =            r_float(process, local_player + self.obj_x),
             y =            r_float(process, local_player + self.obj_y),
             z =            r_float(process, local_player + self.obj_z),
-            attack_range = r_float(process, local_player + self.obj_attack_range)
+            attack_range = r_float(process, local_player + self.obj_attack_range),
+            items =        items_ids
         )
 
         return attributes
     
     def read_enemy(self, pointer):
         process = self.process
+
+        items_ids = self.read_items(pointer)
+
         attributes = self.EnemyNamedtuple(
             name =         r_string(process, pointer + self.obj_name),
             health =       r_float(process, pointer + self.obj_health),
@@ -51,8 +75,8 @@ class AttributesReader(Offsets):
             targetable =   r_bool(process, pointer + self.obj_targetable),
             visible =      r_bool(process, pointer + self.obj_visible),
             attack_range = r_float(process, pointer + self.obj_attack_range),
-            pointer =      pointer
-
+            pointer =      pointer,
+            items =        items_ids
         )
     
         return attributes

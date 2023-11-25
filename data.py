@@ -11,6 +11,7 @@ class Offsets:
     champion_list = int(offsets_file.get("offsets", "champion_list"), 16)
     minion_list = int(offsets_file.get("offsets", "minion_list"), 16)
     turret_list = int(offsets_file.get("offsets", "turret_list"), 16)
+
     obj_name = int(offsets_file.get("offsets", "obj_name"), 16)
     obj_team = int(offsets_file.get("offsets", "obj_team"), 16)
     obj_gold = int(offsets_file.get("offsets", "obj_gold"), 16)
@@ -29,6 +30,12 @@ class Offsets:
     obj_y = int(offsets_file.get("offsets", "obj_y"), 16)
     obj_z = int(offsets_file.get("offsets", "obj_z"), 16)
     obj_spell_book = int(offsets_file.get("offsets", "obj_spell_book"), 16)
+
+    obj_item_list = int(offsets_file.get("offsets", "obj_item_list"), 16)
+    item_list_item = int(offsets_file.get("offsets", "item_list_item"), 16)
+    item_info = int(offsets_file.get("offsets", "item_info"), 16)
+    item_info_id = int(offsets_file.get("offsets", "item_info_id"), 16)
+
     spell_info = int(offsets_file.get("offsets", "spell_info"), 16)
     spell_data = int(offsets_file.get("offsets", "spell_data"), 16)
     spell_name = int(offsets_file.get("offsets", "spell_name"), 16)
