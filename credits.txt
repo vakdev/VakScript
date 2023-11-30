@@ -1,0 +1,18 @@
+Contributions
+
+Azimov:
+	- Added Offsets update using .ini file.
+	- Added Vision tracker.
+	- Added Items reading.
+	- Added Buffs reading.
+	- Tester.
+	- Discord mod.	
+
+PeterParks:
+	- Added custom delay in orb. [rem]
+	- Tester.
+	- Discord mod.
+
+blackcatxhan:
+	- Added Auto build to .exe.
+
