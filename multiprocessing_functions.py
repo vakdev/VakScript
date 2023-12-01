@@ -179,7 +179,6 @@ class MultiprocessingFunctions:
             self.scripts_terminate.value = 0
             process = Process(target=execute_scripts, args=(
                 self.scripts_terminate,
-                75,
                 user_data,
                 self.champion_pointers,
                 self.ward_pointers,

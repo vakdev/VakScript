@@ -4,6 +4,7 @@ from math import cos, sin, pi
 from glob import glob
 import os
 import sys
+from time import sleep
 
 #ext
 from pyMeow import open_process, get_module, load_font, new_color
@@ -17,6 +18,7 @@ from data import Info, Offsets
 from entities import AttributesReader
 from world_to_screen import World
 from utils import safe_title
+from settings import jsonGetter, jsonSetter
 
 class Colors:
     Lightgray = new_color(200, 200, 200, 255)
@@ -98,8 +100,14 @@ def load_scripts():
         
     return loaded_scripts
 
-def execute_scripts(terminate, fps, user_data, champion_pointers, ward_pointers, minion_pointers, turret_pointers, on_window):
+def execute_scripts(terminate, user_data, champion_pointers, ward_pointers, minion_pointers, turret_pointers, on_window):
     while not terminate.value:
+        if jsonGetter().get_data('scripts_fps'):
+            fps = int(jsonGetter().get_data('scripts_fps'))
+        else:
+            fps = 60
+            jsonSetter().set_scripts_data('scripts_fps', fps)
+            
         if on_window.value:
             del_mem()
             process = open_process(process=Info.game_name_executable)
@@ -112,8 +120,6 @@ def execute_scripts(terminate, fps, user_data, champion_pointers, ward_pointers,
 
             world = World(process, base_address, screen_width, screen_height)
             draw = Draw(world, screen_width, screen_height)
-
-            fps = fps
 
             loaded_scripts = user_data
 
@@ -135,3 +141,5 @@ def execute_scripts(terminate, fps, user_data, champion_pointers, ward_pointers,
                 if not on_window.value:
                     overlay_close()
                     break
+
+        sleep(0.1)

@@ -29,6 +29,6 @@ class Script(UserScript):
 
             # drawing text on player champion position, own_pos[0] is x, own_pos[1] is y
             # draw_font(fontId: int, text: string, posX, posY, fontSize, spacing: float, tint: Color)
-            # fontId is font id from script_manager.py
+            # fontId is font id from scripts_manager.py
             draw_font(1, f'{self.script_name}', own_pos[0] + 30, own_pos[1] + 20, 20, 2, new_color(255, 203, 0, 255))
             
