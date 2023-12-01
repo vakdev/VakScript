@@ -183,6 +183,11 @@ def show_gui(main_instance, scripts_tabs, loaded_scripts):
 
             with tab(label='Scripts'):
                 add_checkbox(label='Turn on external scripts', callback=main_instance.start_scripts_process, user_data=loaded_scripts)
+                add_input_text(
+                    label='Scripts FPS', width=50, no_spaces=True,
+                    hint=jsonGetter().get_data('scripts_fps') if jsonGetter().get_data('scripts_fps') != None else 60,
+                    callback=lambda _, data: jsonSetter().set_scripts_data('scripts_fps', data)
+                )
                 for script_tab in scripts_tabs:
                     script_tab()
 
