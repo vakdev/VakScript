@@ -13,11 +13,13 @@ class Offsets:
     turret_list = int(offsets_file.get("offsets", "turret_list"), 16)
 
     obj_name = int(offsets_file.get("offsets", "obj_name"), 16)
+    obj_lvl = int(offsets_file.get("offsets", "obj_lvl"), 16)
     obj_team = int(offsets_file.get("offsets", "obj_team"), 16)
     obj_gold = int(offsets_file.get("offsets", "obj_gold"), 16)
     obj_health = int(offsets_file.get("offsets", "obj_health"), 16)
     obj_max_health = int(offsets_file.get("offsets", "obj_max_health"), 16)
     obj_armor = int(offsets_file.get("offsets", "obj_armor"), 16)
+    obj_magic_resist = int(offsets_file.get("offsets", "obj_magic_resist"), 16)
     obj_base_attack = int(offsets_file.get("offsets", "obj_base_attack"), 16)
     obj_bonus_attack = int(offsets_file.get("offsets", "obj_bonus_attack"), 16)
     obj_bonus_as = int(offsets_file.get("offsets", "obj_bonus_as"), 16)

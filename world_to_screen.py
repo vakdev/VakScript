@@ -34,3 +34,5 @@ class World:
 
         if 0 <= out_x <= self.width and 0 <= out_y <= self.height:
             return out_x, out_y
+        else:
+            return None, None
