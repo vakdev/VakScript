@@ -1,6 +1,6 @@
 from script_class import UserScript
 from entities import EntityConditions
-from script_manager import Colors
+from scripts_manager import Colors
 
 from dearpygui.dearpygui import add_checkbox, tree_node
 
