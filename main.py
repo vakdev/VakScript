@@ -6,7 +6,7 @@ from ctypes import windll
 #own
 from multiprocessing_functions import MultiprocessingFunctions
 from gui import show_gui
-from script_manager import load_scripts
+from scripts_manager import load_scripts
 
 if __name__ == '__main__':
     freeze_support() #required for pyinstaller --onefile
