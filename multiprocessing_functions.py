@@ -17,6 +17,7 @@ from data import Info, Offsets
 from read_manager import ListReader
 from stats import Stats
 from utils import is_active_window, debug_info
+from scripts_manager import execute_scripts
 
 requests.packages.urllib3.disable_warnings()
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -55,12 +56,13 @@ class MultiprocessingFunctions:
         self.spaceglider_terminate = Value('i', 0)
         self.autosmite_terminate = Value('i', 0)
         self.drawings_terminate = Value('i', 0)
+        self.scripts_terminate = Value('i', 0)
         self.on_window = Value('i', 0)
 
         #entities names
         self.minion_names = MINION_NAMES
         self.jungle_names = JUNGLE_NAMES
-
+    
 
     def updater(self) -> None:
         """
@@ -154,8 +156,8 @@ class MultiprocessingFunctions:
             process.start()
         else:
             self.autosmite_terminate.value = 1
-#
-#
+
+
     def start_drawings_process(self, _, state) -> None:
         if state:
             self.drawings_terminate.value = 0
@@ -170,3 +172,20 @@ class MultiprocessingFunctions:
             process.start()
         else:
             self.drawings_terminate.value = 1
+    
+
+    def start_scripts_process(self, _, state, user_data) -> None:
+        if state:
+            self.scripts_terminate.value = 0
+            process = Process(target=execute_scripts, args=(
+                self.scripts_terminate,
+                user_data,
+                self.champion_pointers,
+                self.ward_pointers,
+                self.minion_pointers,
+                self.turret_pointers,
+                self.on_window
+            ))
+            process.start()
+        else:
+            self.scripts_terminate.value = 1

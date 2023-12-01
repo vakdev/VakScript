@@ -41,6 +41,10 @@ class jsonSetter:
         else:
             self.settings['AutoSmite'][key] = data
         self._json_update()
+    
+    def set_scripts_data(self, key, data):
+        self.settings['Scripts'][key] = data
+        self._json_update()
 
 class jsonGetter(jsonSetter):
 

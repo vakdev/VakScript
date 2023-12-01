@@ -1,11 +1,3 @@
-
-"""
-[v13.21]:
-    - Auto last hit while spacing removed.
-    - Spell tracker (lvl) removed.
-    - Custom pyMeow.pyd removed.
-"""
-
 #built-in
 import sys
 from multiprocessing import Process, Manager, freeze_support
@@ -14,7 +6,7 @@ from ctypes import windll
 #own
 from multiprocessing_functions import MultiprocessingFunctions
 from gui import show_gui
-from utils import debug_info
+from scripts_manager import load_scripts
 
 if __name__ == '__main__':
     freeze_support() #required for pyinstaller --onefile
@@ -28,8 +20,17 @@ if __name__ == '__main__':
 
     updater_process = Process(target=main_instance.updater)
     updater_process.start()
-    
-    show_gui(main_instance)
+
+    scripts_tabs = []
+    print('Loading scripts...')
+    loaded_scripts = load_scripts()
+    for script in loaded_scripts:
+        try:
+            scripts_tabs.append(script.VakScript_draw_menu)
+        except Exception as e:
+            print(f'Error loading {script} tab! Error: {e}')
+
+    show_gui(main_instance, scripts_tabs, loaded_scripts)
 
     main_instance.drawings_terminate.value = 1
     main_instance.autosmite_terminate.value = 1
