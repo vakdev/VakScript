@@ -1,7 +1,3 @@
-from pyMeow import draw_font, new_color
-
-from multiprocessing import Value
-
 from script_class import UserScript
 from entities import EntityConditions
 from script_manager import Colors

@@ -6,7 +6,6 @@ from ctypes import windll
 #own
 from multiprocessing_functions import MultiprocessingFunctions
 from gui import show_gui
-from utils import debug_info
 from script_manager import load_scripts
 
 if __name__ == '__main__':
