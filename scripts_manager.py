@@ -83,7 +83,13 @@ class Draw:
 
 def load_scripts():
     sys.path.insert(0, './scripts')
-    python_files = glob(os.path.join('scripts/', '*.py'))
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.dirname(sys.executable)
+    elif __file__:
+        application_path = os.path.dirname(__file__)
+    scripts_folder = os.path.join(application_path, 'scripts')
+    python_files = glob(os.path.join(scripts_folder, '*.py'))
+
     loaded_scripts = []
     for file in python_files:
         module_name = os.path.splitext(os.path.basename(file))[0]
@@ -97,7 +103,7 @@ def load_scripts():
                 print(f'Error loading {module_name}')
         except Exception as e:
             print(f'Error loading {module_name}: {e}')
-        
+            
     return loaded_scripts
 
 def execute_scripts(terminate, user_data, champion_pointers, ward_pointers, minion_pointers, turret_pointers, on_window):

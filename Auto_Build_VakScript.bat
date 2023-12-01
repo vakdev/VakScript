@@ -40,7 +40,7 @@ REM Set the target folder name using the extracted version
 set "target_folder=VakScript v%version%"
 
 REM Build the Python code using PyInstaller and specify the output folder
-pyinstaller --onefile --noconsole --distpath "%target_folder%" main.py
+pyinstaller --onefile --noconsole --hidden-import script_class --distpath "%target_folder%" main.py
 
 REM Copy required files to the target folder
 copy drawings_font.ttf "%target_folder%"
@@ -49,6 +49,9 @@ copy offsets.ini "%target_folder%"
 
 REM Copy wards folder to the target folder
 xcopy /E /I /Y wards "%target_folder%\wards"
+
+REM Copy scripts folder to the target folder
+xcopy /E /I /Y scripts "%target_folder%\scripts"
 
 @echo off
 setlocal EnableDelayedExpansion
