@@ -17,7 +17,7 @@ from data import Info, Offsets
 from read_manager import ListReader
 from stats import Stats
 from utils import is_active_window, debug_info
-from script_manager import execute_scripts
+from scripts_manager import execute_scripts
 
 requests.packages.urllib3.disable_warnings()
 ssl._create_default_https_context = ssl._create_unverified_context
