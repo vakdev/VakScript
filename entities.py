@@ -14,17 +14,19 @@ class AttributesReader(Offsets):
         self.process = process
         self.base_address = base_address
         self.spell_keys = ['Q', 'W', 'E', 'R', 'D', 'F']
-        self.PlayerNamedtuple = namedtuple('Player', 'name basic_attack bonus_attack x y z attack_range')
-        self.EnemyNamedtuple = namedtuple('Enemy', 'name health max_health gold armor basic_attack bonus_attack magic_damage x y z alive targetable visible attack_range pointer')
-        self.MinionNamedtuple = namedtuple('Minion', 'name health armor x y z alive targetable visible')
+        self.PlayerNamedtuple = namedtuple('Player', 'name lvl basic_attack bonus_attack magic_damage x y z attack_range')
+        self.EnemyNamedtuple = namedtuple('Enemy', 'name health max_health gold armor magic_resist basic_attack bonus_attack magic_damage x y z alive targetable visible attack_range pointer')
+        self.MinionNamedtuple = namedtuple('Minion', 'name health armor magic_resist x y z alive targetable visible')
         self.TurretNamedTuple = namedtuple('Turret', 'attack_range x y z alive targetable visible')
 
     def read_player(self, local_player):
         process = self.process
         attributes = self.PlayerNamedtuple(
             name =         r_string(process, local_player + self.obj_name),
+            lvl =          r_int(process, local_player + self.obj_lvl),
             basic_attack = r_float(process, local_player + self.obj_base_attack),
             bonus_attack = r_float(process, local_player + self.obj_bonus_attack),
+            magic_damage = r_float(process, local_player + self.obj_magic_damage),
             x =            r_float(process, local_player + self.obj_x),
             y =            r_float(process, local_player + self.obj_y),
             z =            r_float(process, local_player + self.obj_z),
@@ -41,6 +43,7 @@ class AttributesReader(Offsets):
             max_health =   r_float(process, pointer + self.obj_max_health),
             gold =         r_int(process, pointer + self.obj_gold),
             armor =        r_float(process, pointer + self.obj_armor),
+            magic_resist = r_float(process, pointer + self.obj_magic_resist),
             basic_attack = r_float(process, pointer + self.obj_base_attack),
             bonus_attack = r_float(process, pointer + self.obj_bonus_attack),
             magic_damage = r_float(process, pointer + self.obj_magic_damage),
@@ -63,6 +66,7 @@ class AttributesReader(Offsets):
             name =         r_string(process, pointer + self.obj_name),
             health =       r_float(process, pointer + self.obj_health),
             armor =        r_float(process, pointer + self.obj_armor),
+            magic_resist = r_float(process, pointer + self.obj_magic_resist),
             x =            r_float(process, pointer + self.obj_x),
             y =            r_float(process, pointer + self.obj_y),
             z =            r_float(process, pointer + self.obj_z),
