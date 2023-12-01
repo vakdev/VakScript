@@ -11,6 +11,7 @@ class Offsets:
     champion_list = int(offsets_file.get("offsets", "champion_list"), 16)
     minion_list = int(offsets_file.get("offsets", "minion_list"), 16)
     turret_list = int(offsets_file.get("offsets", "turret_list"), 16)
+
     obj_name = int(offsets_file.get("offsets", "obj_name"), 16)
     obj_lvl = int(offsets_file.get("offsets", "obj_lvl"), 16)
     obj_team = int(offsets_file.get("offsets", "obj_team"), 16)
@@ -31,11 +32,24 @@ class Offsets:
     obj_y = int(offsets_file.get("offsets", "obj_y"), 16)
     obj_z = int(offsets_file.get("offsets", "obj_z"), 16)
     obj_spell_book = int(offsets_file.get("offsets", "obj_spell_book"), 16)
+
+    obj_item_list = int(offsets_file.get("offsets", "obj_item_list"), 16)
+    item_info = int(offsets_file.get("offsets", "item_info"), 16)
+    item_info_id = int(offsets_file.get("offsets", "item_info_id"), 16)
+
     spell_info = int(offsets_file.get("offsets", "spell_info"), 16)
     spell_data = int(offsets_file.get("offsets", "spell_data"), 16)
     spell_name = int(offsets_file.get("offsets", "spell_name"), 16)
     spell_level = int(offsets_file.get("offsets", "spell_level"), 16)
     spell_cooldown = int(offsets_file.get("offsets", "spell_cooldown"), 16)
+
+    buff_manager = int(offsets_file.get("offsets", "buff_manager"), 16)
+    buff_count = int(offsets_file.get("offsets", "buff_count"), 16)
+    buff_count2 = int(offsets_file.get("offsets", "buff_count2"), 16)
+    buff_start = int(offsets_file.get("offsets", "buff_start"), 16)
+    buff_end = int(offsets_file.get("offsets", "buff_end"), 16)
+    buff_info = int(offsets_file.get("offsets", "buff_info"), 16)
+    buff_name = int(offsets_file.get("offsets", "buff_name"), 16)
 
 class Info:
     offsets_file = configparser.ConfigParser()
