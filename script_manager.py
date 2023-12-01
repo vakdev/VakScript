@@ -60,19 +60,20 @@ class Draw:
         self.cos_values = [cos(i * self.angle_increment) for i in range(self.num_vert)]
         self.sin_values = [sin(i * self.angle_increment) for i in range(self.num_vert)]
 
-    def entity_range(self, view_proj_matrix, game_pos, radius, thickness=1.0, color=Colors.Cyan):
+    def entity_range(self, view_proj_matrix, game_pos, radius, thickness=1.0, color=Colors.Cyan, limited=False):
+        world_to_screen = self.world_to_screen_limited if limited else self.world_to_screen
         for i in range(self.num_vert):
-            vec1 = self.world_to_screen(
+            vec1 = world_to_screen(
                 view_proj_matrix, game_pos[0] + self.cos_values[i] * radius, game_pos[1], game_pos[2] + self.sin_values[i] * radius
             )
 
             next_index = (i + 1) % self.num_vert
 
-            vec2 = self.world_to_screen(
+            vec2 = world_to_screen(
                 view_proj_matrix, game_pos[0] + self.cos_values[next_index] * radius, game_pos[1], game_pos[2] + self.sin_values[next_index] * radius
             )
-
-            draw_line(vec1[0], vec1[1], vec2[0], vec2[1], color, thickness)
+            if vec1[0] is not None and vec2[0] is not None:
+                draw_line(vec1[0], vec1[1], vec2[0], vec2[1], color, thickness)
         
     def line_to_enemy(self, own_pos, pos, thickness=1.0, color=Colors.Lime):
         draw_line(own_pos[0], own_pos[1], pos[0], pos[1], color, thickness)
@@ -88,7 +89,7 @@ def load_scripts():
             module = __import__(module_name)
             module_class = module.Script()
             if module_class.hello():
-                print(f'Loaded correctly: {module_name}')
+                print(f'Loaded successfully: {module_name}')
                 loaded_scripts.append(module_class)
             else:
                 print(f'Error loading {module_name}')

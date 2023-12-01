@@ -29,5 +29,7 @@
         "smite": "f",
         "update": "q",
         "randb": true
+    },
+    "Scripts": {
     }
 }
