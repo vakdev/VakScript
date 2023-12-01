@@ -74,7 +74,7 @@ class Draw:
             vec2 = world_to_screen(
                 view_proj_matrix, game_pos[0] + self.cos_values[next_index] * radius, game_pos[1], game_pos[2] + self.sin_values[next_index] * radius
             )
-            if vec1[0] is not None and vec2[0] is not None:
+            if vec1 and vec2:
                 draw_line(vec1[0], vec1[1], vec2[0], vec2[1], color, thickness)
         
     def line_to_enemy(self, own_pos, pos, thickness=1.0, color=Colors.Lime):
