@@ -30,7 +30,7 @@ class Script(UserScript):
         self.VakScript_set_setting('limited', state)
 
 
-    def main(self, attr_reader, draw, world, local_player, champions, wards, minions, turrets):
+    def main(self, attr_reader, draw, world, local_player, champions, wards, minions, turrets, game_time):
         self.limited = self.VakScript_get_setting('limited')
         view_proj_matrix = world.get_view_proj_matrix()
         for turret in turrets:
