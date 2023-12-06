@@ -49,7 +49,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                 local_player = r_uint64(process, base_address + Offsets.local_player)
                 local_player_name = r_string(process, local_player + Offsets.obj_name)
                 stats = Stats()
-                target_selector = TargetSelector()
+                target_selector = TargetSelector(stats=stats)
                 attr_reader = AttributesReader(process, base_address)
                 orbwalk = Orbwalk(process, base_address)
 
@@ -82,6 +82,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                 
                 select_target = target_prio_modes.get(target_prio, target_selector.select_by_health)
                 select_minion_target = target_selector.select_by_health
+                select_minion_lasthit = target_selector.select_by_lasthit
 
                 walk_modes = {
                     'Normal' : orbwalk.walk,
@@ -109,10 +110,8 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
 
             else:
                 try:
-                    key_is_pressed = GetAsyncKeyState
-                    
                     while 1:
-                        if key_is_pressed(orbwalk_key):
+                        if GetAsyncKeyState(orbwalk_key):
                             kp_mp(range_key)
                             entities = [attr_reader.read_enemy(pointer) for pointer in champion_pointers]
                             target = select_target(attr_reader.read_player(local_player), entities)
@@ -125,10 +124,10 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                             
                             continue
                         
-                        elif key_is_pressed(lasthit_key):
+                        elif GetAsyncKeyState(lasthit_key):
                             kp_mp(range_key)
                             entities = [attr_reader.read_minion(pointer) for pointer in minion_pointers]
-                            target = select_minion_target(attr_reader.read_player(local_player), entities)
+                            target = select_minion_lasthit(attr_reader.read_player(local_player), entities)
                             if target:
                                 mr(0)
                                 pos = world_to_screen(get_view_proj_matrix(), target.x, target.z, target.y)
@@ -139,7 +138,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                             
                             continue
                         
-                        elif key_is_pressed(laneclear_key):
+                        elif GetAsyncKeyState(laneclear_key):
                             kp(range_key)
                             entities = [attr_reader.read_minion(pointer) for pointer in minion_pointers]
                             target = select_minion_target(attr_reader.read_player(local_player), entities)

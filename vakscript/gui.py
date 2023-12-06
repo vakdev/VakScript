@@ -50,7 +50,7 @@ def show_gui(main_instance, scripts_tabs, loaded_scripts):
                         callback=lambda _, data: GUIFunctions.set_spaceglider_data('orbwalk_prio', data)
                     )
                     add_combo(
-                        label='Lasthit mode', width=150, items=['Manual'],
+                        label='Lasthit mode', width=150, items=['Normal'],
                         default_value=jsonGetter().get_data('lasthit_mode'),
                         callback=lambda _, data: GUIFunctions.set_spaceglider_data('lasthit_mode', data)
                     )

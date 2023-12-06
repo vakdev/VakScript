@@ -7,6 +7,7 @@ from pyMeow import r_string, r_float, r_bool, r_int, r_ints64, r_uint64
 
 #own
 from data import Offsets
+from stats import Stats
 
 """
 TODO:
@@ -184,13 +185,12 @@ class EntityConditions:
     def __init__(self, world=None, stats=None):
         if stats is not None:
             self.radius = stats.get_targets_radius()
+        else:
+            self.radius = Stats().get_targets_radius()
 
         if world is not None:
             self.world_to_screen_limited = world.world_to_screen_limited
             self.get_view_proj_matrix = world.get_view_proj_matrix
-
-        self.drawings_mode = False
-        self.player = None
 
     @staticmethod
     def hurtable(entity) -> bool:
@@ -206,38 +206,53 @@ class EntityConditions:
     def max_damage(entity) -> float:
         return max(entity.basic_attack + entity.bonus_attack, entity.magic_damage)
 
-    def distance(self, entity) -> float:
-        return hypot(self.player.x - entity.x, self.player.y - entity.y)
+    def distance(self, player, target) -> float:
+        return hypot(player.x - target.x, player.y - target.y)
     
-    def entity_in_range(self, entity) -> bool:
-        # if greater precision is required: (only for champions)
-        # return self.distance(self.player, entity) - self.radius.get(entity.name, 65.0) <= self.player.attack_range + self.radius.get(self.player.name, 65.0)
-        return self.distance(entity) - 65.0 <= self.player.attack_range + 65.0
+    def in_distance(self, player, target):
+        return self.distance(player, target) - self.radius.get(target.name, 65.) <= player.attack_range + self.radius.get(player.name, 65.)
+    
+    def in_distance_minion(self, player, target):
+        return self.distance(player, target) - 65.0 <= player.attack_range + self.radius.get(player.name, 65.)
 
-    def min_attacks(self, entity) -> float:
-        return entity.health / self.effective_damage(self.player.basic_attack + self.player.bonus_attack, entity.armor)
-
-    def ready_to_attack(self, entity) -> bool:
-        if self.drawings_mode:
-            # Know if enemy champions are hurtable and if are in the screen.
-            return self.hurtable(entity) and self.world_to_screen_limited(self.get_view_proj_matrix(), entity.x, entity.z, entity.y)
-        return self.hurtable(entity) and self.entity_in_range(entity)
+    def min_attacks(self, player, entity) -> float:
+        return entity.health / self.effective_damage(player.basic_attack + player.bonus_attack, entity.armor)
 
 class TargetSelector(EntityConditions):
     def __init__(self, world=None, stats=None):
         super().__init__(world, stats)
 
-    def select_by_health(self, player, entities):
-        # Less health / armor entity will be focused. (less hits to kill)
-        self.player = player
-        return min(filter(self.ready_to_attack, entities), key=self.min_attacks, default=None)
+    def select_by_health(self, player, targets):
+        # Enemy with less hits to kill him will be focused.
+        target, min_autos = None, None
+        for entity in targets:
+            if self.hurtable(entity) and self.in_distance(player, entity):
+                autos = self.min_attacks(player, entity)
+                if target is None or 0 < autos < min_autos:
+                    target, min_autos = entity, autos
+        return target
     
-    def select_by_damage(self, player, entities):
+    def select_by_damage(self, player, targets):
         # Enemy with most damage will be focused.
-        self.player = player
-        return max(filter(self.ready_to_attack, entities), key=self.max_damage, default=None)
+        target, max_damage = None, None
+        for entity in targets:
+            if self.hurtable(entity) and self.in_distance(player, entity):
+                damage = max(entity.basic_attack + entity.bonus_attack + entity.attack_range, entity.magic_damage)
+                if target is None or damage > max_damage:
+                    target, max_damage = entity, damage
+        return target
     
-    def select_by_distance(self, player, entities):
+    def select_by_distance(self, player, targets):
         # Nearest enemy will be focused.
-        self.player = player
-        return min(filter(self.ready_to_attack, entities), key=self.distance, default=None)
+        target, min_distance = None, None
+        for entity in targets:
+            if self.hurtable(entity) and self.in_distance(player, entity):
+                d = self.distance(player, entity)
+                if target is None or d < min_distance:
+                    target, min_distance = entity, d
+        return target
+        
+    def select_by_lasthit(self, player, entities):
+        # Select minion to lasthit
+        valid_targets = filter(lambda entity: self.hurtable(entity) and self.in_distance_minion(player, entity) and self.effective_damage(player.basic_attack + player.bonus_attack, entity.armor) > entity.health + entity.armor, entities)
+        return min(valid_targets, key=lambda target: hypot(player.x - target.x, player.y - target.y), default=None)
