@@ -187,13 +187,10 @@ class EntityConditions:
             self.radius = stats.get_targets_radius()
         else:
             self.radius = Stats().get_targets_radius()
-            
+
         if world is not None:
             self.world_to_screen_limited = world.world_to_screen_limited
             self.get_view_proj_matrix = world.get_view_proj_matrix
-
-        self.drawings_mode = False
-        self.player = None
 
     @staticmethod
     def hurtable(entity) -> bool:
@@ -221,17 +218,12 @@ class EntityConditions:
     def min_attacks(self, player, entity) -> float:
         return entity.health / self.effective_damage(player.basic_attack + player.bonus_attack, entity.armor)
 
-    def ready_to_attack(self, entity) -> bool:
-        if self.drawings_mode:
-            # Know if enemy champions are hurtable and if are in the screen.
-            return self.hurtable(entity) and self.world_to_screen_limited(self.get_view_proj_matrix(), entity.x, entity.z, entity.y)
-        return self.hurtable(entity) and self.entity_in_range(entity)
-
 class TargetSelector(EntityConditions):
     def __init__(self, world=None, stats=None):
         super().__init__(world, stats)
 
     def select_by_health(self, player, targets):
+        # Enemy with less hits to kill him will be focused.
         target, min_autos = None, None
         for entity in targets:
             if self.hurtable(entity) and self.in_distance(player, entity):
@@ -241,6 +233,7 @@ class TargetSelector(EntityConditions):
         return target
     
     def select_by_damage(self, player, targets):
+        # Enemy with most damage will be focused.
         target, max_damage = None, None
         for entity in targets:
             if self.hurtable(entity) and self.in_distance(player, entity):
@@ -250,6 +243,7 @@ class TargetSelector(EntityConditions):
         return target
     
     def select_by_distance(self, player, targets):
+        # Nearest enemy will be focused.
         target, min_distance = None, None
         for entity in targets:
             if self.hurtable(entity) and self.in_distance(player, entity):
@@ -257,3 +251,8 @@ class TargetSelector(EntityConditions):
                 if target is None or d < min_distance:
                     target, min_distance = entity, d
         return target
+        
+    def select_by_lasthit(self, player, entities):
+        # Select minion to lasthit
+        valid_targets = filter(lambda entity: self.hurtable(entity) and self.in_distance_minion(player, entity) and self.effective_damage(player.basic_attack + player.bonus_attack, entity.armor) > entity.health + entity.armor, entities)
+        return min(valid_targets, key=lambda target: hypot(player.x - target.x, player.y - target.y), default=None)

@@ -143,7 +143,6 @@ def drawings(terminate, settings, champion_pointers, ward_pointers, turret_point
                 
 
                 target_selector = TargetSelector(world)
-                target_selector.drawings_mode = True    # Ignores if entity is not in player range
 
                 show_position = settings['show_position']
                 show_focused = settings['show_focused']

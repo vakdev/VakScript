@@ -82,6 +82,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                 
                 select_target = target_prio_modes.get(target_prio, target_selector.select_by_health)
                 select_minion_target = target_selector.select_by_health
+                select_minion_lasthit = target_selector.select_by_lasthit
 
                 walk_modes = {
                     'Normal' : orbwalk.walk,
@@ -126,7 +127,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                         elif GetAsyncKeyState(lasthit_key):
                             kp_mp(range_key)
                             entities = [attr_reader.read_minion(pointer) for pointer in minion_pointers]
-                            target = select_minion_target(attr_reader.read_player(local_player), entities)
+                            target = select_minion_lasthit(attr_reader.read_player(local_player), entities)
                             if target:
                                 mr(0)
                                 pos = world_to_screen(get_view_proj_matrix(), target.x, target.z, target.y)
