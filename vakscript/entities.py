@@ -167,13 +167,15 @@ class AttributesReader(Offsets):
         return attributes
 
     def read_spells(self, pointer):
-        # Currently this only works for spells level.
-        # [v13.21] - removed.
         spells, process = [], self.process
         spell_book = r_ints64(process, pointer + self.obj_spell_book, 0x4)
         for spell_slot in spell_book:
             level = r_int(process, spell_slot + self.spell_level)
-            spells.append(level)
+            cooldown = r_float(process, spell_slot + self.spell_cooldown)
+            spell = dict(level=level, cooldown=cooldown)
+            spells.append(spell)
+        # to use spells: spells[0]['level'] or spells[0]['cooldown']
+        # where 0 is Q, 3 is R
         return spells
     
 
