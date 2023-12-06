@@ -26,7 +26,7 @@ settings_json = {
         'range' : 'o',
         'kiting_mode' : 'Normal',
         'orbwalk_prio' : 'Less Basic Attacks',
-        'lasthit_mode' : 'Manual',
+        'lasthit_mode' : 'Normal',
         'press_range': False,
         'ppc' : False
     },
