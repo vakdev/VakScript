@@ -29,6 +29,7 @@ class AttributesReader(Offsets):
         self.MinionNamedtuple = namedtuple('Minion', 'name health armor magic_resist x y z alive targetable visible')
         self.TurretNamedTuple = namedtuple('Turret', 'attack_range x y z alive targetable visible')
         self.BuffNamedTuple = namedtuple('Buff', 'name count count2 alive')
+        self.zombies = ["Sion", "KogMaw", "Karthus"]
     
     def read_items(self, pointer):
         process = self.process
@@ -111,10 +112,13 @@ class AttributesReader(Offsets):
 
         # Currently cause huge lags, because we read alot of enemies for some reason
         # buffs = self.read_buffs(pointer)
+        
+        name =         r_string(process, pointer + self.obj_name)
+        health =       r_float(process, pointer + self.obj_health)
 
         attributes = self.EnemyNamedtuple(
-            name =         r_string(process, pointer + self.obj_name),
-            health =       r_float(process, pointer + self.obj_health),
+            name =         name,
+            health =       health,
             max_health =   r_float(process, pointer + self.obj_max_health),
             gold =         r_int(process, pointer + self.obj_gold),
             armor =        r_float(process, pointer + self.obj_armor),
@@ -125,7 +129,7 @@ class AttributesReader(Offsets):
             x =            r_float(process, pointer + self.obj_x),
             y =            r_float(process, pointer + self.obj_y),
             z =            r_float(process, pointer + self.obj_z),
-            alive =        r_int(process, pointer + self.obj_spawn_count) % 2 == 0,
+            alive =        health > 0 if name in self.zombies else r_int(process, pointer + self.obj_spawn_count) % 2 == 0,
             targetable =   r_bool(process, pointer + self.obj_targetable),
             visible =      r_bool(process, pointer + self.obj_visible),
             attack_range = r_float(process, pointer + self.obj_attack_range),
