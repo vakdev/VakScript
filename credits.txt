@@ -21,3 +21,5 @@ PeterParks: [https://github.com/Teemoplays]
 blackcatxhan: [https://github.com/blackcatxhan]
 	- Added Auto build to .exe.
 
+9quh:
+	- Wrote lasthit code.
