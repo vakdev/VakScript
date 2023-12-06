@@ -221,10 +221,11 @@ def drawings(terminate, settings, champion_pointers, ward_pointers, turret_point
 
                                     if show_healths:
                                         draw.health(entity, own_pos, pos)
-
-                                    if show_spells:
+                                    
+                                    # Removed, because of changes to read_spells() and to the game itself.
+                                    '''if show_spells:
                                         spell_levels = attr_reader.read_spells(entity.pointer)
-                                        draw.spell_level(pos, spell_levels)
+                                        draw.spell_level(pos, spell_levels)'''
                         
                         if vision_tracker:
                             for ward in wards:

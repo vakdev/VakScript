@@ -10,7 +10,7 @@ from time import sleep
 from pyMeow import open_process, get_module, load_font, new_color
 from pyMeow import overlay_init, overlay_loop, overlay_close, begin_drawing, end_drawing
 from pyMeow import draw_line, draw_circle
-from pyMeow import r_uint64
+from pyMeow import r_uint64, r_float
 from win32api import GetSystemMetrics
 
 #own
@@ -143,12 +143,13 @@ def execute_scripts(terminate, user_data, champion_pointers, ward_pointers, mini
                 wards = [attr_reader.read_minion(pointer) for pointer in ward_pointers]
                 minions = [attr_reader.read_minion(pointer) for pointer in minion_pointers]
                 turrets = [attr_reader.read_turret(pointer) for pointer in turret_pointers]
+                game_time = r_float(process, base_address + Offsets.game_time)
 
                 begin_drawing()
                 for script in loaded_scripts:
                     if script.script_terminate.value:
                         continue
-                    script.main(attr_reader, draw, world, local_player, champions, wards, minions, turrets)
+                    script.main(attr_reader, draw, world, local_player, champions, wards, minions, turrets, game_time)
                 end_drawing()
 
                 if not on_window.value:

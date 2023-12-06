@@ -11,7 +11,7 @@ class Script(UserScript):
         # script_prefix is used in settings.json where all script settins is stored
         self.script_prefix = 'example'
 
-    def main(self, attr_reader, draw, world, local_player, champions, wards, minions, turrets):
+    def main(self, attr_reader, draw, world, local_player, champions, wards, minions, turrets, game_time):
         # recieving view proj matrix
         view_proj_matrix = world.get_view_proj_matrix()
 
