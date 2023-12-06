@@ -119,7 +119,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                                 pos = world_to_screen(get_view_proj_matrix(), target.x, target.z, target.y)
                                 walk(pos, attack_key, base_attack_speed, windup, windup_mod)
                             else:
-                                sleep(0.03)
+                                sleep(0.05)
                                 right_click()
                             
                             continue
@@ -134,7 +134,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                                 walk_min(pos, attack_key, base_attack_speed, windup, windup_mod)
                             else:
                                 right_click()
-                                sleep(0.03)
+                                sleep(0.05)
                             
                             continue
                         
@@ -147,7 +147,7 @@ def spaceglider(terminate, settings, champion_pointers, minion_pointers, on_wind
                                 walk_min(pos, attack_key, base_attack_speed, windup, windup_mod)
                             else:
                                 right_click()
-                                sleep(0.03)
+                                sleep(0.05)
                             
                             continue
                         
