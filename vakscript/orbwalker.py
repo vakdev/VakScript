@@ -45,8 +45,8 @@ class Orbwalk:
     def walk(self, pos, attack_key, base_as, windup, windup_mod):
         game_time = self.get_game_time()
         c_attack_speed = self.get_attack_time()
+        mouse_pos = GetCursorPos()
         if self.can_attack_time < game_time and pos:
-            mouse_pos = GetCursorPos()
             self.can_attack_time = game_time + 1. / c_attack_speed
             self.can_move_time = game_time + self.get_windup_time(base_as, windup, windup_mod, c_attack_speed)
             windll.user32.SetCursorPos(pos[0], pos[1])
@@ -54,15 +54,16 @@ class Orbwalk:
             sleep(0.01)
             windll.user32.SetCursorPos(mouse_pos[0], mouse_pos[1])
         elif self.can_move_time < game_time:
-            sleep(0.03)
+            windll.user32.SetCursorPos(mouse_pos[0], mouse_pos[1])
+            sleep(0.1)
             right_click()
 
     def walk_v2(self, pos, attack_key, base_as, windup, windup_mod):
         # Will try to fix mouse issue. (moves cursor to target instead of walk.)
         game_time = self.get_game_time()
         c_attack_speed = self.get_attack_time()
+        mouse_pos = GetCursorPos()
         if self.can_attack_time < game_time and pos:
-            mouse_pos = GetCursorPos()
             self.can_attack_time = game_time + 1. / c_attack_speed
             self.can_move_time = game_time + self.get_windup_time(base_as, windup, windup_mod, c_attack_speed)
             windll.user32.SetCursorPos(pos[0], pos[1])
@@ -70,7 +71,8 @@ class Orbwalk:
             sleep(0.01)
             windll.user32.SetCursorPos(mouse_pos[0], mouse_pos[1])
         elif self.can_move_time < game_time:
-            sleep(0.03)
+            windll.user32.SetCursorPos(mouse_pos[0], mouse_pos[1])
+            sleep(0.1)
             right_click()
 
     def walk_inplace(self, pos, attack_key, base_as, windup, windup_mod):
@@ -81,7 +83,7 @@ class Orbwalk:
             self.can_move_time = game_time + self.get_windup_time(base_as, windup, windup_mod, c_attack_speed)
             send_key(attack_key)
         elif self.can_move_time < game_time:
-            sleep(0.03)
+            sleep(0.1)
             right_click()
 
     def walk_kalista(self, pos, attack_key, *_):
@@ -96,4 +98,4 @@ class Orbwalk:
             sleep(0.02)
         elif not pos:
             right_click()
-            sleep(0.03)
+            sleep(0.1)
