@@ -1,4 +1,4 @@
-# VakScript - Spaceglider for League of Legends (13.22+)
+# VakScript - Spaceglider for League of Legends (13.24+)
 
 Tool to automate kiting without any attack speed limit, game mode, or entity.
 The main purpose is help AD Carry players, not limited to any other role.
