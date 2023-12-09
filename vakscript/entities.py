@@ -173,14 +173,20 @@ class AttributesReader(Offsets):
 
     def read_spells(self, pointer):
         spells, process = [], self.process
-        spell_book = r_ints64(process, pointer + self.obj_spell_book, 0x4)
+        spell_book = r_ints64(process, pointer + self.obj_spell_book, 0x6)
         for spell_slot in spell_book:
+            spell_info_ptr = r_uint64(process, spell_slot + self.spell_info)
+            spell_data_ptr = r_uint64(process, spell_info_ptr + self.spell_data)
+            spell_name_ptr = r_uint64(process, spell_data_ptr + self.spell_name)
+            name = r_string(process, spell_name_ptr, 50)
+            charges = r_int(process, spell_slot + self.spell_charges)
+
             level = r_int(process, spell_slot + self.spell_level)
             cooldown = r_float(process, spell_slot + self.spell_cooldown)
-            spell = dict(level=level, cooldown=cooldown)
+            spell = dict(name=name, charges=charges, level=level, cooldown=cooldown)
             spells.append(spell)
         # to use spells: spells[0]['level'] or spells[0]['cooldown']
-        # where 0 is Q, 3 is R
+        # where 0 is Q, 3 is R, 4 and 5 are summoner spells
         return spells
     
 

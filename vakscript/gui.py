@@ -164,7 +164,7 @@ def show_gui(main_instance, scripts_tabs, loaded_scripts):
                     
             with tab(label='AutoSmite'):
                 add_checkbox(label='Use Auto Smite', callback=main_instance.start_autosmite_process)
-                with child_window(width=GUI_WIDTH * 0.8, height=83):    
+                with child_window(width=GUI_WIDTH * 0.8, height=63):    
                     add_checkbox(
                         label='Consider Blue / Red / Crab',
                         default_value=jsonGetter().get_data('randb'),
@@ -174,11 +174,6 @@ def show_gui(main_instance, scripts_tabs, loaded_scripts):
                         label='Smite Key', width=30, no_spaces=True,
                         hint=jsonGetter().get_data('smite').upper(),
                         callback=lambda _, data: GUIFunctions.set_autosmite_data('smite', data)
-                    )
-                    add_input_text(
-                        label='Update Key', width=30, no_spaces=True,
-                        hint=jsonGetter().get_data('update').upper(),
-                        callback=lambda _, data: GUIFunctions.set_autosmite_data('update', data)
                     )
 
             with tab(label='Scripts'):
