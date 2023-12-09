@@ -46,7 +46,6 @@ settings_json = {
     },
     'AutoSmite' : {
         'smite' : 'f',
-        'update' : 'q',
         'randb' : False
     },
     "Scripts" : {

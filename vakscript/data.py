@@ -46,6 +46,7 @@ class Offsets:
     spell_name = int(offsets_file.get("offsets", "spell_name"), 16)
     spell_level = int(offsets_file.get("offsets", "spell_level"), 16)
     spell_cooldown = int(offsets_file.get("offsets", "spell_cooldown"), 16)
+    spell_charges = int(offsets_file.get("offsets", "spell_charges"), 16)
 
     buff_manager = int(offsets_file.get("offsets", "buff_manager"), 16)
     buff_count = int(offsets_file.get("offsets", "buff_count"), 16)
@@ -70,19 +71,9 @@ class Info:
     persisted_settings = 'Config\PersistedSettings.json'
     settings_to_persist_path = path.join(game_files_path, settings_to_persist)
     persisted_settings_path = path.join(game_files_path, persisted_settings)
-    url_activeplayer = 'https://127.0.0.1:2999/liveclientdata/activeplayer'
-    url_activeplayer_name = 'https://127.0.0.1:2999/liveclientdata/activeplayername'
     url_allgamedata = 'https://127.0.0.1:2999/liveclientdata/allgamedata'
     url_comunitydragon = 'https://raw.communitydragon.org/latest/game/data/characters/{name}/{name}.bin.json'
     root_key = 'characters/{}/characterrecords/root'
-    asmite_raw_names = {
-        "GeneratedTip_SummonerSpell_SummonerSmite_DisplayName":600.,
-        "GeneratedTip_SummonerSpell_S5_SummonerSmitePlayerGanker_DisplayName":900.,
-        "GeneratedTip_SummonerSpell_SummonerSmiteAvatarOffensive_DisplayName":1200.,
-        "GeneratedTip_SummonerSpell_SummonerSmiteAvatarDefensive_DisplayName":1200.,
-        "GeneratedTip_SummonerSpell_SummonerSmiteAvatarUtility_DisplayName":1200.
-    }
-    asmite_url_request = 'https://127.0.0.1:2999/liveclientdata/playersummonerspells?summonerName={username}'
 
 VK_CODES = {'backspace':0x08,
            'tab':0x09,
