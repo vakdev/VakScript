@@ -36,7 +36,7 @@ class AttributesReader(Offsets):
         items_ids = []
         for i in range(7):
             try:
-                item = r_uint64(process, pointer + Offsets.obj_item_list + 0x30 + 0x8 * i)
+                item = r_uint64(process, pointer + Offsets.obj_item_list + 0x50 + 0x8 * i)
                 item_slot = r_uint64(process, item + 0x10)
                 item_info = r_uint64(process, item_slot + Offsets.item_info)
                 item_info_id = r_int(process, item_info + Offsets.item_info_id)
