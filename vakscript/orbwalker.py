@@ -67,12 +67,14 @@ class Orbwalk:
             self.can_attack_time = game_time + 1. / c_attack_speed
             self.can_move_time = game_time + self.get_windup_time(base_as, windup, windup_mod, c_attack_speed)
             windll.user32.SetCursorPos(pos[0], pos[1])
+            sleep(0.005)
             send_key(attack_key)
-            sleep(0.01)
+            sleep(0.002)
             windll.user32.SetCursorPos(mouse_pos[0], mouse_pos[1])
         elif self.can_move_time < game_time:
             windll.user32.SetCursorPos(mouse_pos[0], mouse_pos[1])
-            sleep(0.1)
+            sleep(0.005)
+            sleep(0.02)
             right_click()
 
     def walk_inplace(self, pos, attack_key, base_as, windup, windup_mod):
