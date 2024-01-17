@@ -23,11 +23,22 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 
 #### 4. Drawings:
  - Show current enemy position.
+ - Show prioritized target.
  - Show current enemy health.
- - Show target to focus.
+ - Show local player range.
+ - Show enemy player range.
+ - Show needed AA.
+ - Show gold.
+ - Show enemy ward/vision.
+ - Limit position.
+ - Limit drawings fps.
 
 #### 5. Auto Smite:
  - Including Blue / Red / Crab.
+
+#### 6. External Scripts:
+ - Toggle external scripts ON/OFF.
+ - Limit external scripts drawings fps.
 
 ## Usage
 1. Download and Install Python 3.10.10
