@@ -175,6 +175,12 @@ def show_gui(main_instance, scripts_tabs, loaded_scripts):
                         hint=jsonGetter().get_data('smite').upper(),
                         callback=lambda _, data: GUIFunctions.set_autosmite_data('smite', data)
                     )
+                with child_window(width=GUI_WIDTH * 0.8, height=80):
+                    add_checkbox(
+                        label='Smite Toggle',
+                        default_value=jsonGetter().get_data('randa'),
+                        callback=lambda _, data: GUIFunctions.set_autosmite_data('randa', data)
+                    )
                     add_input_text(
                         label='Smite Toggle Key', width=30, no_spaces=True,
                         hint=jsonGetter().get_data('Smite_toggle'),

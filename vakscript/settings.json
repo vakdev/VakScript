@@ -28,7 +28,8 @@
     "AutoSmite": {
         "smite": "f",
         "Smite_toggle" : "b",
-        "randb": true
+        "randb": true,
+        "randa": true
     },
     "Scripts": {
     }

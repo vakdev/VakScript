@@ -58,6 +58,7 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
                 asmite = Asmite(settings)
                 smite_key = asmite.get_settings()
                 Smite_toggle = VK_CODES[settings['Smite_toggle']]
+                randa = settings['randa']
 
                 damage = 0
                 smite_charges = 0
@@ -74,7 +75,7 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
             else:
                 try:
                     while 1 and on_window.value:
-                        if GetAsyncKeyState(Smite_toggle):
+                        if (randa and GetAsyncKeyState(Smite_toggle)) or randa == False:
                             player = attr_reader.read_player(local_player)
 
                             for buff in player.buffs:
