@@ -40,7 +40,7 @@ def show_gui(main_instance, scripts_tabs, loaded_scripts):
                 add_checkbox(label='Use Spaceglider', callback=main_instance.start_spaceglider_process)
                 with child_window(width=GUI_WIDTH * 0.8, height=315):
                     add_combo(
-                        label='Kiting mode', width=150, items=['Normal', 'Normal v2', 'In-place'],
+                        label='Kiting mode', width=150, items=['Normal', 'Normal v2', 'In-place', 'Kalista'],
                         default_value=jsonGetter().get_data('kiting_mode'),
                         callback=lambda _, data: GUIFunctions.set_spaceglider_data('kiting_mode', data)
                     )
@@ -164,7 +164,7 @@ def show_gui(main_instance, scripts_tabs, loaded_scripts):
                     
             with tab(label='AutoSmite'):
                 add_checkbox(label='Use Auto Smite', callback=main_instance.start_autosmite_process)
-                with child_window(width=GUI_WIDTH * 0.8, height=63):    
+                with child_window(width=GUI_WIDTH * 0.8, height=80):    
                     add_checkbox(
                         label='Consider Blue / Red / Crab',
                         default_value=jsonGetter().get_data('randb'),
@@ -174,6 +174,17 @@ def show_gui(main_instance, scripts_tabs, loaded_scripts):
                         label='Smite Key', width=30, no_spaces=True,
                         hint=jsonGetter().get_data('smite').upper(),
                         callback=lambda _, data: GUIFunctions.set_autosmite_data('smite', data)
+                    )
+                with child_window(width=GUI_WIDTH * 0.8, height=80):
+                    add_checkbox(
+                        label='Smite Toggle',
+                        default_value=jsonGetter().get_data('randa'),
+                        callback=lambda _, data: GUIFunctions.set_autosmite_data('randa', data)
+                    )
+                    add_input_text(
+                        label='Smite Toggle Key', width=30, no_spaces=True,
+                        hint=jsonGetter().get_data('Smite_toggle'),
+                        callback=lambda _, data: GUIFunctions.set_autosmite_data('Smite_toggle', data)
                     )
 
             with tab(label='Scripts'):

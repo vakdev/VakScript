@@ -3,11 +3,12 @@ from ctypes import windll
 from collections import namedtuple
 from gc import collect as del_mem
 from time import sleep
+from math import hypot
 
 #ext
 from pyMeow import open_process, get_module
 from pyMeow import r_int, r_float, r_uint64
-from win32api import GetSystemMetrics, GetCursorPos
+from win32api import GetSystemMetrics, GetAsyncKeyState, GetCursorPos
 
 
 #own
@@ -23,7 +24,6 @@ TODO:
 """
 
 class Asmite:
-
     def __init__(self, settings):
         self.settings = settings
 
@@ -46,6 +46,9 @@ class Asmite:
         )
 
         return attributes
+    
+def distance(self, player, target) -> float:
+        return hypot(player.x - target.x, player.y - target.y)
 
 def autosmite(terminate, settings, jungle_pointers, on_window):
     while not terminate.value:
@@ -58,6 +61,8 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
                 attr_reader = AttributesReader(process, base_address)
                 asmite = Asmite(settings)
                 smite_key = asmite.get_settings()
+                Smite_toggle = VK_CODES[settings['Smite_toggle']]
+                randa = settings['randa']
 
                 damage = 0
                 smite_charges = 0
@@ -74,29 +79,31 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
             else:
                 try:
                     while 1 and on_window.value:
-                        player = attr_reader.read_player(local_player)
+                        if (randa and GetAsyncKeyState(Smite_toggle)) or randa == False:
+                            player = attr_reader.read_player(local_player)
+                            
 
-                        for buff in player.buffs:
-                            if 'smitedamagetracker' in str(buff.name).lower():
-                                damage = buff.count2
+                            for buff in player.buffs:
+                                if 'smitedamagetracker' in str(buff.name).lower():
+                                    damage = buff.count2
 
-                        entities = [asmite._read_attr(process, pointer, nt) for pointer in jungle_pointers]
-                        target = [entity for entity in entities if entity.health <= damage and entity.alive]
+                            entities = [asmite._read_attr(process, pointer, nt) for pointer in jungle_pointers]
+                            target = [entity for entity in entities if entity.health <= damage and entity.alive]
                         
-                        spells = attr_reader.read_spells(local_player)
-                        if 'smite' in spells[4]['name'].lower():
-                            smite_charges = spells[4]['charges']
-                        elif 'smite' in spells[5]['name'].lower():
-                            smite_charges = spells[5]['charges']
+                            spells = attr_reader.read_spells(local_player)
+                            if 'smite' in spells[4]['name'].lower():
+                                smite_charges = spells[4]['charges']
+                            elif 'smite' in spells[5]['name'].lower():
+                                smite_charges = spells[5]['charges']
 
-                        if target and smite_charges > 0:
-                            pos = world.world_to_screen(world.get_view_proj_matrix(), target[0].x, target[0].z, target[0].y)
-                            mouse_pos = GetCursorPos()
-                            if pos:
-                                set_cursor_pos(pos[0], pos[1])
-                                send_key(smite_key)
-                                sleep(0.01)
-                                set_cursor_pos(mouse_pos[0], mouse_pos[1])
+                            if target and smite_charges > 0:
+                                pos = world.world_to_screen(world.get_view_proj_matrix(), target[0].x, target[0].z, target[0].y)
+                                mouse_pos = GetCursorPos()
+                                if pos:
+                                    set_cursor_pos(pos[0], pos[1])
+                                    send_key(smite_key)
+                                    sleep(0.01)
+                                    set_cursor_pos(mouse_pos[0], mouse_pos[1])
 
                         sleep(0.03)
                 except Exception as asmite_loop:
