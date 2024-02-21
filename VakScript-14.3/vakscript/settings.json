@@ -1,0 +1,36 @@
+{
+    "Spaceglider": {
+        "orbwalk": "space",
+        "laneclear": "v",
+        "lasthit": "c",
+        "attack": "a",
+        "range": "o",
+        "kiting_mode": "Normal",
+        "orbwalk_prio": "Less Basic Attacks",
+        "lasthit_mode": "Normal",
+        "press_range": true,
+        "ppc": false
+    },
+    "Drawings": {
+        "show_position": true,
+        "show_focused": true,
+        "show_healths": true,
+        "show_gold": true,
+        "show_spells": false,
+        "show_player_range": true,
+        "show_enemy_range": true,
+        "show_turret_range": true,
+        "show_hits": true,
+        "vision_tracker": true,
+        "screen_track": false,
+        "fps": "60"
+    },
+    "AutoSmite": {
+        "smite": "f",
+        "Smite_toggle" : "b",
+        "randb": true,
+        "randa": true
+    },
+    "Scripts": {
+    }
+}

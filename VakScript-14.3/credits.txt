@@ -1,0 +1,25 @@
+Contributions
+
+Azimov: [https://github.com/AzimovUA]
+	- Added Offsets update using .ini file.
+	- Added Vision tracker.
+	- Added Items reading.
+	- Added Buffs reading.
+	- Added Spells reading.
+	- Added Scripts.
+	- Tester.
+	- Discord mod.
+
+almazpyjs: [https://github.com/almazpyjs]
+	- Helped with entities attack range in drawings.
+
+PeterParks: [https://github.com/Teemoplays]
+	- Added custom delay in orb. [rem]
+	- Tester.
+	- Discord mod.
+
+blackcatxhan: [https://github.com/blackcatxhan]
+	- Added Auto build to .exe.
+
+9quh:
+	- Wrote lasthit code.
