@@ -38,7 +38,7 @@ if __name__ == '__main__':
     show_gui(main_instance, scripts_tabs, loaded_scripts)
 
     main_instance.drawings_terminate.value = 1
-    main_instance.autosmite_terminate.value = 1
+    #main_instance.autosmite_terminate.value = 1
     main_instance.updater_terminate.value = 1
     main_instance.spaceglider_terminate.value = 1
 

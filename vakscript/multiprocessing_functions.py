@@ -12,7 +12,7 @@ from pyMeow import open_process, get_module, r_uint64, r_int
 #own
 from spaceglider import spaceglider
 from drawings import drawings
-from autosmite import autosmite
+#from autosmite import autosmite
 from data import Info, Offsets
 from read_manager import ListReader
 from stats import Stats
@@ -34,39 +34,39 @@ MINION_NAMES = [
     'sru_orderminionranged', 'sru_orderminionsiege', 'ha_chaosminionsiege', 'ha_chaosminionranged', 
     'ha_orderminionmelee', 'sru_chaosminionsuper', 'sru_chaosminionranged', 'sru_orderminionmelee'
 ]
-
-JUNGLE_NAMES = [
-        'sru_dragon_air', 'sru_dragon_chemtech', 'sru_dragon_earth', 'sru_dragon_elder',
-        'sru_dragon_fire', 'sru_dragon_hextech', 'sru_dragon_water', 'sru_riftherald',
-        'sru_baron', 'sru_riftherald_mercenary_tx_cm', 'sru_red', 'sru_blue', 'sru_crab'
-]
-
+#
+#JUNGLE_NAMES = [
+#        'sru_dragon_air', 'sru_dragon_chemtech', 'sru_dragon_earth', 'sru_dragon_elder',
+#        'sru_dragon_fire', 'sru_dragon_hextech', 'sru_dragon_water', 'sru_riftherald',
+#        'sru_baron', 'sru_riftherald_mercenary_tx_cm', 'sru_red', 'sru_blue', 'sru_crab'
+#]
+#
 class MultiprocessingFunctions:
     
     def __init__(self, manager):
         #pointers
         self.champion_pointers = manager.list()
         self.minion_pointers = manager.list()
-        self.jungle_pointers = manager.list()
+        #self.jungle_pointers = manager.list()
         self.ward_pointers = manager.list()
         self.turret_pointers = manager.list()
 
         #json settings
         self.spaceglider_settings = manager.dict()
-        self.autosmite_settings = manager.dict()
+        #self.autosmite_settings = manager.dict()
         self.drawings_settings = manager.dict()
 
         #terminate
         self.updater_terminate = Value('i', 0)
         self.spaceglider_terminate = Value('i', 0)
-        self.autosmite_terminate = Value('i', 0)
+        #self.autosmite_terminate = Value('i', 0)
         self.drawings_terminate = Value('i', 0)
         self.scripts_terminate = Value('i', 0)
         self.on_window = Value('i', 0)
 
         #entities names
         self.minion_names = MINION_NAMES
-        self.jungle_names = JUNGLE_NAMES
+        #self.jungle_names = JUNGLE_NAMES
     
 
     def updater(self) -> None:
@@ -102,12 +102,12 @@ class MultiprocessingFunctions:
                                 self.ward_pointers[:] = read_pointers.get_pointers(Offsets.minion_list, size=512, search_mode=3)
                                 self.turret_pointers[:] = read_pointers.get_pointers(Offsets.turret_list, size=64, search_mode=2)
 
-                            if not self.autosmite_terminate.value:
-                                if not self.autosmite_settings['randb']:
-                                    jg_names = self.jungle_names[:-3]
-                                else:
-                                    jg_names = self.jungle_names
-                                self.jungle_pointers[:] = read_pointers.get_pointers(Offsets.minion_list, jg_names, size=512, search_mode=0)
+                            #if not self.autosmite_terminate.value:
+                            #    if not self.autosmite_settings['randb']:
+                            #        jg_names = self.jungle_names[:-3]
+                            #    else:
+                            #        jg_names = self.jungle_names
+                            #    self.jungle_pointers[:] = read_pointers.get_pointers(Offsets.minion_list, jg_names, size=512, search_mode=0)
                         else:
                             self.on_window.value = 0
 
@@ -128,10 +128,10 @@ class MultiprocessingFunctions:
             if not self.drawings_terminate.value:
                 for k, v in settings['Drawings'].items():
                     self.drawings_settings[k] = v
-                    
-            if not self.autosmite_terminate.value:
-                for k, v in settings['AutoSmite'].items():
-                    self.autosmite_settings[k] = v
+            #        
+            #if not self.autosmite_terminate.value:
+            #    for k, v in settings['AutoSmite'].items():
+            #        self.autosmite_settings[k] = v
 
 
     def start_spaceglider_process(self, _, state) -> None:
@@ -149,18 +149,18 @@ class MultiprocessingFunctions:
             self.spaceglider_terminate.value = 1
 
 
-    def start_autosmite_process(self, _, state) -> None:
-        if state:
-            self.autosmite_terminate.value = 0
-            process = Process(target=autosmite, args=(
-                self.autosmite_terminate,
-                self.autosmite_settings,
-                self.jungle_pointers,
-                self.on_window
-            ))
-            process.start()
-        else:
-            self.autosmite_terminate.value = 1
+    #def start_autosmite_process(self, _, state) -> None:
+    #    if state:
+    #        self.autosmite_terminate.value = 0
+    #        process = Process(target=autosmite, args=(
+    #            self.autosmite_terminate,
+    #            self.autosmite_settings,
+    #            self.jungle_pointers,
+    #            self.on_window
+    #        ))
+    #        process.start()
+    #    else:
+    #        self.autosmite_terminate.value = 1
 
 
     def start_drawings_process(self, _, state) -> None:

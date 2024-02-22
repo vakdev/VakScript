@@ -162,30 +162,30 @@ def show_gui(main_instance, scripts_tabs, loaded_scripts):
                         callback=lambda _, data: GUIFunctions.set_drawings_data('fps', data)
                     )
                     
-            with tab(label='AutoSmite'):
-                add_checkbox(label='Use Auto Smite', callback=main_instance.start_autosmite_process)
-                with child_window(width=GUI_WIDTH * 0.8, height=80):    
-                    add_checkbox(
-                        label='Consider Blue / Red / Crab',
-                        default_value=jsonGetter().get_data('randb'),
-                        callback=lambda _, data: GUIFunctions.set_autosmite_data('randb', data)
-                    )
-                    add_input_text(
-                        label='Smite Key', width=30, no_spaces=True,
-                        hint=jsonGetter().get_data('smite').upper(),
-                        callback=lambda _, data: GUIFunctions.set_autosmite_data('smite', data)
-                    )
-                with child_window(width=GUI_WIDTH * 0.8, height=80):
-                    add_checkbox(
-                        label='Smite Toggle',
-                        default_value=jsonGetter().get_data('randa'),
-                        callback=lambda _, data: GUIFunctions.set_autosmite_data('randa', data)
-                    )
-                    add_input_text(
-                        label='Smite Toggle Key', width=30, no_spaces=True,
-                        hint=jsonGetter().get_data('Smite_toggle'),
-                        callback=lambda _, data: GUIFunctions.set_autosmite_data('Smite_toggle', data)
-                    )
+            #with tab(label='AutoSmite'):
+            #    add_checkbox(label='Use Auto Smite', callback=main_instance.start_autosmite_process)
+            #    with child_window(width=GUI_WIDTH * 0.8, height=80):    
+            #        add_checkbox(
+            #            label='Consider Blue / Red / Crab',
+            #            default_value=jsonGetter().get_data('randb'),
+            #            callback=lambda _, data: GUIFunctions.set_autosmite_data('randb', data)
+            #        )
+            #        add_input_text(
+            #            label='Smite Key', width=30, no_spaces=True,
+            #            hint=jsonGetter().get_data('smite').upper(),
+            #            callback=lambda _, data: GUIFunctions.set_autosmite_data('smite', data)
+            #        )
+            #    with child_window(width=GUI_WIDTH * 0.8, height=80):
+            #        add_checkbox(
+            #            label='Smite Toggle',
+            #            default_value=jsonGetter().get_data('randa'),
+            #            callback=lambda _, data: GUIFunctions.set_autosmite_data('randa', data)
+            #        )
+            #        add_input_text(
+            #            label='Smite Toggle Key', width=30, no_spaces=True,
+            #            hint=jsonGetter().get_data('Smite_toggle'),
+            #            callback=lambda _, data: GUIFunctions.set_autosmite_data('Smite_toggle', data)
+            #        )
 
             with tab(label='Scripts'):
                 add_checkbox(label='Turn on external scripts', callback=main_instance.start_scripts_process, user_data=loaded_scripts)
