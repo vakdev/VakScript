@@ -2,11 +2,11 @@
 from urllib.request import urlopen
 from time import sleep
 from ctypes import windll
-
 #ext
 from pyMeow import r_float
 from orjson import loads
-from win32api import GetCursorPos, SetCursorPos
+from win32api import GetCursorPos, SetCursorPos, mouse_event, GetSystemMetrics
+import win32con
 from mouse import right_click
 
 #own
@@ -63,21 +63,19 @@ class Orbwalk:
         game_time = self.get_game_time()
         c_attack_speed = self.get_attack_time()
         mouse_pos_initial = GetCursorPos()
-        mouse_pos = GetCursorPos()
+        x, y = mouse_pos_initial
         if self.can_attack_time < game_time and pos:
             self.can_attack_time = game_time + 1. / c_attack_speed
             self.can_move_time = game_time + self.get_windup_time(base_as, windup, windup_mod, c_attack_speed)
-            windll.user32.SetCursorPos(pos[0], pos[1])
-            sleep(0.05)
+            mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, int(pos[0]/GetSystemMetrics(0)*65535.0), int(pos[1]/GetSystemMetrics(1)*65535.0))
+            sleep(0.005)
             send_key(attack_key)
-            sleep(0.01)
-            SetCursorPos(mouse_pos_initial)
+            sleep(0.005)
+            mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, int(x/GetSystemMetrics(0)*65535.0), int(y/GetSystemMetrics(1)*65535.0))
+            print(x,y)
         elif self.can_move_time < game_time:
-            sleep(0.05)
-            SetCursorPos(mouse_pos_initial)
-            sleep(0.05)
             right_click()
-            sleep(0.055)
+            sleep(0.1)
 
     def walk_inplace(self, pos, attack_key, base_as, windup, windup_mod):
         game_time = self.get_game_time()
