@@ -75,10 +75,8 @@ class Info:
     url_comunitydragon = 'https://raw.communitydragon.org/latest/game/data/characters/{name}/{name}.bin.json'
     root_key = 'characters/{}/characterrecords/root'
 
-VK_CODES = {'mousex1':0x05,
-            'mousex2':0x06,
-            'backspace':0x08,
-            'tab':0x09,
+VK_CODES = {'backspace':0x08,
+           'tab':0x09,
            'clear':0x0C,
            'enter':0x0D,
            'shift':0x10,
