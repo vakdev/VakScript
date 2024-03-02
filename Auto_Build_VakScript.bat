@@ -53,6 +53,8 @@ xcopy /E /I /Y vakscript\wards "%target_folder%\wards"
 REM Copy scripts folder to the target folder
 xcopy /E /I /Y vakscript\scripts "%target_folder%\scripts"
 
+xcopy /I /Y vakscript\Prototype.ttf "%target_folder%"
+xcopy /I /Y vakscript\image_1.png "%target_folder%"
 @echo off
 setlocal EnableDelayedExpansion
 

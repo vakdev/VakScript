@@ -23,3 +23,8 @@ blackcatxhan: [https://github.com/blackcatxhan]
 
 9quh:
 	- Wrote lasthit code.
+
+Shurtug
+	-improved walkv2
+	-added smite toggle
+	-re designed menu

@@ -27,10 +27,12 @@
     },
     "AutoSmite": {
         "smite": "f",
-        "Smite_toggle" : "b",
+        "Smite_toggle": "g",
         "randb": true,
         "randa": true
     },
     "Scripts": {
+        "example_turret_enabled": false,
+        "example_turret_limited": false
     }
 }
