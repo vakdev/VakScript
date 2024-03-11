@@ -104,5 +104,3 @@ def autosmite(terminate, settings, jungle_pointers, on_window):
                 except Exception as asmite_loop:
                     debug_info(asmite_loop, True)
                     sleep(0.1)
-
-
