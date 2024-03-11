@@ -2,7 +2,7 @@
 import sys
 from multiprocessing import Process, Manager, freeze_support
 from ctypes import windll
-
+import keyboard
 #own
 from multiprocessing_functions import MultiprocessingFunctions
 from gui import show_gui

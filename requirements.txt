@@ -8,3 +8,4 @@ pywin32-ctypes
 requests
 psutil
 numpy
+keyboard
