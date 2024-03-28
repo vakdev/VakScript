@@ -4,10 +4,11 @@ import win32api
 import fileinput
 from psutil import process_iter
 from json import dump
-
+import shutil
+import json
 #own
 from data import Info
-
+import gc
 """
 TODO: 
     - Check if evtShowCharacterMenu isn't bug.
@@ -18,23 +19,23 @@ vak code changes:
 """
 
 settings_json = {
-    'Spaceglider': {
-        'orbwalk' : 'space',
-        'laneclear' : 'v',
-        'lasthit' : 'c',
-        'attack' : 'a',
-        'range' : 'o',
-        'kiting_mode' : 'Normal',
-        'orbwalk_prio' : 'Less Basic Attacks',
-        'lasthit_mode' : 'Normal',
-        'press_range': False,
-        'ppc' : False
+    "Spaceglider": {
+        "orbwalk": "space",
+        "laneclear": "v",
+        "lasthit": "c",
+        "attack": "a",
+        "range": "o",
+        "kiting_mode": "Normal",
+        "orbwalk_prio": "Less Basic Attacks",
+        "lasthit_mode": "Normal",
+        "press_range": False,
+        "ppc": False
     },
-    'Drawings' : {
+    "Drawings": {
         "show_position": True,
         "show_focused": True,
         "show_healths": True,
-        "show_gold": False,
+        "show_gold":False,
         "show_spells": False,
         "show_player_range": True,
         "show_enemy_range": True,
@@ -42,13 +43,17 @@ settings_json = {
         "show_hits": True,
         "vision_tracker": True,
         "screen_track": False,
-        "fps": "60" 
+        "fps": "60"
     },
-    'AutoSmite' : {
-        'smite' : 'f',
-        'randb' : False
+    "AutoSmite": {
+        "smite": "f",
+        "randb": False,
+        "randa": True,
+        "Smite_toggle": "h"
     },
-    "Scripts" : {
+    "Scripts": {},
+    "Settings": {
+        "League_Path": "C:\\Riot Games\\League of Legends"
     }
 }
 
@@ -114,6 +119,7 @@ class Autoconfig:
                 if current_index == k:
                     line = line.replace(v, '[<Unbound>],[<Unbound>]')
             print(line, end="")
+                
 
     def get_persisted_settings(self):
         current_settings = dict()
@@ -133,6 +139,7 @@ class Autoconfig:
         
 
     def set_persisted_settings(self):
+        
         current_settings = self.get_persisted_settings()
         for line in fileinput.input(self.persisted_settings, inplace=True):
             current_index = fileinput.lineno()
@@ -183,3 +190,55 @@ def start_autoconfig():
                     pass
 
         Autoconfig(settings_to_persist, persisted_settings).set_config()
+
+def backup_persisted_settings():
+        persisted_settings = Info.persisted_settings_path
+        backup_path = os.path.join(Info.game_files_path, r'Config\persisted_settings_backup.json')
+        if os.path.exists(backup_path):
+            with open(persisted_settings, 'r') as file1, open(backup_path, 'r') as file2:
+                json1 = json.load(file1)
+                json2 = json.load(file2)
+
+            if json1 != json2:
+                os.remove(backup_path)
+                shutil.copy(persisted_settings, backup_path)
+                print("Backup of persisted settings successful.")
+            else:
+                print("Settings equal to backup, backup not needed.")
+        else:
+            shutil.copy(persisted_settings, backup_path)
+            print("Backup of persisted settings created.")
+        gc.collect()
+
+def restore_persisted_settings():
+    persisted_settings = Info.persisted_settings_path
+    backup_path = os.path.join(Info.game_files_path, r'Config\persisted_settings_backup.json')
+    try:
+        if os.path.exists(backup_path):
+            with open(persisted_settings, 'r') as file1, open(backup_path, 'r') as file2:
+                json1 = json.load(file1)
+                json2 = json.load(file2)
+            if json1 != json2:
+                os.remove(persisted_settings)
+                shutil.copy(backup_path, persisted_settings)
+                print("Restoration successful.")
+            else:
+                print("Settings equal to backup, backup not needed.")
+        else:
+            print("No backup has been created yet")
+    except:
+        try:
+            with open(persisted_settings, 'r') as file1:
+                json.load(file1)
+        except:
+            shutil.copy(backup_path, persisted_settings)
+            print("settings file had been corrupted - restored backup successfully")
+        try:
+            with open(backup_path, 'r') as file2:
+                json2=json.load(file2) 
+        except:
+            corrupted_backup_location = os.path.join(Info.game_files_path, r'Config\persisted_settings_backup_probably_corrupted.json')
+            print("backup file corrupted - restoration not possible - renamed backup file for manual inspection at"+corrupted_backup_location)
+            os.rename(backup_path, corrupted_backup_location)
+        
+    gc.collect()

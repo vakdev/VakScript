@@ -1,11 +1,66 @@
 from os import path
 import configparser
-
+from json import load, dump
 """
 TODO:
     - bonus_attack_speed offset in offsets.ini is wrong
 """
+class jsonSetter:
 
+    def __init__(self):
+        self.file_name = "settings.json"
+        self.file = open(self.file_name, "r+")
+        self.settings = load(self.file)
+
+    def _json_update(self):
+        self.file.seek(0)
+        dump(self.settings, self.file, indent=4)
+        self.file.truncate()
+        self.file.close()
+
+    def is_valid_data(self, data):
+        return data.lower() in VK_CODES.keys()
+    
+    def set_spaceglider_data(self, key, data):
+        if isinstance(data, str):
+            if self.is_valid_data(data):
+                self.settings['Spaceglider'][key] = data.lower()
+            elif key.endswith(('mode', 'prio')):
+                self.settings['Spaceglider'][key] = data
+        else:
+            self.settings['Spaceglider'][key] = data
+        self._json_update()
+
+    def set_drawings_data(self, key, data):
+        self.settings['Drawings'][key] = data
+        self._json_update()
+
+    def set_autosmite_data(self, key, data):
+        if isinstance(data, str):
+            if self.is_valid_data(data):
+                self.settings['AutoSmite'][key] = data.lower()
+        else:
+            self.settings['AutoSmite'][key] = data
+        self._json_update()
+    
+    def set_scripts_data(self, key, data):
+        self.settings['Scripts'][key] = data
+        self._json_update()
+        
+    def set_settings_data(self, key, data):
+        self.settings['Settings'][key] = data
+        self._json_update()
+        
+class jsonGetter(jsonSetter):
+
+    def __init__(self):
+        super().__init__()
+
+    def get_data(self, key):
+        for sk, sv in self.settings.items():
+            if key in sv:
+                return self.settings[sk][key]
+            
 class Offsets:
     offsets_file = configparser.ConfigParser()
     offsets_file.read("offsets.ini")
@@ -55,7 +110,7 @@ class Offsets:
     buff_end = int(offsets_file.get("offsets", "buff_end"), 16)
     buff_info = int(offsets_file.get("offsets", "buff_info"), 16)
     buff_name = int(offsets_file.get("offsets", "buff_name"), 16)
-
+    
 class Info:
     offsets_file = configparser.ConfigParser()
     offsets_file.read("offsets.ini")
@@ -66,11 +121,13 @@ class Info:
     client_name_executable = 'LeagueClient.exe'
     game_name_executable = 'League of Legends.exe'
     game_name_window = 'League of Legends (TM) Client'
-    game_files_path = '\Riot Games\League of Legends'
+    game_files_path = jsonGetter().get_data('League_Path')
+    print(game_files_path)
     settings_to_persist = 'DATA\CFG\defaults\SettingsToPersist.json'
     persisted_settings = 'Config\PersistedSettings.json'
-    settings_to_persist_path = path.join(game_files_path, settings_to_persist)
-    persisted_settings_path = path.join(game_files_path, persisted_settings)
+    if game_files_path != None:
+        settings_to_persist_path = path.join(game_files_path, settings_to_persist)
+        persisted_settings_path = path.join(game_files_path, persisted_settings)
     url_allgamedata = 'https://127.0.0.1:2999/liveclientdata/allgamedata'
     url_comunitydragon = 'https://raw.communitydragon.org/latest/game/data/characters/{name}/{name}.bin.json'
     root_key = 'characters/{}/characterrecords/root'

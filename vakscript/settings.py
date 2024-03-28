@@ -45,7 +45,11 @@ class jsonSetter:
     def set_scripts_data(self, key, data):
         self.settings['Scripts'][key] = data
         self._json_update()
-
+        
+    def set_settings_data(self, key, data):
+        self.settings['Settings'][key] = data
+        self._json_update()
+        
 class jsonGetter(jsonSetter):
 
     def __init__(self):
