@@ -47,6 +47,14 @@ https://github.com/vakdev/VakScript/assets/93299015/d8412240-c2dc-45fd-a7aa-d93b
 4. Extract VakScript and install requirements: pip install -r requirements.txt
 5. Start main.py
 
+## Usage of Community Add-ons/Scripts
+1. Head over to the community scripts channel on our discord.
+(https://discord.com/channels/977983459626733658/1181850771336212602)
+2. Download a add-on of your choice.
+3. Move said add-on to your scripts folder you can find it within the folder you got either from compiling Vak yourself, or by downloading a already compiled version through this repository's releases section.
+4. Run the script.
+5. Hop into a game and enjoy.
+
 ## Packaging to .EXE
 1. Start Auto_Build_VakScript.bat.
 2. Start builded script from VakScript v**.** folder as admin.
